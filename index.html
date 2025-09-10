@@ -1,20 +1,121 @@
-<!doctype html><html lang="en"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>KARBA — Test Frontend</title><script src="config.js"></script>
-<style>body{font-family:Arial, sans-serif; padding:24px}</style></head>
-<body><h1>KARBA Test Frontend</h1>
-<p>Backend URL: <code id="burl"></code></p>
-<form id="lead"><input name="fullName" placeholder="Full name" required />
-<input name="email" type="email" placeholder="Email" required />
-<button>Send Test Lead</button></form>
-<pre id="out" style="background:#111;color:#0f0;padding:12px;border-radius:8px;min-height:120px"></pre>
-<script>
-const back=(window.KARBA_CONFIG&&window.KARBA_CONFIG.BACKEND_URL)||'';
-document.getElementById('burl').textContent=back||'(configure in config.js)';
-document.getElementById('lead').addEventListener('submit', async (e)=>{
- e.preventDefault();
- const data=Object.fromEntries(new FormData(e.target).entries());
- const r=await fetch(back+'/api/leads',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
- document.getElementById('out').textContent=await r.text();
-});
-</script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KARBA Financial Consultant</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<script defer src="config.js"></script>
+<script defer src="script.js"></script>
+</head>
+<body>
+<header class="nav">
+  <div class="container nav-inner">
+    <div class="brand">
+      <div class="shield">▲</div>
+      <div class="brand-text">
+        <div class="brand-title">KARBA</div>
+        <div class="brand-sub">FINANCIAL CONSULTANT</div>
+      </div>
+    </div>
+    <nav class="menu">
+      <a href="#services">Services</a>
+      <a href="#about">About</a>
+      <a href="#contact" class="btn btn-outline">Book Free Consultation</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="container hero-inner">
+    <div class="hero-copy">
+      <h1>Live Confidently. Invest Wisely. <span class="nowrap">Leave a Legacy.</span></h1>
+      <p>Tailored protection and investment solutions for families, professionals, and growing businesses.</p>
+      <div class="cta-row">
+        <a href="#contact" class="btn btn-primary">Get Covered Today</a>
+        <a class="btn btn-ghost" href="https://wa.me/2348123456789?text=Hello%20KARBA%2C%20I%27d%20like%20a%20free%20consultation.">Chat on WhatsApp</a>
+      </div>
+    </div>
+    <div class="hero-art" aria-hidden="true">
+      <div class="family-card">Black happy family — protected & thriving.</div>
+    </div>
+  </div>
+</section>
+
+<section id="services" class="services">
+  <div class="container">
+    <h2>Our Services</h2>
+    <div class="grid">
+      <div class="card"><h3>Life Insurance Policies</h3><p>Affordable, flexible coverage designed to secure your loved ones and estate.</p></div>
+      <div class="card"><h3>Children Education Plans</h3><p>Plan ahead for tuition and long-term academic milestones.</p></div>
+      <div class="card"><h3>Family Protection Plans</h3><p>Comprehensive cover for income, health gaps, and emergencies.</p></div>
+      <div class="card"><h3>Retirement & Annuity</h3><p>Build stable retirement income streams and protect your future.</p></div>
+      <div class="card"><h3>Motor / Car Insurance</h3><p>Third-party and comprehensive cover with fast claims assistance.</p></div>
+      <div class="card"><h3>General Insurance</h3><p>Fire, burglary, travel and more — we’ll tailor cover to your needs.</p></div>
+      <div class="card"><h3>Real Estate Advisory (Future)</h3><p>Guidance on property acquisition and risk evaluation.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="about" class="about">
+  <div class="container about-inner">
+    <div>
+      <h2>Why KARBA?</h2>
+      <ul class="ticks">
+        <li>Independent advice focused on your goals</li>
+        <li>Transparent, modern process & ongoing support</li>
+        <li>Solutions that scale as your family or business grows</li>
+      </ul>
+    </div>
+    <div class="stat-card">
+      <div class="stat"><span>10+</span> partner providers</div>
+      <div class="stat"><span>100%</span> tailored recommendations</div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="contact">
+  <div class="container">
+    <h2>Book a Free Consultation</h2>
+    <form id="lead-form" class="lead-form">
+      <div class="two">
+        <label>Full name<input name="fullName" required placeholder="Your full name"></label>
+        <label>Email<input name="email" required type="email" placeholder="you@example.com"></label>
+      </div>
+      <label>Phone (optional)<input name="phone" placeholder="+234 ..."></label>
+      <label>Service of interest
+        <select name="service">
+          <option>Life Insurance</option>
+          <option>Children Education Plan</option>
+          <option>Family Protection</option>
+          <option>Retirement & Annuity</option>
+          <option>Motor / Car Insurance</option>
+          <option>General Insurance</option>
+        </select>
+      </label>
+      <label>Message (optional)<textarea name="message" rows="4" placeholder="Tell us your goal..."></textarea></label>
+      <button class="btn btn-primary" type="submit">Submit</button>
+      <div id="form-status" aria-live="polite"></div>
+    </form>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container foot-inner">
+    <div class="logo-foot">
+      <div class="brand-title">KARBA</div>
+      <div class="brand-sub">FINANCIAL CONSULTANT</div>
+    </div>
+    <div class="socials">
+      <a href="https://www.linkedin.com/in/babatunde-bamigbetan-14a4b6142?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://www.facebook.com/share/16LyzTFTEt/" target="_blank" rel="noopener">Facebook</a>
+      <a href="https://www.instagram.com/karba_f.c?igsh=cGxxaWhnMGJvZ3p1" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://www.youtube.com/@KarbaFinancialConsultant" target="_blank" rel="noopener">YouTube</a>
+    </div>
+    <div class="copy">© 2025 KARBA. All rights reserved.</div>
+  </div>
+</footer>
+</body>
+</html>
