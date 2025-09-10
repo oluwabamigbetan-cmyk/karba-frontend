@@ -1,0 +1,20 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KARBA — Test Frontend</title><script src="config.js"></script>
+<style>body{font-family:Arial, sans-serif; padding:24px}</style></head>
+<body><h1>KARBA Test Frontend</h1>
+<p>Backend URL: <code id="burl"></code></p>
+<form id="lead"><input name="fullName" placeholder="Full name" required />
+<input name="email" type="email" placeholder="Email" required />
+<button>Send Test Lead</button></form>
+<pre id="out" style="background:#111;color:#0f0;padding:12px;border-radius:8px;min-height:120px"></pre>
+<script>
+const back=(window.KARBA_CONFIG&&window.KARBA_CONFIG.BACKEND_URL)||'';
+document.getElementById('burl').textContent=back||'(configure in config.js)';
+document.getElementById('lead').addEventListener('submit', async (e)=>{
+ e.preventDefault();
+ const data=Object.fromEntries(new FormData(e.target).entries());
+ const r=await fetch(back+'/api/leads',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
+ document.getElementById('out').textContent=await r.text();
+});
+</script></body></html>
