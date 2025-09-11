@@ -1,75 +1,82 @@
-// script.js
+// script.js — no-hang submit + clear errors
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('lead-form');
   const statusBox = document.getElementById('form-status');
 
-  const BACKEND = (window.KARBA_CONFIG && window.KARBA_CONFIG.BACKEND_URL) || '';
-  const SITE = (window.KARBA_CONFIG && window.KARBA_CONFIG.RECAPTCHA_SITE_KEY) || '';
+  const cfg = window.KARBA_CONFIG || {};
+  const BACKEND = (cfg.BACKEND_URL || '').replace(/\/+$/, '');
+  const SITE = cfg.RECAPTCHA_SITE_KEY || '';
 
-  // 1) Load reCAPTCHA with your site key
-  function loadRecaptcha() {
+  function show(msg) {
+    if (statusBox) statusBox.textContent = msg;
+  }
+
+  // Load reCAPTCHA v3 with your SITE key
+  (function loadRecaptcha() {
     if (!SITE) return;
     const s = document.createElement('script');
     s.src = `https://www.google.com/recaptcha/api.js?render=${SITE}`;
-    s.async = true;
-    s.defer = true;
+    s.async = true; s.defer = true;
     document.head.appendChild(s);
-  }
-  loadRecaptcha();
+  })();
 
-  // Helper: post to a given path
+  // Helper: fetch with timeout so it can’t spin forever
+  async function fetchWithTimeout(url, options = {}, ms = 20000) {
+    const ctrl = new AbortController();
+    const t = setTimeout(() => ctrl.abort(), ms);
+    try {
+      return await fetch(url, { ...options, signal: ctrl.signal });
+    } finally {
+      clearTimeout(t);
+    }
+  }
+
+  async function getRecaptchaToken() {
+    try {
+      if (!window.grecaptcha || !SITE) return null; // allow backend to decide
+      await grecaptcha.ready();
+      return await grecaptcha.execute(SITE, { action: 'lead' });
+    } catch {
+      return null;
+    }
+  }
+
   async function postLead(path, payload) {
-    const res = await fetch(BACKEND + path, {
+    return fetchWithTimeout(`${BACKEND}${path}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
     });
-    return res;
   }
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    if (!BACKEND) {
-      statusBox.textContent = 'Missing BACKEND_URL.';
-      return;
-    }
-    if (!SITE) {
-      statusBox.textContent = 'Missing RECAPTCHA_SITE_KEY.';
-      return;
-    }
+    if (!BACKEND) { show('Setup error: BACKEND_URL missing.'); return; }
+    if (!SITE) { show('Setup error: RECAPTCHA_SITE_KEY missing.'); return; }
 
-    statusBox.textContent = 'Submitting…';
+    show('Submitting…');
 
     const data = Object.fromEntries(new FormData(form).entries());
+    const token = await getRecaptchaToken();
+    const payload = { ...data, recaptchaToken: token };
 
     try {
-      // 2) Get reCAPTCHA token
-      if (!window.grecaptcha) {
-        statusBox.textContent = 'reCAPTCHA not loaded. Please refresh and try again.';
-        return;
-      }
-      await grecaptcha.ready();
-      const token = await grecaptcha.execute(SITE, { action: 'lead' });
-
-      const payload = { ...data, recaptchaToken: token };
-
-      // 3) Try /api/leads, fallback to /api/test-lead if 404
+      // Try main route, then a fallback if your backend uses /api/test-lead
       let res = await postLead('/api/leads', payload);
-      if (res.status === 404) {
-        res = await postLead('/api/test-lead', payload);
-      }
+      if (res.status === 404) res = await postLead('/api/test-lead', payload);
 
-      const txt = await res.text();
-      if (res.ok) {
-        statusBox.textContent = 'Thank you! We will contact you shortly.';
-        form.reset();
+      const text = await res.text();
+      let json; try { json = JSON.parse(text); } catch { json = { message: text }; }
+
+      if (!res.ok) {
+        show(`Error ${res.status}: ${json.message || text || 'Unknown error'}`);
       } else {
-        statusBox.textContent = `Error: ${res.status} ${txt}`;
+        show('Thank you! We will contact you shortly.');
+        form.reset();
       }
     } catch (err) {
-      console.error(err);
-      statusBox.textContent = 'Network error. Please try again.';
+      show(err?.name === 'AbortError' ? 'Request timed out. Please try again.' : 'Network error. Please try again.');
     }
   });
 });
