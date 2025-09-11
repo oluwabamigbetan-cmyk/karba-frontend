@@ -7,7 +7,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
+
+<!-- Config first (gives us BACKEND + SITE KEY) -->
 <script defer src="config.js"></script>
+
+<!-- Your main app logic -->
 <script defer src="script.js"></script>
 </head>
 <body>
@@ -79,7 +83,7 @@
 <section id="contact" class="contact">
   <div class="container">
     <h2>Book a Free Consultation</h2>
-    <form id="lead-form" class="lead-form">
+    <form id="lead-form" class="lead-form" autocomplete="on">
       <div class="two">
         <label>Full name<input name="fullName" required placeholder="Your full name"></label>
         <label>Email<input name="email" required type="email" placeholder="you@example.com"></label>
