@@ -1,5 +1,8 @@
 // config.v2.js
 window.KARBA_CONFIG = {
+  // ⚠️ EXACT Render backend base URL (no trailing slash)
   BACKEND_URL: "https://karba-backend-jgbp.onrender.com",
-  RECAPTCHA_SITE_KEY: "6Ld66MYrAAAAAEdGo5j3wHH9YbIPQFlWKXkN4dqc"  // from reCAPTCHA v3 Admin
+
+  // ⚠️ Your reCAPTCHA v3 **SITE** key (the one that starts with 6L...)
+  RECAPTCHA_SITE_KEY: "6Ld66MYrAAAAAEdGo5j3wHH9YbIPQFlWKXkN4dqc"
 };
