@@ -1,82 +1,79 @@
-// script.js — no-hang submit + clear errors
-document.addEventListener('DOMContentLoaded', () => {
-  const form = document.getElementById('lead-form');
-  const statusBox = document.getElementById('form-status');
+// script.js
 
-  const cfg = window.KARBA_CONFIG || {};
-  const BACKEND = (cfg.BACKEND_URL || '').replace(/\/+$/, '');
-  const SITE = cfg.RECAPTCHA_SITE_KEY || '';
+// Dynamically load reCAPTCHA v3
+(function () {
+  const recaptchaScript = document.createElement("script");
+  recaptchaScript.src = `https://www.google.com/recaptcha/api.js?render=${window.KARBA_CONFIG.RECAPTCHA_SITE_KEY}`;
+  document.head.appendChild(recaptchaScript);
+})();
 
-  function show(msg) {
-    if (statusBox) statusBox.textContent = msg;
-  }
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("consultation-form");
+  const statusDiv = document.getElementById("form-status");
 
-  // Load reCAPTCHA v3 with your SITE key
-  (function loadRecaptcha() {
-    if (!SITE) return;
-    const s = document.createElement('script');
-    s.src = `https://www.google.com/recaptcha/api.js?render=${SITE}`;
-    s.async = true; s.defer = true;
-    document.head.appendChild(s);
-  })();
+  if (!form || !statusDiv) return;
 
-  // Helper: fetch with timeout so it can’t spin forever
-  async function fetchWithTimeout(url, options = {}, ms = 20000) {
-    const ctrl = new AbortController();
-    const t = setTimeout(() => ctrl.abort(), ms);
-    try {
-      return await fetch(url, { ...options, signal: ctrl.signal });
-    } finally {
-      clearTimeout(t);
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    // Clear previous messages
+    statusDiv.textContent = "Submitting...";
+    statusDiv.style.color = "#FFD700"; // gold while processing
+
+    // Safety checks
+    if (!window.KARBA_CONFIG || !window.KARBA_CONFIG.BACKEND_URL) {
+      statusDiv.textContent = "Setup error: BACKEND_URL missing.";
+      statusDiv.style.color = "red";
+      return;
     }
-  }
 
-  async function getRecaptchaToken() {
-    try {
-      if (!window.grecaptcha || !SITE) return null; // allow backend to decide
-      await grecaptcha.ready();
-      return await grecaptcha.execute(SITE, { action: 'lead' });
-    } catch {
-      return null;
+    if (!window.grecaptcha) {
+      statusDiv.textContent = "reCAPTCHA not loaded. Please refresh.";
+      statusDiv.style.color = "red";
+      return;
     }
-  }
-
-  async function postLead(path, payload) {
-    return fetchWithTimeout(`${BACKEND}${path}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    });
-  }
-
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-
-    if (!BACKEND) { show('Setup error: BACKEND_URL missing.'); return; }
-    if (!SITE) { show('Setup error: RECAPTCHA_SITE_KEY missing.'); return; }
-
-    show('Submitting…');
-
-    const data = Object.fromEntries(new FormData(form).entries());
-    const token = await getRecaptchaToken();
-    const payload = { ...data, recaptchaToken: token };
 
     try {
-      // Try main route, then a fallback if your backend uses /api/test-lead
-      let res = await postLead('/api/leads', payload);
-      if (res.status === 404) res = await postLead('/api/test-lead', payload);
+      // Get reCAPTCHA token
+      const token = await window.grecaptcha.execute(
+        window.KARBA_CONFIG.RECAPTCHA_SITE_KEY,
+        { action: "submit" }
+      );
 
-      const text = await res.text();
-      let json; try { json = JSON.parse(text); } catch { json = { message: text }; }
+      // Collect form data
+      const data = {
+        name: form.name.value,
+        email: form.email.value,
+        phone: form.phone.value,
+        service: form.service.value,
+        message: form.message.value,
+        recaptchaToken: token,
+      };
 
-      if (!res.ok) {
-        show(`Error ${res.status}: ${json.message || text || 'Unknown error'}`);
-      } else {
-        show('Thank you! We will contact you shortly.');
+      // Send to backend
+      const response = await fetch(
+        `${window.KARBA_CONFIG.BACKEND_URL}/api/leads`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        }
+      );
+
+      const result = await response.json();
+
+      if (response.ok) {
+        statusDiv.textContent = "✅ Thank you! We will contact you shortly.";
+        statusDiv.style.color = "green";
         form.reset();
+      } else {
+        statusDiv.textContent = `❌ Error: ${result.error || "Unknown error"}`;
+        statusDiv.style.color = "red";
       }
     } catch (err) {
-      show(err?.name === 'AbortError' ? 'Request timed out. Please try again.' : 'Network error. Please try again.');
+      console.error(err);
+      statusDiv.textContent = "❌ Network error. Please try again.";
+      statusDiv.style.color = "red";
     }
   });
 });
