@@ -89,7 +89,7 @@
 <section id="contact" class="contact">
   <div class="container">
     <h2>Book a Free Consultation</h2>
-   <form id="lead-form" class="lead-form">
+      <form id="lead-form" class="lead-form" autocomplete="on">
       <div class="two">
         <label>Full name<input name="fullName" required placeholder="Your full name"></label>
         <label>Email<input name="email" required type="email" placeholder="you@example.com"></label>
@@ -108,6 +108,8 @@
       <label>Message (optional)<textarea name="message" rows="4" placeholder="Tell us your goal..."></textarea></label>
       <button class="btn btn-primary" type="submit">Submit</button>
       <div id="form-status" aria-live="polite"></div>
+       <script defer src="config.v2.js?v=20250912a"></script>
+<script defer src="script.js?v=20250912a"></script>
     </form>
   </div>
 </section>
