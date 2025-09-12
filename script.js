@@ -3,54 +3,55 @@
   const log = (...a) => console.log('[KARBA]', ...a);
   const err = (...a) => console.error('[KARBA]', ...a);
 
-  function getEl(id) { return document.getElementById(id); }
-
-  function setStatus(msg) {
-    const box = getEl('form-status');
-    if (box) box.textContent = msg;
+  function el(id) { return document.getElementById(id); }
+  function setStatus(msg, color) {
+    const box = el('form-status');
+    if (box) { box.textContent = msg; if (color) box.style.color = color; }
   }
 
-  // Bind once after DOM is ready
+  // Load reCAPTCHA v3 dynamically from the Site key in config
+  function loadRecaptcha(siteKey) {
+    if (!siteKey) return;
+    const s = document.createElement('script');
+    s.src = `https://www.google.com/recaptcha/api.js?render=${siteKey}`;
+    s.async = true; s.defer = true;
+    s.onload = () => log('reCAPTCHA loaded');
+    s.onerror = () => err('reCAPTCHA failed to load');
+    document.head.appendChild(s);
+  }
+
+  // Never hang forever
+  async function fetchWithTimeout(url, options = {}, ms = 20000) {
+    const ctrl = new AbortController();
+    const t = setTimeout(() => ctrl.abort(), ms);
+    try {
+      return await fetch(url, { ...options, signal: ctrl.signal });
+    } finally { clearTimeout(t); }
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
     log('DOM ready');
+    const form = el('lead-form');
+    if (!form) { err('Form #lead-form not found'); return; }
 
-    const form = getEl('lead-form');
-    if (!form) { err('lead-form not found'); return; }
-
-    // Safety: stop the browser’s default submit no matter what
+    // Prevent native submit/reload no matter what
     form.setAttribute('novalidate', 'true');
-    form.addEventListener('submit', (ev) => ev.preventDefault(), { once: true });
 
-    // Attach our real handler (and mark as bound)
-    form.addEventListener('submit', onSubmit);
-    window.__KARBA_FORM_BOUND__ = true;
-    log('submit handler bound');
-
-    // Quick config sanity
-    const cfg = (window.KARBA_CONFIG || {});
+    const cfg = window.KARBA_CONFIG || {};
     log('CONFIG', cfg);
 
-    if (!cfg.BACKEND_URL) {
-      setStatus('Setup error: BACKEND_URL missing.');
-      return;
-    }
-    if (!cfg.RECAPTCHA_SITE_KEY) {
-      setStatus('Setup error: RECAPTCHA_SITE_KEY missing.');
-      return;
-    }
+    if (!cfg.BACKEND_URL) { setStatus('Setup error: BACKEND_URL missing.', 'red'); return; }
+    if (!cfg.RECAPTCHA_SITE_KEY) { setStatus('Setup error: RECAPTCHA_SITE_KEY missing.', 'red'); return; }
 
-    // Load reCAPTCHA v3
-    const s = document.createElement('script');
-    s.src = `https://www.google.com/recaptcha/api.js?render=${cfg.RECAPTCHA_SITE_KEY}`;
-    s.onload = () => log('reCAPTCHA script loaded');
-    s.onerror = () => err('Failed to load reCAPTCHA script');
-    document.head.appendChild(s);
+    // Load reCAPTCHA
+    loadRecaptcha(cfg.RECAPTCHA_SITE_KEY);
 
-    // Optional: small health ping so you can see success in console
+    // Optional: backend health log
     fetch(cfg.BACKEND_URL + '/api/health')
-      .then(r => r.text())
-      .then(t => log('HEALTH:', t))
+      .then(r => r.text()).then(txt => log('HEALTH:', txt))
       .catch(e => err('HEALTH error', e));
+
+    form.addEventListener('submit', onSubmit);
   });
 
   async function onSubmit(e) {
@@ -58,47 +59,55 @@
     e.stopPropagation();
 
     const form = e.currentTarget;
-    setStatus('Submitting…');
+    setStatus('Submitting…', '#EEDC82'); // soft gold
 
-    const cfg = (window.KARBA_CONFIG || {});
-    const BACKEND = cfg.BACKEND_URL;
-    const SITE = cfg.RECAPTCHA_SITE_KEY;
-
-    if (!BACKEND) { setStatus('Setup error: BACKEND_URL missing.'); return; }
-    if (!SITE) { setStatus('Setup error: RECAPTCHA_SITE_KEY missing.'); return; }
+    const { BACKEND_URL, RECAPTCHA_SITE_KEY } = window.KARBA_CONFIG || {};
+    if (!BACKEND_URL) { setStatus('Setup error: BACKEND_URL missing.', 'red'); return; }
+    if (!RECAPTCHA_SITE_KEY) { setStatus('Setup error: RECAPTCHA_SITE_KEY missing.', 'red'); return; }
 
     try {
-      // Wait for reCAPTCHA then get token
       if (!window.grecaptcha) {
-        setStatus('reCAPTCHA not ready. Refresh and try again.');
+        setStatus('reCAPTCHA not ready. Refresh and try again.', 'red');
         return;
       }
 
+      // Acquire token (v3 score)
       await grecaptcha.ready();
-      const token = await grecaptcha.execute(SITE, { action: 'lead' });
-      log('recaptcha token obtained (length):', token && token.length);
+      const token = await grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: 'lead' });
+      log('token length:', token && token.length);
 
-      const payload = Object.fromEntries(new FormData(form).entries());
-      payload.recaptchaToken = token;
+      // Gather form data
+      const data = Object.fromEntries(new FormData(form).entries());
+      data.recaptchaToken = token;
 
-      const res = await fetch(BACKEND + '/api/leads', {
+      // Post to backend
+      let res = await fetchWithTimeout(`${BACKEND_URL.replace(/\/+$/,'')}/api/leads`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(data)
       });
 
-      const txt = await res.text();
-      log('POST /api/leads', res.status, txt);
+      // Auto-fallback if your server uses /api/test-lead
+      if (res.status === 404) {
+        res = await fetchWithTimeout(`${BACKEND_URL.replace(/\/+$/,'')}/api/test-lead`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+      }
 
-      if (res.ok) {
-        setStatus('Thank you! We will contact you shortly.');
-        form.reset();
+      const text = await res.text();
+      log('POST result', res.status, text);
+
+      if (!res.ok) {
+        setStatus(`Error ${res.status}: ${text}`, 'red');
       } else {
-        setStatus(`Error ${res.status}: ${txt}`);
+        setStatus('✅ Thank you! We will contact you shortly.', 'green');
+        form.reset();
       }
     } catch (ex) {
       err(ex);
-      setStatus('Network error. Please try again.');
+      setStatus(ex?.name === 'AbortError' ? 'Request timed out. Please try again.' : 'Network error. Please try again.', 'red');
     }
   }
 })();
