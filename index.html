@@ -9,12 +9,16 @@
 <link rel="stylesheet" href="styles.css">
 
     <!-- Config first (gives us BACKEND + SITE KEY) -->
+    <!-- before -->
+    <!-- <script defer src="config.js"></script> -->
+    <!-- after -->
     <script defer src="config.v2.js?v=20250912a"></script>
-<script defer src="script.js?v=20250912a"></script>
-
-<!-- Your main app logic -->
-<script defer src="config.v2.js?v=20250912a"></script>
     <script defer src="script.js?v=20250912a"></script>
+
+
+<!-- load config FIRST, then app logic; add versions to bust cache -->
+<script defer src="config.v2.js?v=20250912a"></script>
+<script defer src="script.js?v=20250912a"></script>
 </head>
 <body>
 <header class="nav">
@@ -107,6 +111,7 @@
     </form>
   </div>
 </section>
+<form id="lead-form" class="lead-form"> … </form>
 
 <footer class="footer">
   <div class="container foot-inner">
@@ -123,7 +128,3 @@
     <div class="copy">© 2025 KARBA. All rights reserved.</div>
   </div>
 </footer>
-</body>
-</html>
-<script src="config.v2.js?v=20250912a"></script>
-<script src="script.js?v=20250912a"></script>
