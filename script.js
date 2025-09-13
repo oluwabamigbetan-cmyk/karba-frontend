@@ -1,122 +1,75 @@
 // script.js
-(() => {
-  const log = (...a) => console.log("[KARBA]", ...a);
-  const err = (...a) => console.error("[KARBA]", ...a);
-
-  // ----- config checks -----
+document.addEventListener("DOMContentLoaded", async () => {
+  const form = document.getElementById("lead-form");
+  const statusBox = document.getElementById("form-status");
   const CFG = window.KARBA_CONFIG || {};
-  const BACKEND = CFG.BACKEND_URL || "";
-  const SITE = CFG.RECAPTCHA_SITE_KEY || "";
 
-  document.addEventListener("DOMContentLoaded", () => {
-    log("DOM ready");
-    const form = document.getElementById("lead-form");
-    const statusBox = document.getElementById("form-status");
+  // --- Guard rails (show clear setup errors on the page) ---
+  if (!CFG.BACKEND_URL) {
+    console.error("BACKEND_URL missing");
+    if (statusBox) statusBox.textContent = "Setup error: BACKEND_URL missing.";
+    return;
+  }
+  if (!CFG.RECAPTCHA_SITE_KEY) {
+    console.error("RECAPTCHA_SITE_KEY missing");
+    if (statusBox) statusBox.textContent = "Setup error: RECAPTCHA_SITE_KEY missing.";
+    return;
+  }
 
-    if (!form) {
-      err("No form with id='lead-form' found.");
-      return;
-    }
-    if (!BACKEND) {
-      statusBox.textContent = "Setup error: BACKEND_URL missing.";
-      err("BACKEND_URL missing in config.");
-      return;
-    }
-    if (!SITE) {
-      statusBox.textContent = "Setup error: RECAPTCHA_SITE_KEY missing.";
-      err("RECAPTCHA_SITE_KEY missing in config.");
-      return;
-    }
-
-    // ----- load reCAPTCHA v3 -----
-    let greLoaded;
-    const waitForGre = new Promise((resolve, reject) => {
-      greLoaded = { resolve, reject };
-    });
-
-    function loadRecaptcha(siteKey) {
-  return new Promise((resolve, reject) => {
-    const s = document.createElement("script");
-    s.src = `https://www.google.com/recaptcha/api.js?render=${siteKey}`;
-    s.async = true;
-    s.defer = true;
-    s.onload = () => {
-      grecaptcha.ready(resolve);
-    };
-    s.onerror = () => reject(new Error("Failed to load reCAPTCHA"));
-    document.head.appendChild(s);
-  });
-}
-function injectRecaptcha() {
-      if (window.grecaptcha) {
-        // already present
-        greLoaded.resolve();
-        return;
-      }
+  // --- Load reCAPTCHA v3 dynamically ---
+  function loadRecaptcha(siteKey) {
+    return new Promise((resolve, reject) => {
       const s = document.createElement("script");
-      s.src = `https://www.google.com/recaptcha/api.js?render=${encodeURIComponent(SITE)}`;
+      s.src = `https://www.google.com/recaptcha/api.js?render=${siteKey}`;
       s.async = true;
       s.defer = true;
       s.onload = () => {
-        log("reCAPTCHA script loaded.");
-        // grecaptcha.ready is async; resolve when ready
-        window.grecaptcha.ready(() => {
-          log("reCAPTCHA ready()");
-          greLoaded.resolve();
-        });
-      };
-      s.onerror = () => greLoaded.reject(new Error("Failed to load reCAPTCHA script"));
-      document.head.appendChild(s);
-    }
-    injectRecaptcha();
-
-    // Expose a tiny tester in the console
-    window.KARBA = {
-      config: CFG,
-      async getToken() {
-        await waitForGre;
-        return window.grecaptcha.execute(SITE, { action: "lead" });
-      }
-    };
-
-    // health check (optional, helpful)
-    fetch(BACKEND + "/api/health")
-      .then(r => r.ok ? r.json() : Promise.reject(r.status))
-      .then(j => log("health:", j))
-      .catch(e => err("health error:", e));
-
-    // ----- submit handler -----
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      statusBox.textContent = "Submitting…";
-
-      // gather fields
-      const data = Object.fromEntries(new FormData(form).entries());
-
-      try {
-        await waitForGre; // ensure grecaptcha is ready
-        const token = await window.grecaptcha.execute(SITE, { action: "lead" });
-        log("token acquired (len):", token?.length);
-
-        const res = await fetch(BACKEND + "/api/leads", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ ...data, recaptchaToken: token })
-        });
-
-        const bodyText = await res.text();
-        if (res.ok) {
-          statusBox.textContent = "✅ Thank you! We will contact you shortly.";
-          form.reset();
-          log("lead ok:", bodyText);
-        } else {
-          statusBox.textContent = "Error " + res.status + ": " + bodyText;
-          err("lead error:", res.status, bodyText);
+        try {
+          grecaptcha.ready(() => resolve());
+        } catch (e) {
+          reject(e);
         }
-      } catch (e2) {
-        statusBox.textContent = "Network/Setup error. Check Console.";
-        err(e2);
-      }
+      };
+      s.onerror = () => reject(new Error("Failed to load reCAPTCHA"));
+      document.head.appendChild(s);
     });
+  }
+
+  try {
+    await loadRecaptcha(CFG.RECAPTCHA_SITE_KEY);
+    console.log("[KARBA] reCAPTCHA loaded");
+  } catch (e) {
+    console.error(e);
+    if (statusBox) statusBox.textContent = "reCAPTCHA failed to load. Refresh and try again.";
+    return;
+  }
+
+  // --- Submit handler ---
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    statusBox.textContent = "Submitting…";
+
+    try {
+      // Get a v3 token for action "lead"
+      const recaptchaToken = await grecaptcha.execute(CFG.RECAPTCHA_SITE_KEY, { action: "lead" });
+
+      const data = Object.fromEntries(new FormData(form).entries());
+      const res = await fetch(`${CFG.BACKEND_URL}/api/leads`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...data, recaptchaToken })
+      });
+
+      const text = await res.text();
+      if (res.ok) {
+        statusBox.textContent = "Thank you! We will contact you shortly.";
+        form.reset();
+      } else {
+        statusBox.textContent = `Error ${res.status}: ${text}`;
+      }
+    } catch (err) {
+      console.error(err);
+      statusBox.textContent = "Network error. Please try again.";
+    }
   });
-})();
+});
