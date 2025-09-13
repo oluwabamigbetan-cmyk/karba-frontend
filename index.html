@@ -1,25 +1,15 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>KARBA Financial Consultant</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>KARBA Financial Consultant</title>
 
-    <!-- Config first (gives us BACKEND + SITE KEY) -->
-    <!-- before -->
-    <!-- <script defer src="config.js"></script> -->
-    <!-- after -->
-    <script defer src="config.v2.js?v=20250912a"></script>
-    <script defer src="script.js?v=20250912a"></script>
-
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
 </head>
-<!-- Config + App (versioned to bust cache) -->
-<script defer src="config.v2.js?v=20250913a"></script>
-<script defer src="script.js?v=20250913a"></script>    
-</body>
+<body>
 <header class="nav">
   <div class="container nav-inner">
     <div class="brand">
@@ -88,12 +78,12 @@
 <section id="contact" class="contact">
   <div class="container">
     <h2>Book a Free Consultation</h2>
-      <form id="lead-form" class="lead-form" autocomplete="on">
+    <form id="lead-form" class="lead-form" autocomplete="on">
       <div class="two">
-        <label>Full name<input name="fullName" required placeholder="Your full name"></label>
-        <label>Email<input name="email" required type="email" placeholder="you@example.com"></label>
+        <label>Full name<input name="fullName" required placeholder="Your full name" /></label>
+        <label>Email<input name="email" required type="email" placeholder="you@example.com" /></label>
       </div>
-      <label>Phone (optional)<input name="phone" placeholder="+234 ..."></label>
+      <label>Phone (optional)<input name="phone" placeholder="+234 ..." /></label>
       <label>Service of interest
         <select name="service">
           <option>Life Insurance</option>
@@ -107,8 +97,6 @@
       <label>Message (optional)<textarea name="message" rows="4" placeholder="Tell us your goal..."></textarea></label>
       <button class="btn btn-primary" type="submit">Submit</button>
       <div id="form-status" aria-live="polite"></div>
-       <script defer src="config.v2.js?v=20250912a"></script>
-<script defer src="script.js?v=20250912a"></script>
     </form>
   </div>
 </section>
@@ -128,5 +116,9 @@
     <div class="copy">© 2025 KARBA. All rights reserved.</div>
   </div>
 </footer>
-<script defer src="config.v2.js?v=20250912a"></script>
-<script defer src="script.js?v=20250912a"></script>
+
+<!-- CONFIG FIRST, THEN APP. Keep these names exactly. -->
+<script defer src="config.js?v=reset1"></script>
+<script defer src="script.js?v=reset1"></script>
+</body>
+</html>
