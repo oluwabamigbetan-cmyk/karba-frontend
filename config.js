@@ -1,11 +1,12 @@
-// config.js — EDIT THESE TWO VALUES ONLY
+// config.js - EDIT THESE TWO VALUES ONLY
+
 window.KARBA_CONFIG = {
-  // 1) Your Render backend base URL (NO trailing slash)
+  // 1) Your backend base URL (NO trailing slash)
   BACKEND_URL: "https://karba-backend-jgbp.onrender.com",
 
-  // 2) Your reCAPTCHA v3 SITE KEY (registered for your Vercel domain)
-  RECAPTCHA_SITE_KEY: "6Ld66MYrAAAAAEdGo5j3wHH9YbIPQFlWKXkN4dqc"
+  // 2) Your reCAPTCHA v3 SITE KEY (from Google reCAPTCHA Admin Console)
+  RECAPTCHA_SITE_KEY: "6Ld66MYmAAAAAEdo53jWHt9YDfpUWKhXNkW4k4qc"
 };
 
-// sanity log (you should see an object in DevTools)
+// Sanity log (you should see an object in DevTools console)
 console.log("[KARBA_CONFIG]", window.KARBA_CONFIG);
