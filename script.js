@@ -34,7 +34,20 @@
       greLoaded = { resolve, reject };
     });
 
-    function injectRecaptcha() {
+    function loadRecaptcha(siteKey) {
+  return new Promise((resolve, reject) => {
+    const s = document.createElement("script");
+    s.src = `https://www.google.com/recaptcha/api.js?render=${siteKey}`;
+    s.async = true;
+    s.defer = true;
+    s.onload = () => {
+      grecaptcha.ready(resolve);
+    };
+    s.onerror = () => reject(new Error("Failed to load reCAPTCHA"));
+    document.head.appendChild(s);
+  });
+}
+function injectRecaptcha() {
       if (window.grecaptcha) {
         // already present
         greLoaded.resolve();
