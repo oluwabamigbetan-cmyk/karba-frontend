@@ -1,5 +1,3 @@
-// config.js - EDIT THESE TWO VALUES ONLY
-
 window.KARBA_CONFIG = {
   // 1) Your backend base URL (NO trailing slash)
   BACKEND_URL: "https://karba-backend-jgbp.onrender.com",
