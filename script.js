@@ -5,7 +5,7 @@
   const q = (sel, p = document) => p.querySelector(sel);
 
   // ---------- HERO image rotator ----------
-  const hero = document.querySelector("#heroImg");
+   const heroImg = q("#heroImg");
   const heroImages = [
     "assets/hero-1.jpg",
     "assets/hero-2.jpg",
