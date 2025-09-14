@@ -4,13 +4,11 @@
   const log = (...a) => console.log("[KARBA]", ...a);
   const q = (sel, p = document) => p.querySelector(sel);
 
-  // ---------- HERO image rotator ----------
+  // ---------- HERO image ----------
    const heroImg = q("#heroImg");
   const heroImages = [
     "assets/hero-1.jpg",
     "assets/hero-2.jpg",
-    "assets/hero-3.jpg",
-    "assets/hero-4.jpg",
   ].filter(Boolean);
   if (heroImg && heroImages.length) {
     let idx = 0;
