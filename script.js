@@ -9,6 +9,8 @@
   const heroImages = [
     "assets/hero-1.jpg",
     "assets/hero-2.jpg",
+    "assets/hero-3.jpg",
+    "assets/hero-4.jpg",
   ].filter(Boolean);
   if (heroImg && heroImages.length) {
     let idx = 0;
