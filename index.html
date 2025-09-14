@@ -41,19 +41,15 @@
     </div>
   </header>
 
-  <!-- Hero -->
-  <section class="hero">
-    <div class="hero__image">
-      <!-- we swap these src values in script.js for a soft slideshow -->
-      <img id="heroImg" src="assets/hero-1.jpg" alt="Happy Nigerian family" />
-    </div>
-    <div class="hero__overlay"></div>
-    <div class="hero__content container">
-      <h1 class="hero__title">Live Confidently. Invest Wisely. Leave a Legacy.</h1>
-      <p class="hero__sub">Tailored protection and investment solutions for families, professionals, and growing businesses.</p>
-      <div class="hero__cta">
+<!-- HERO -->
+<section id="hero" class="hero">
+  <div id="heroImg" class="hero-img"></div>
+  <div class="hero-content">  
+     <h1>Live Confidently. Invest Wisely. Leave a Legacy.</h1>
+    <p>Tailored protection and investment solutions for families, professionals, and growing businesses.</p>
+    <div class="hero-cta">
         <a href="#contact" class="btn btn--gold">Get Covered Today</a>
-        <a href="https://wa.me/2348090914569?text=Hello%20KARBA%2C%20I%27d%20like%20a%20free%20consultation" class="btn btn--outline">Chat on WhatsApp</a>
+        <a href="https://wa.me/2349162631205?text=Hello%20KARBA%2C%20I%27d%20like%20a%20free%20consultation" class="btn btn--outline">Chat on WhatsApp</a>
       </div>
     </div>
   </section>
@@ -132,46 +128,34 @@
   </div>
 </section>
 
-  <!-- Contact / Lead form -->
-  <section id="contact" class="section section--alt">
-    <div class="container">
-      <h2 class="section__title">Book a Free Consultation</h2>
-      <p class="section__sub">Please fill your name, email, and service of interest.</p>
+ <!-- CONTACT / LEAD FORM -->
+<section id="contact" class="contact">
+  <h2>Book a Free Consultation</h2>
+  <p>Please fill your name, email, and service of interest.</p>
 
-      <form id="leadForm" class="form">
-        <div class="form__row">
-          <label>Full name<input name="name" type="text" placeholder="Your full name" required /></label>
-          <label>Email<input name="email" type="email" placeholder="you@example.com" required /></label>
-          <label>Phone (optional)<input name="phone" type="tel" placeholder="+234..." /></label>
-        </div>
+  <form id="lead-form" novalidate>
+    <label>Full name <input name="fullname" required placeholder="Your full name" /></label>
+    <label>Email <input name="email" type="email" required placeholder="you@example.com" /></label>
+    <label>Phone (optional) <input name="phone" placeholder="+234…" /></label>
+    <label>Service of interest
+      <select name="service">
+        <option>Life Insurance</option>
+        <option>Family Protection Plans</option>
+        <option>Children Education Plans</option>
+        <option>Retirement &amp; Annuity</option>
+        <option>Motor / Car Insurance</option>
+        <option>General Insurance</option>
+      </select>
+    </label>
+    <label>Message (optional)
+      <textarea name="message" rows="3" placeholder="Tell us your goal…"></textarea>
+    </label>
 
-        <div class="form__row">
-          <label>Service of interest
-            <select name="service" required>
-              <option value="">Select a service…</option>
-              <option>Life Insurance</option>
-              <option>Children Education Plans</option>
-              <option>Family Protection Plans</option>
-              <option>Retirement &amp; Annuity</option>
-              <option>Motor / Car Insurance</option>
-              <option>Real Estate (Future)</option>
-            </select>
-          </label>
-          <label>Message (optional)
-            <textarea name="message" rows="3" placeholder="Tell us your goal…"></textarea>
-          </label>
-        </div>
-
-        <div class="form__actions">
-          <button id="submitBtn" class="btn btn--gold" type="submit">Submit</button>
-          <span id="formStatus" role="status" aria-live="polite"></span>
-        </div>
-      </form>
-
-      <div class="health" id="health"></div>
-    </div>
-  </section>
-
+    <div id="form-status" aria-live="polite"></div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+</section>
+         
   <footer class="footer">
     <div class="container foot">
       <div class="foot__brand">
@@ -190,10 +174,10 @@
 
   <!-- CONFIG FIRST -->
   <script src="config.js"></script>
-  <!-- reCAPTCHA v3 loader (before script.js) -->
-  <script src="config.js?v=1"></script>
-<script src="https://www.google.com/recaptcha/api.js?render=6Ld66MYrAAAAAE6o5J3whH9YbIDPQfLWkXKN4dqc"></script>
-<script src="script.js?v=1" defer></script>
+  <!-- SCRIPTS (order matters: reCAPTCHA → config → app script) -->
+<script src="https://www.google.com/recaptcha/api.js?render=6Ld66MYrAAAAAEdGo5J3whH9YbIDPQfLWKXN4dqc"></script>
+<script src="config.js"></script>
+<script src="script.js"></script>
 <!-- your app code -->
 <script src="config.js?v=1"></script>
 <script src="script.js?v=<?=Date.now()?>"></script>
