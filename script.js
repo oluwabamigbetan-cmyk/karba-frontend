@@ -1,158 +1,111 @@
-/* script.js — KARBA site */
-// IMPORTANT: config.js must load BEFORE this file and define:
-// window.KARBA_CONFIG = { BACKEND_URL: "https://…", RECAPTCHA_SITE_KEY: "…" };
-
+// script.js
 (function () {
   "use strict";
 
-  // ---------- utilities ----------
-  const CFG = (window && window.KARBA_CONFIG) || {};
-  const $  = (sel, root=document) => root.querySelector(sel);
-  const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
+  const CFG = window.KARBA_CONFIG;
 
-  // Small status helper for the form
-  function setStatus(msg, ok=false) {
-    const el = $("#form-status");
-    if (!el) return;
-    el.textContent = msg;
-    el.className = ok ? "ok" : "err";
-  }
-
-  // ---------- 1) HERO image rotator ----------
-  // Put your images in /assets with these exact names (or edit array):
+  // ---------- HERO image rotator ----------
+  const hero = document.querySelector("#heroImg");
   const heroImages = [
-    "/assets/hero-1.jpg",   // Nigerian family (your pick)
-    "/assets/hero-2.jpg"    // alternate similar tone
-    "/assets/hero-3.jpg",   // CAC certificate
-  "/assets/hero-4.jpg"    // second professional image
+    "/assets/hero-1.jpg",
+    "/assets/hero-2.jpg",
+    "/assets/hero-3.jpg",
+    "/assets/hero-4.jpg"
   ];
 
-  // Optional: preload to avoid first-fade flicker
-  heroImages.forEach(src => { const i = new Image(); i.src = src; });
+  let hidx = 0;
+  function showHero(i) {
+    if (!hero) return;
+    hero.style.opacity = "0";
+    setTimeout(() => {
+      hero.style.backgroundImage = `url('${heroImages[i]}')`;
+      hero.style.opacity = "1";
+    }, 250);
+  }
 
-  const heroImg = $("#heroImg"); // <img id="heroImg"> in your HTML
-  if (heroImg && heroImages.length) {
-    let idx = 0;
-    heroImg.src = heroImages[idx];
-
+  if (hero && heroImages.length) {
+    showHero(hidx);
     setInterval(() => {
-      idx = (idx + 1) % heroImages.length;
-      // simple fade out/in (requires CSS: #heroImg {transition:opacity .25s})
-      heroImg.style.opacity = "0";
-      setTimeout(() => {
-        heroImg.src = heroImages[idx];
-        heroImg.style.opacity = "1";
-      }, 250);
+      hidx = (hidx + 1) % heroImages.length;
+      showHero(hidx);
     }, 6000);
   }
 
-  // ---------- 2) /api/health check (left status rail) ----------
-  const healthEl = $("#health");
-  function pingHealth() {
-    if (!CFG.BACKEND_URL) return;
-    fetch(CFG.BACKEND_URL + "/api/health")
-      .then(r => r.json())
-      .then(j => {
-        if (healthEl) healthEl.textContent = "API OK — " + (j.time || "");
-      })
-      .catch(() => {
-        if (healthEl) healthEl.textContent = "API unreachable";
-      });
-  }
-  pingHealth();
-  // ping every 60s in case Render idles
-  setInterval(pingHealth, 60000);
+  // ---------- Health check ----------
+  const statusEl = document.getElementById("form-status");
+  fetch(CFG.BACKEND_URL + "/api/health")
+    .then((r) => r.json())
+    .then((j) => {
+      if (statusEl) statusEl.textContent = "API OK — " + (j.time || "");
+    })
+    .catch(() => {
+      if (statusEl) statusEl.textContent = "API unreachable";
+    });
 
-  // ---------- 3) Lead form with reCAPTCHA v3 ----------
-  const form = $("#lead-form");
+  // ---------- Lead form (reCAPTCHA v3) ----------
+  const form = document.getElementById("lead-form");
   if (form) {
-    const btn = $("#submitBtn") || form.querySelector('button[type="submit"], input[type="submit"]');
-
     form.addEventListener("submit", async (e) => {
-      e.preventDefault();
+      e.preventDefault(); // stops the page from jumping/reloading
 
-      // basic front-end validation
-      const fullname = (form.fullname?.value || "").trim();
-      const email    = (form.email?.value || "").trim();
-      const phone    = (form.phone?.value || "").trim();
-      const service  = (form.service?.value || "").trim();
-      const message  = (form.message?.value || "").trim();
+      const btn = form.querySelector('button[type="submit"]');
+      const name = form.fullname.value.trim();
+      const email = form.email.value.trim();
+      const phone = form.phone.value.trim();
+      const service = form.service.value;
+      const message = form.message.value.trim();
 
-      if (!fullname || !email || !service) {
-        setStatus("Please fill your name, email and service of interest.");
-        return;
+      if (btn) {
+        btn.disabled = true;
+        btn.textContent = "Sending…";
+      }
+      if (statusEl) {
+        statusEl.textContent = "";
+        statusEl.style.color = "#fff";
       }
 
-      // reCAPTCHA must be present and configured
-      if (typeof grecaptcha === "undefined" || !CFG.RECAPTCHA_SITE_KEY) {
-        setStatus("Could not connect to the security service. Please try again.");
-        return;
-      }
-
-      // UI state
-      if (btn) { btn.disabled = true; btn.textContent = "Sending…"; }
-      setStatus("Submitting…");
-
-      // ensure API is reachable (optional, but gives nicer UX)
-      try {
-        await fetch(CFG.BACKEND_URL + "/api/health", { cache: "no-store" });
-      } catch {
-        if (btn) { btn.disabled = false; btn.textContent = "Submit"; }
-        setStatus("Network error. Please try again.");
-        return;
-      }
-
-      // get reCAPTCHA token
-      let token;
       try {
         await grecaptcha.ready();
-        token = await grecaptcha.execute(CFG.RECAPTCHA_SITE_KEY, { action: "lead" });
-        if (!token || token.length < 100) throw new Error("Empty token");
-      } catch (err) {
-        console.error("reCAPTCHA error:", err);
-        if (btn) { btn.disabled = false; btn.textContent = "Submit"; }
-        setStatus("Verification failed. Please retry.");
-        return;
-      }
+        const token = await grecaptcha.execute(CFG.RECAPTCHA_SITE_KEY, {
+          action: "lead",
+        });
 
-      // send to backend
-      const body = {
-        name: fullname,
-        email,
-        phone,
-        service,
-        message,
-        recaptchaToken: token
-      };
+        const body = { name, email, phone, service, message, recaptchaToken: token };
 
-      try {
-        const r = await fetch(CFG.BACKEND_URL + "/api/leads", {
+        const resp = await fetch(CFG.BACKEND_URL + "/api/leads", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(body)
+          body: JSON.stringify(body),
         });
-        const j = await r.json().catch(() => ({}));
-        if (!r.ok || j.ok === false) {
-          throw new Error(j.message || "Server error");
+
+        const text = await resp.text();
+        if (!resp.ok) throw new Error(text || "Request failed");
+
+        if (statusEl) {
+          statusEl.textContent = "Thanks — we’ll be in touch shortly.";
+          statusEl.style.color = "#93e36f";
         }
-        setStatus("Thanks — we’ll be in touch shortly.", true);
         form.reset();
       } catch (err) {
-        console.error("LEAD FAIL:", err);
-        setStatus("Network error. Please try again.");
+        console.error(err);
+        if (statusEl) {
+          statusEl.textContent = "Network error. Please try again.";
+          statusEl.style.color = "#ffb4b4";
+        }
       } finally {
-        if (btn) { btn.disabled = false; btn.textContent = "Submit"; }
+        if (btn) {
+          btn.disabled = false;
+          btn.textContent = "Submit";
+        }
       }
     });
   }
 
-  // ---------- 4) Optional: swap favicon if missing ----------
-  // If you put /assets/favicon.ico in the repo, you can keep this or remove it.
-  const fav = $('link[rel="icon"]');
-  if (!fav) {
-    const link = document.createElement("link");
-    link.rel = "icon";
-    link.href = "/assets/favicon.ico";
-    document.head.appendChild(link);
+  // ---------- Favicon (auto attach if missing) ----------
+  if (!document.querySelector('link[rel="icon"]')) {
+    const l = document.createElement("link");
+    l.rel = "icon";
+    l.href = "/assets/favicon.ico";
+    document.head.appendChild(l);
   }
 })();
