@@ -23,6 +23,8 @@
   const heroImages = [
     "/assets/hero-1.jpg",   // Nigerian family (your pick)
     "/assets/hero-2.jpg"    // alternate similar tone
+    "/assets/hero-3.jpg",   // CAC certificate
+  "/assets/hero-4.jpg"    // second professional image
   ];
 
   // Optional: preload to avoid first-fade flicker
