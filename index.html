@@ -133,27 +133,38 @@
   <h2>Book a Free Consultation</h2>
   <p>Please fill your name, email, and service of interest.</p>
 
-  <form id="lead-form" novalidate>
-    <label>Full name <input name="fullname" required placeholder="Your full name" /></label>
-    <label>Email <input name="email" type="email" required placeholder="you@example.com" /></label>
-    <label>Phone (optional) <input name="phone" placeholder="+234…" /></label>
-    <label>Service of interest
-      <select name="service">
-        <option>Life Insurance</option>
-        <option>Family Protection Plans</option>
-        <option>Children Education Plans</option>
-        <option>Retirement &amp; Annuity</option>
-        <option>Motor / Car Insurance</option>
-        <option>General Insurance</option>
-      </select>
-    </label>
-    <label>Message (optional)
-      <textarea name="message" rows="3" placeholder="Tell us your goal…"></textarea>
-    </label>
+  <form id="lead-form" class="form">
+  <label>Full name
+    <input id="fullName" name="name" type="text" placeholder="Your full name" required />
+  </label>
 
-    <div id="form-status" aria-live="polite"></div>
-    <button type="submit" class="btn btn-primary">Submit</button>
-  </form>
+  <label>Email
+    <input id="email" name="email" type="email" placeholder="you@example.com" required />
+  </label>
+
+  <label>Phone (optional)
+    <input id="phone" name="phone" type="tel" placeholder="080..." />
+  </label>
+
+  <label>Service of interest
+    <select id="service" name="service" required>
+      <option value="">Select one</option>
+      <option>Life Insurance</option>
+      <option>Retirement & Annuity</option>
+      <option>Children Education Plans</option>
+      <option>Family Protection Plans</option>
+      <option>General Insurance</option>
+    </select>
+  </label>
+
+  <label>Message (optional)
+    <textarea id="message" name="message" placeholder="Tell us a bit…"></textarea>
+  </label>
+
+  <div id="form-status" aria-live="polite" style="margin:.5rem 0;min-height:1.25rem;"></div>
+
+  <button id="submitBtn" type="submit" class="btn btn-gold">Submit</button>
+</form>
 </section>
          
   <footer class="footer">
