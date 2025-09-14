@@ -1,88 +1,85 @@
-// script.js  — clean, user-friendly form flow
-
+<script>
 document.addEventListener('DOMContentLoaded', () => {
   const CFG = window.KARBA_CONFIG || {};
-  const form = document.getElementById('lead-form');
-  const statusEl = document.getElementById('form-status');
-  const submitBtn = form?.querySelector('button[type="submit"]');
+  const form = document.getElementById('leadForm');
+  const statusBox = document.getElementById('formStatus');
 
-  // Guard rails: show clear setup errors if something is missing
-  if (!CFG.BACKEND_URL) {
-    if (statusEl) statusEl.textContent = 'Setup error: BACKEND_URL missing.';
+  // Small helpers
+  const setStatus = (msg) => { if (statusBox) statusBox.textContent = msg; };
+
+  // Quick sanity logs (you can remove later)
+  console.log('[KARBA_CONFIG]', CFG);
+
+  // 1) Health check (optional but nice)
+  if (CFG.BACKEND_URL) {
+    fetch(`${CFG.BACKEND_URL}/api/health`)
+      .then(r => r.json()).then(j => console.log('[HEALTH]', j))
+      .catch(() => console.warn('[HEALTH] check failed'));
+  }
+
+  // 2) Handle submit
+  if (!form) {
+    console.error('leadForm not found in DOM');
     return;
   }
-  if (!CFG.RECAPTCHA_SITE_KEY) {
-    if (statusEl) statusEl.textContent = 'Setup error: RECAPTCHA_SITE_KEY missing.';
-    return;
-  }
 
-  // Load reCAPTCHA v3 dynamically (keeps HTML clean)
-  const recaptchaReady = new Promise((resolve, reject) => {
-    const s = document.createElement('script');
-    s.src = `https://www.google.com/recaptcha/api.js?render=${CFG.RECAPTCHA_SITE_KEY}`;
-    s.async = true;
-    s.onload = () => grecaptcha.ready(resolve);
-    s.onerror = () => reject(new Error('Failed to load reCAPTCHA.'));
-    document.head.appendChild(s);
-  });
-
-  // Optional: health check once at load (helps debugging)
-  fetch(`${CFG.BACKEND_URL}/api/health`).then(r => r.json())
-    .then(j => console.log('[HEALTH]', j))
-    .catch(() => {});
-
-  form?.addEventListener('submit', async (e) => {
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
-
-    // UI: lock while submitting
-    if (submitBtn) submitBtn.disabled = true;
-    if (statusEl) {
-      statusEl.textContent = 'Submitting…';
-      statusEl.className = 'info';
-    }
+    setStatus('Submitting…');
 
     try {
-      // 1) Make sure reCAPTCHA is ready
-      await recaptchaReady;
+      // Build payload from *names*, not ids — prevents "undefined"
+      const fd = new FormData(form);
+      const payload = {
+        name: (fd.get('name') || '').toString().trim(),
+        email: (fd.get('email') || '').toString().trim(),
+        phone: (fd.get('phone') || '').toString().trim(),
+        service: (fd.get('service') || '').toString().trim(),
+        message: (fd.get('message') || '').toString().trim(),
+      };
 
-      // 2) Get a v3 token for action "lead"
+      // Basic front-end validation
+      if (!payload.name || !payload.email || !payload.service) {
+        setStatus('Please fill in your name, email, and select a service.');
+        return;
+      }
+
+      if (!CFG.RECAPTCHA_SITE_KEY) {
+        setStatus('reCAPTCHA not configured.');
+        console.error('Missing RECAPTCHA_SITE_KEY');
+        return;
+      }
+      if (!CFG.BACKEND_URL) {
+        setStatus('Backend not configured.');
+        console.error('Missing BACKEND_URL');
+        return;
+      }
+
+      // 3) Get reCAPTCHA v3 token
       const token = await grecaptcha.execute(CFG.RECAPTCHA_SITE_KEY, { action: 'lead' });
 
-      // 3) Build payload
-      const data = Object.fromEntries(new FormData(form).entries());
-      data.recaptchaToken = token;
-
-      // 4) POST to backend
+      // 4) Send to backend
       const res = await fetch(`${CFG.BACKEND_URL}/api/leads`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
+        body: JSON.stringify({ ...payload, recaptchaToken: token })
       });
 
       const text = await res.text();
-      let body;
-      try { body = JSON.parse(text); } catch { body = { ok:false, error:text }; }
-
-      if (res.ok && body?.ok) {
-        if (statusEl) {
-          statusEl.textContent = '✅ Thank you! We will contact you shortly.';
-          statusEl.className = 'success';
-        }
-        form.reset();
-      } else {
-        if (statusEl) {
-          statusEl.textContent = `❌ Error: ${body?.error || res.statusText || 'Submission failed'}`;
-          statusEl.className = 'error';
-        }
+      if (!res.ok) {
+        setStatus(`Error ${res.status}: ${text}`);
+        console.error('Submit failed:', res.status, text);
+        return;
       }
+
+      // Success
+      setStatus('Thank you! We will contact you shortly.');
+      form.reset();
+      console.log('Lead OK:', text);
     } catch (err) {
       console.error(err);
-      if (statusEl) {
-        statusEl.textContent = '❌ Network or reCAPTCHA error. Please try again.';
-        statusEl.className = 'error';
-      }
-    } finally {
-      if (submitBtn) submitBtn.disabled = false;
+      setStatus('Network error. Please try again.');
     }
   });
 });
+</script>
