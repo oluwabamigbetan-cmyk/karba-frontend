@@ -98,16 +98,20 @@ document.addEventListener("DOMContentLoaded", async () => {
     e.preventDefault();
 
     // Basic front-end validation (you can expand if you like)
-    const name = (form.name?.value || "").trim();
-    const email = (form.email?.value || "").trim();
-    const phone = (form.phone?.value || "").trim();
-    const service = (form.service?.value || "").trim();
-    const message = (form.message?.value || "").trim();
+const name = document.getElementById("name").value.trim();
+const email = document.getElementById("email").value.trim();
+const phone = document.getElementById("phone").value.trim();
+const service = document.getElementById("service").value;
+const message = document.getElementById("message").value.trim();
 
-    if (!name || !email || !service) {
-      setStatus("Please fill your name, email and service of interest.", "error");
-      return;
-    }
+    const payload = {
+  name,
+  email,
+  phone,
+  service,
+  message,
+  recaptchaToken: token
+};
 
     setStatus("Submitting…", "info");
 
