@@ -1,128 +1,132 @@
-// script.js — robust form + reCAPTCHA v3 + health + hero slider
-
+// script.js — hero slider + health ping + reCAPTCHA v3 + robust lead submit
 (() => {
   const CFG = window.KARBA_CONFIG || {};
-  const $ = (sel, root = document) => root.querySelector(sel);
+  const $ = (sel, p = document) => p.querySelector(sel);
+  const $$ = (sel, p = document) => [...p.querySelectorAll(sel)];
 
-  // ------- small helpers -------
-  const statusEl = $('#form-status');
-  const btn = $('#submitBtn');
-  const setStatus = (txt, color) => {
-    if (!statusEl) return;
-    statusEl.textContent = txt || '';
-    statusEl.style.color = color || '';
-  };
-  const disable = (v) => { if (btn) btn.disabled = !!v; };
-
-  // ------- hero (optional) -------
-  const heroImg = $('#heroImg');
-  const heroImages = [
-    'assets/hero-1.jpg',
-    'assets/hero-2.jpg',
-  ].filter(Boolean);
-  if (heroImg && heroImages.length) {
+  // ---------- HERO SLIDER ----------
+  function startHeroSlider() {
+    const slides = $$(".hero__img");
+    if (!slides.length) return;
     let i = 0;
+    slides[0].classList.add("is-active");
     setInterval(() => {
-      i = (i + 1) % heroImages.length;
-      heroImg.style.opacity = '0';
-      setTimeout(() => {
-        heroImg.src = heroImages[i];
-        heroImg.style.opacity = '1';
-      }, 250);
-    }, 6000);
+      slides[i].classList.remove("is-active");
+      i = (i + 1) % slides.length;
+      slides[i].classList.add("is-active");
+    }, 5500);
   }
 
-  // ------- backend health ping (optional UI strip) -------
-  const health = () => {
-    if (!CFG.BACKEND_URL) return;
-    fetch(CFG.BACKEND_URL + '/api/health', { credentials: 'omit' })
-      .then(r => r.json())
-      .then(() => console.log('API OK'))
-      .catch(() => console.log('API unreachable'));
-  };
-  setTimeout(health, 500); // after load
-
-  // ------- recaptcha helpers -------
-  const getRecaptchaToken = async () => {
-    if (!window.grecaptcha) throw new Error('grecaptcha not loaded');
-    if (!CFG.RECAPTCHA_SITE_KEY) throw new Error('Missing reCAPTCHA site key');
-    await new Promise(res => window.grecaptcha.ready(res));
-    return window.grecaptcha.execute(CFG.RECAPTCHA_SITE_KEY, { action: 'lead' });
+  // ---------- STATUS UI ----------
+  const statusEl = $("#status");
+  const setStatus = (txt, color) => {
+    if (!statusEl) return;
+    statusEl.textContent = txt;
+    statusEl.style.color = color || "";
   };
 
-  // ------- form handler -------
-  const form = $('#lead-form');
-  if (!form) return;
-
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    setStatus('');
-
-    const nameEl = $('#fullName');
-    const emailEl = $('#email');
-    const phoneEl = $('#phone');
-    const serviceEl = $('#service');
-    const messageEl = $('#message');
-
-    const name = (nameEl?.value || '').trim();
-    const email = (emailEl?.value || '').trim();
-    const phone = (phoneEl?.value || '').trim();
-    const service = (serviceEl?.value || '').trim();
-    const message = (messageEl?.value || '').trim();
-
-    // basic validation
-    if (!name || !email) {
-      setStatus('Please enter your name and email.', '#ffb');
-      return;
-    }
-    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
-      setStatus('Please enter a valid email address.', '#ffb');
-      return;
-    }
-    if (!service) {
-      setStatus('Please select a service of interest.', '#ffb');
-      return;
-    }
+  // ---------- HEALTH CHECK ----------
+  async function healthPing() {
     if (!CFG.BACKEND_URL) {
-      setStatus('Backend URL missing in config.js', '#ffb');
+      setStatus("Backend URL missing in config.js", "#ffb4b4");
       return;
     }
-
-    disable(true);
-    setStatus('Securing…');
-
     try {
-      const recaptchaToken = await getRecaptchaToken();
-      setStatus('Sending…');
-
-      const body = {
-        name, email, phone, service, message,
-        recaptchaToken
-      };
-
-      const res = await fetch(CFG.BACKEND_URL + '/api/leads', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body)
-      });
-
-      const text = await res.text();
-      if (!res.ok) throw new Error(text || ('HTTP ' + res.status));
-
-      setStatus('Thanks — we’ll be in touch shortly.', '#bff5bf');
-      form.reset();
-    } catch (err) {
-      console.error(err);
-      // common messages
-      if (String(err).includes('recaptcha')) {
-        setStatus('reCAPTCHA error — please refresh and try again.', '#ffb');
-      } else if (String(err).includes('CORS')) {
-        setStatus('CORS error — backend not allowing this domain.', '#ffb');
-      } else {
-        setStatus('Network error — please try again.', '#ffb');
-      }
-    } finally {
-      disable(false);
+      const r = await fetch(`${CFG.BACKEND_URL}/api/health`, { cache: "no-store" });
+      const j = await r.json();
+      setStatus(j.ok ? `API OK — ${j.time}` : "API unreachable");
+    } catch {
+      setStatus("API unreachable");
     }
+  }
+
+  // ---------- reCAPTCHA v3 (explicit) ----------
+  let grecaptchaWidgetId = null;
+  function loadRecaptchaExplicit() {
+    return new Promise((resolve) => {
+      const tryInit = () => {
+        if (!window.grecaptcha || !CFG.RECAPTCHA_SITE_KEY) return setTimeout(tryInit, 150);
+        // Create an invisible widget we can execute()
+        grecaptchaWidgetId = window.grecaptcha.render("recaptcha-badge-host", {
+          sitekey: CFG.RECAPTCHA_SITE_KEY,
+          size: "invisible",
+          badge: "bottomright"
+        });
+        resolve();
+      };
+      tryInit();
+    });
+  }
+  async function getRecaptchaToken() {
+    if (!window.grecaptcha || grecaptchaWidgetId === null) throw new Error("reCAPTCHA not ready");
+    // executes the invisible widget; action is optional metadata
+    return await window.grecaptcha.execute(grecaptchaWidgetId, { action: "lead" });
+  }
+
+  // ---------- FORM SUBMIT ----------
+  function wireForm() {
+    const form = $("#lead-form");
+    const btn = $("#submitBtn");
+    if (!form || !btn) return;
+
+    const disable = (v) => { btn.disabled = !!v; btn.textContent = v ? "Sending…" : "Submit"; };
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const fd = new FormData(form);
+      const name = (fd.get("name") || "").toString().trim();
+      const email = (fd.get("email") || "").toString().trim();
+
+      if (!name || !email) {
+        setStatus("Please enter your name and email.");
+        return;
+      }
+
+      disable(true);
+      setStatus("Securing…");
+
+      try {
+        const recaptchaToken = await getRecaptchaToken();
+
+        const body = {
+          name,
+          email,
+          phone: (fd.get("phone") || "").toString().trim(),
+          service: (fd.get("service") || "").toString().trim(),
+          message: (fd.get("message") || "").toString().trim(),
+          recaptchaToken
+        };
+
+        const r = await fetch(`${CFG.BACKEND_URL}/api/leads`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body)
+        });
+
+        const text = await r.text();
+        let data;
+        try { data = JSON.parse(text); } catch { data = { ok: r.ok, message: text }; }
+
+        if (!r.ok || !data.ok) {
+          throw new Error(data.message || `HTTP ${r.status}`);
+        }
+
+        setStatus("Thanks — we’ll be in touch shortly.");
+        form.reset();
+      } catch (err) {
+        console.error(err);
+        setStatus("Network error — please try again.");
+      } finally {
+        disable(false);
+      }
+    });
+  }
+
+  // ---------- INIT ----------
+  document.addEventListener("DOMContentLoaded", async () => {
+    startHeroSlider();
+    await loadRecaptchaExplicit();
+    wireForm();
+    healthPing();
   });
 })();
