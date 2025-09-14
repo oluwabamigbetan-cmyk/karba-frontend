@@ -1,150 +1,89 @@
-// script.js  —  KARBA landing page logic (frontend)
-// Works with config.js (window.KARBA_CONFIG) and a Render Node backend.
-
-// ===== tiny helpers =========================================================
-const $ = (sel, root = document) => root.querySelector(sel);
-const delay = (ms) => new Promise(r => setTimeout(r, ms));
-
-function setStatus(msg, type = "info") {
-  // Expects an element with id="form-status" in your HTML
-  const box = $("#form-status");
-  if (!box) return;
-  box.textContent = msg;
-  box.dataset.type = type; // let CSS colorize if you want
-}
-
-// ===== reCAPTCHA loader (v3, invisible) ====================================
-function loadRecaptcha(siteKey) {
-  // If already present, reuse
-  if (window.grecaptcha && window.grecaptcha.execute) return Promise.resolve();
-
-  return new Promise((resolve, reject) => {
-    const s = document.createElement("script");
-    s.src = `https://www.google.com/recaptcha/api.js?render=${encodeURIComponent(siteKey)}`;
-    s.async = true;
-    s.defer = true;
-    s.onload = () => {
-      // wait for grecaptcha.ready to exist
-      let tries = 0;
-      (function waitReady() {
-        if (window.grecaptcha && window.grecaptcha.ready) {
-          resolve();
-        } else if (tries++ < 50) {
-          setTimeout(waitReady, 100);
-        } else {
-          reject(new Error("grecaptcha failed to initialize"));
-        }
-      })();
-    };
-    s.onerror = () => reject(new Error("Failed to load reCAPTCHA script"));
-    document.head.appendChild(s);
-  });
-}
-
-async function recaptchaToken(siteKey, action = "lead") {
-  await new Promise((r) => grecaptcha.ready(r));
-  return grecaptcha.execute(siteKey, { action });
-}
-
-// ===== main ================================================================
-document.addEventListener("DOMContentLoaded", async () => {
+/* script.js v3 */
+(function () {
   const CFG = window.KARBA_CONFIG || {};
-  const BACKEND = CFG.BACKEND_URL;
-  const SITE_KEY = CFG.RECAPTCHA_SITE_KEY;
+  const form = document.getElementById('lead-form');
+  const statusBox = document.getElementById('form-status');
 
-  // Guard rails – show clear setup errors on the page
-  if (!BACKEND) {
-    console.error("[KARBA] BACKEND_URL missing in config.js");
-    setStatus("Setup error: BACKEND_URL missing.", "error");
-    return;
-  }
-  if (!SITE_KEY) {
-    console.error("[KARBA] RECAPTCHA_SITE_KEY missing in config.js");
-    setStatus("Setup error: RECAPTCHA_SITE_KEY missing.", "error");
-    return;
+  function $(id, name) {
+    return document.getElementById(id) || document.querySelector(`[name="${name}"]`);
   }
 
-  console.log("[KARBA_CONFIG]", CFG);
+  const el = {
+    name:    () => ($('name','name')?.value || '').trim(),
+    email:   () => ($('email','email')?.value || '').trim(),
+    phone:   () => ($('phone','phone')?.value || '').trim(),
+    service: () => ($('service','service')?.value || '').trim(),
+    message: () => ($('message','message')?.value || '').trim()
+  };
 
-  // 1) Health check (optional but helpful)
-  try {
-    const r = await fetch(`${BACKEND}/api/health`, { method: "GET" });
-    if (!r.ok) throw new Error(`Health ${r.status}`);
-    const j = await r.json().catch(() => ({}));
-    console.log("[HEALTH]", j);
-  } catch (err) {
-    console.warn("[KARBA] Backend health check failed:", err);
-    // Don’t block the form because of a transient health miss
+  function setStatus(msg, ok=false) {
+    if (!statusBox) return;
+    statusBox.textContent = msg;
+    statusBox.style.color = ok ? '#0a0' : '#f66';
   }
 
-  // 2) Load reCAPTCHA
-  try {
-    await loadRecaptcha(SITE_KEY);
-    console.log("[KARBA] reCAPTCHA loaded");
-  } catch (err) {
-    console.error("[KARBA] reCAPTCHA failed to load:", err);
-    setStatus("reCAPTCHA failed to load. Refresh and try again.", "error");
-    return;
-  }
+  // quick health ping (visible in console only)
+  fetch(`${CFG.BACKEND_URL}/api/health`)
+    .then(r => r.json()).then(j => console.log('[HEALTH]', j))
+    .catch(e => console.warn('[HEALTH FAIL]', e));
 
-  // 3) Wire up form submit
-  const form = $("#lead-form");
   if (!form) {
-    console.warn('[KARBA] No form with id="lead-form" found.');
+    console.error('lead-form not found');
     return;
   }
 
-  form.addEventListener("submit", async (e) => {
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
+    setStatus('Submitting…');
 
-    // Basic front-end validation (you can expand if you like)
-    const name = (form.name?.value || "").trim();
-    const email = (form.email?.value || "").trim();
-    const phone = (form.phone?.value || "").trim();
-    const service = (form.service?.value || "").trim();
-    const message = (form.message?.value || "").trim();
+    const name = el.name();
+    const email = el.email();
+    const service = el.service();
 
     if (!name || !email || !service) {
-      setStatus("Please fill your name, email and service of interest.", "error");
+      setStatus('Please fill your name, email and service of interest.');
       return;
     }
 
-    setStatus("Submitting…", "info");
-
     try {
-      // 3a) get reCAPTCHA v3 token
-      const token = await recaptchaToken(SITE_KEY, "lead");
+      await new Promise(res => grecaptcha.ready(res));
+      const token = await grecaptcha.execute(CFG.RECAPTCHA_SITE_KEY, { action: 'lead' });
 
-      // 3b) send to backend
-      const payload = { name, email, phone, service, message, recaptchaToken: token };
-
-      const res = await fetch(`${BACKEND}/api/leads`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+      const res = await fetch(`${CFG.BACKEND_URL}/api/leads`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name,
+          email,
+          phone: el.phone(),
+          service,
+          message: el.message(),
+          recaptchaToken: token
+        })
       });
 
-      // 3c) handle reply
-      const text = await res.text(); // read first; backend usually returns JSON
-      let data;
-      try { data = JSON.parse(text); } catch { data = { raw: text }; }
+      console.log('[LEADS RES]', res.status, res.statusText);
 
-      if (res.ok) {
-        setStatus("Thank you! We will contact you shortly.", "success");
-        form.reset();
-      } else {
-        // show backend error message if any
-        const msg = data?.message || data?.error || `Error ${res.status}`;
-        setStatus(`Error: ${msg}`, "error");
+      if (!res.ok) {
+        const text = await res.text().catch(()=>'');
+        if (res.status === 401 || res.status === 403) {
+          setStatus('reCAPTCHA rejected (401/403). Check site key domains in reCAPTCHA admin.');
+        } else if (res.status === 404) {
+          setStatus('Endpoint not found (404). Check /api/leads path on backend.');
+        } else if (res.status === 500) {
+          setStatus('Server error (500). See Render logs.');
+        } else {
+          setStatus(`Error ${res.status}. ${text || 'Submit failed.'}`);
+        }
+        return;
       }
+
+      await res.json().catch(()=>({}));
+      setStatus('Thank you! We will contact you shortly.', true);
+      form.reset();
     } catch (err) {
-      console.error("[KARBA] submit error:", err);
-      setStatus("Network error. Please try again.", "error");
+      console.error('[NETWORK/CORS FAIL]', err);
+      setStatus('Network/CORS error. Ensure ALLOWED_ORIGINS on backend include this site.');
     }
   });
-
-  // Optional: gentle UX hint if user clicks submit too fast after load
-  await delay(400);
-  const btn = form.querySelector('[type="submit"]');
-  if (btn) btn.disabled = false;
-});
+})();
