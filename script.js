@@ -1,109 +1,156 @@
-// script.js
-(function () {
-  "use strict";
+// script.js — robust form + reCAPTCHA v3 + health check + hero slider
+(() => {
+  const CFG = window.KARBA_CONFIG || {};
+  const log = (...a) => console.log("[KARBA]", ...a);
+  const q = (sel, p = document) => p.querySelector(sel);
 
-  const CFG = window.KARBA_CONFIG;
-
-  // ---------- HERO image rotator ----------
-  const hero = document.querySelector("#heroImg");
+  // 1) Optional hero slider (skip if you don't use it)
+  const heroImg = q("#heroImg");
   const heroImages = [
-    "/assets/hero-1.jpg",
-    "/assets/hero-2.jpg",
-  ];
-
-  let hidx = 0;
-  function showHero(i) {
-    if (!hero) return;
-    hero.style.opacity = "0";
-    setTimeout(() => {
-      hero.style.backgroundImage = `url('${heroImages[i]}')`;
-      hero.style.opacity = "1";
-    }, 250);
-  }
-
-  if (hero && heroImages.length) {
-    showHero(hidx);
+    "assets/hero-1.jpg",
+    "assets/hero-2.jpg",
+    "assets/hero-3.jpg",
+    "assets/hero-4.jpg",
+  ].filter(Boolean);
+  if (heroImg && heroImages.length) {
+    let idx = 0;
+    heroImg.src = heroImages[idx];
     setInterval(() => {
-      hidx = (hidx + 1) % heroImages.length;
-      showHero(hidx);
+      idx = (idx + 1) % heroImages.length;
+      heroImg.style.opacity = "0";
+      setTimeout(() => {
+        heroImg.src = heroImages[idx];
+        heroImg.style.opacity = "1";
+      }, 250);
     }, 6000);
   }
 
-  // ---------- Health check ----------
-  const statusEl = document.getElementById("form-status");
-  fetch(CFG.BACKEND_URL + "/api/health")
-    .then((r) => r.json())
-    .then((j) => {
-      if (statusEl) statusEl.textContent = "API OK — " + (j.time || "");
-    })
-    .catch(() => {
-      if (statusEl) statusEl.textContent = "API unreachable";
+  // 2) Health ping (shows "API OK - <time>" in the small status strip on the page)
+  const statusEl = q("#form-status");
+  const setStatus = (txt, color = "") => {
+    if (!statusEl) return;
+    statusEl.textContent = txt;
+    statusEl.style.color = color || "";
+  };
+
+  const health = () => {
+    if (!CFG.BACKEND_URL) {
+      setStatus("Backend URL missing", "#ffb4b4");
+      return;
+    }
+    fetch(CFG.BACKEND_URL + "/api/health")
+      .then((r) => r.json())
+      .then((j) => setStatus(`API OK — ${j.time || ""}`))
+      .catch(() => setStatus("API unreachable", "#ffb4b4"));
+  };
+  health();
+
+  // 3) Form + reCAPTCHA v3
+  const form = q("#lead-form");
+  if (!form) return;
+
+  const btn = q("#submitBtn", form);
+  const nameEl = q('input[name="name"]', form);
+  const emailEl = q('input[name="email"]', form);
+  const phoneEl = q('input[name="phone"]', form);
+  const serviceEl = q('select[name="service"]', form);
+  const msgEl = q('textarea[name="message"]', form);
+
+  const disable = (v) => { if (btn) btn.disabled = v; };
+
+  // Safety: promise wrapper with timeout so recaptcha never hangs the UI
+  const withTimeout = (p, ms, label = "operation") => {
+    let to;
+    const timeout = new Promise((_, rej) => {
+      to = setTimeout(() => rej(new Error(`${label} timed out`)), ms);
     });
+    return Promise.race([p.finally(() => clearTimeout(to)), timeout]);
+  };
 
-  // ---------- Lead form (reCAPTCHA v3) ----------
-  const form = document.getElementById("lead-form");
-  if (form) {
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault(); // stops the page from jumping/reloading
+  // Single source for getting a v3 token
+  const getRecaptchaToken = async () => {
+    if (!CFG.RECAPTCHA_SITE_KEY) throw new Error("Missing reCAPTCHA site key");
+    if (!window.grecaptcha || !grecaptcha.execute) {
+      throw new Error("reCAPTCHA not loaded on page");
+    }
+    await withTimeout(
+      new Promise((res) => grecaptcha.ready(res)),
+      5000,
+      "reCAPTCHA ready"
+    );
+    return withTimeout(
+      grecaptcha.execute(CFG.RECAPTCHA_SITE_KEY, { action: "lead" }),
+      5000,
+      "reCAPTCHA execute"
+    );
+  };
 
-      const btn = form.querySelector('button[type="submit"]');
-      const name = form.fullname.value.trim();
-      const email = form.email.value.trim();
-      const phone = form.phone.value.trim();
-      const service = form.service.value;
-      const message = form.message.value.trim();
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-      if (btn) {
-        btn.disabled = true;
-        btn.textContent = "Sending…";
+    try {
+      // basic validation
+      const name = (nameEl?.value || "").trim();
+      const email = (emailEl?.value || "").trim();
+      if (!name || !email) {
+        setStatus("Please enter your name and email.", "#ffb4b4");
+        return;
       }
-      if (statusEl) {
-        statusEl.textContent = "";
-        statusEl.style.color = "#fff";
-      }
 
+      disable(true);
+      setStatus("Securing…");
+
+      // GET TOKEN (clear message if any error)
+      let recaptchaToken = "";
       try {
-        await grecaptcha.ready();
-        const token = await grecaptcha.execute(CFG.RECAPTCHA_SITE_KEY, {
-          action: "lead",
-        });
+        recaptchaToken = await getRecaptchaToken();
+      } catch (rcErr) {
+        console.error(rcErr);
+        setStatus(
+          "Could not verify reCAPTCHA. Please check the site key / domain and try again.",
+          "#ffb4b4"
+        );
+        disable(false);
+        return;
+      }
 
-        const body = { name, email, phone, service, message, recaptchaToken: token };
+      setStatus("Sending…");
 
-        const resp = await fetch(CFG.BACKEND_URL + "/api/leads", {
+      const body = {
+        name,
+        email,
+        phone: phoneEl?.value || "",
+        service: serviceEl?.value || "",
+        message: msgEl?.value || "",
+        recaptchaToken,
+      };
+
+      const r = await withTimeout(
+        fetch(CFG.BACKEND_URL + "/api/leads", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(body),
-        });
+        }),
+        12000,
+        "Lead submit"
+      );
 
-        const text = await resp.text();
-        if (!resp.ok) throw new Error(text || "Request failed");
+      const text = await r.text();
+      if (!r.ok) throw new Error(text || `HTTP ${r.status}`);
 
-        if (statusEl) {
-          statusEl.textContent = "Thanks — we’ll be in touch shortly.";
-          statusEl.style.color = "#93e36f";
-        }
-        form.reset();
-      } catch (err) {
-        console.error(err);
-        if (statusEl) {
-          statusEl.textContent = "Network error. Please try again.";
-          statusEl.style.color = "#ffb4b4";
-        }
-      } finally {
-        if (btn) {
-          btn.disabled = false;
-          btn.textContent = "Submit";
-        }
-      }
-    });
-  }
-
-  // ---------- Favicon (auto attach if missing) ----------
-  if (!document.querySelector('link[rel="icon"]')) {
-    const l = document.createElement("link");
-    l.rel = "icon";
-    l.href = "/assets/favicon.ico";
-    document.head.appendChild(l);
-  }
+      // success
+      setStatus("Thanks — we’ll be in touch shortly.");
+      form.reset();
+    } catch (err) {
+      console.error(err);
+      setStatus(
+        /recaptcha|site key|token|ready|execute/i.test(String(err))
+          ? "reCAPTCHA error. Check domain & site key."
+          : "Network error. Please try again.",
+        "#ffb4b4"
+      );
+    } finally {
+      disable(false);
+    }
+  });
 })();
