@@ -1,23 +1,44 @@
-// ping health
-fetch(window.KARBA_CONFIG.BACKEND_URL + "/api/health")
-  .then(r => r.json()).then(j => console.log("HEALTH:", j));
+<section id="contact" class="contact">
+  <div class="container">
+    <h2>Book a Free Consultation</h2>
 
-// simulate a lead (uses reCAPTCHA token)
-grecaptcha.ready(()=> {
-  grecaptcha.execute(window.KARBA_CONFIG.RECAPTCHA_SITE_KEY, { action:"lead" })
-    .then(t => fetch(window.KARBA_CONFIG.BACKEND_URL + "/api/leads", {
-      method:"POST",
-      headers:{ "Content-Type":"application/json" },
-      body: JSON.stringify({
-        name:"Test User",
-        email:"test@example.com",
-        phone:"",
-        service:"Life Insurance",
-        message:"Hello from console",
-        recaptchaToken: t
-      })
-    }))
-    .then(r => r.text())
-    .then(txt => console.log("LEAD RES:", txt))
-    .catch(e => console.error("LEAD ERR:", e));
-});
+    <form id="lead-form" novalidate>
+      <div class="row">
+        <label for="name">Full name</label>
+        <input id="name" name="name" type="text" placeholder="Your full name" autocomplete="name" required />
+      </div>
+
+      <div class="row">
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" placeholder="you@example.com" autocomplete="email" required />
+      </div>
+
+      <div class="row">
+        <label for="phone">Phone (optional)</label>
+        <input id="phone" name="phone" type="tel" placeholder="+234…" autocomplete="tel" />
+      </div>
+
+      <div class="row">
+        <label for="service">Service of interest</label>
+        <select id="service" name="service" required>
+          <option value="" selected disabled>Select a service</option>
+          <option>Life Insurance</option>
+          <option>Family Protection Plans</option>
+          <option>Retirement Annuity</option>
+          <option>Children Education Plan</option>
+          <option>General Insurance</option>
+          <option>Car Insurance</option>
+        </select>
+      </div>
+
+      <div class="row">
+        <label for="message">Message (optional)</label>
+        <textarea id="message" name="message" rows="2" placeholder="Tell us your goal…"></textarea>
+      </div>
+
+      <div id="form-status" aria-live="polite" style="min-height:24px;margin:8px 0;"></div>
+
+      <button class="btn btn-primary" type="submit">Submit</button>
+    </form>
+  </div>
+</section>
