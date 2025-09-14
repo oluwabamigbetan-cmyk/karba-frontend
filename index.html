@@ -175,9 +175,10 @@
 
   <!-- CONFIG FIRST -->
   <script src="config.js"></script>
-  <!-- reCAPTCHA v3 -->
-  <script src="https://www.google.com/recaptcha/api.js?render=explicit" async defer></script>
-  <!-- APP -->
-  <script src="script.js"></script>
+  <!-- reCAPTCHA v3 loader (before script.js) -->
+<script src="https://www.google.com/recaptcha/api.js?render=6Ld66MYrAAAAAE6o5J3whH9YbIDPQfLWkXKN4dqc"></script>
+<!-- your app code -->
+<script src="config.js?v=1"></script>
+<script src="script.js?v=<?=Date.now()?>"></script>
 </body>
 </html>
