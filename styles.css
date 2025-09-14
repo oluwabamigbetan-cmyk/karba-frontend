@@ -70,6 +70,24 @@ a{color:var(--text); text-decoration:none}
 .cert{background:linear-gradient(180deg,var(--card),var(--card-b)); border:1px solid #22304e; border-radius:14px; padding:12px}
 .cert img{width:100%; height:auto; display:block; border-radius:10px}
 .cert figcaption{color:var(--muted); margin-top:6px}
+.cert-section {
+  text-align: center;
+  padding: 40px 20px;
+  background: #0a0f2c; /* deep navy */
+  color: gold;
+}
+.cert-gallery {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 20px;
+}
+.cert-gallery img {
+  max-width: 300px;
+  border: 2px solid gold;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+}
 
 /* Form */
 .form{display:grid; gap:16px}
