@@ -1,192 +1,117 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>KARBA Financial Consultant</title>
 
-  <link rel="icon" href="/assets/favicon.ico" sizes="any">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="icon" href="assets/favicon.ico" sizes="any">
+  <link rel="preconnect" href="https://www.google.com" crossorigin>
+  <link rel="preconnect" href="https://www.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="styles.css">
 
-  <link rel="stylesheet" href="styles.css?v=1">
+  <!-- 1) Config FIRST -->
+  <script src="config.js"></script>
 
-  <!-- Config FIRST, then reCAPTCHA, then app -->
-  <script src="config.js?v=1"></script>
-  <script src="https://www.google.com/recaptcha/api.js?render=6Ld66MYrAAAAAE6o5J3whH9YbIDPQfLWkXKN4dqc"></script>
+  <!-- 2) reCAPTCHA v3 loader (keeps page fast) -->
+  <script src="https://www.google.com/recaptcha/api.js?render=explicit" async defer></script>
 </head>
 <body>
-  <!-- ... your page markup ... -->
-
-  <script src="script.js?v=1"></script>
-</body>
-  
-
-  <!-- Topnav -->
+  <!-- ======= NAV ======= -->
   <header class="nav">
-    <div class="nav__inner container">
-      <div class="brand">
-        <img src="assets/logo.png" alt="KARBA logo" class="brand__logo" />
-        <div class="brand__text">
-          <strong>KARBA</strong>
-          <span>Financial Consultant</span>
-        </div>
-      </div>
-
+    <div class="container nav__inner">
+      <img src="assets/logo.png" alt="KARBA" class="brand__logo">
       <nav class="menu">
         <a href="#services">Services</a>
         <a href="#about">About</a>
-        <a href="#certs">Certificates</a>
-        <a href="#contact" class="btn btn--outline">Book Free Consultation</a>
+        <a href="#contact">Book Free Consultation</a>
       </nav>
     </div>
   </header>
 
-<!-- HERO -->
-<section id="hero" class="hero">
-  <div id="heroImg" class="hero-img"></div>
-  <div class="hero-content">  
-     <h1>Live Confidently. Invest Wisely. Leave a Legacy.</h1>
-    <p>Tailored protection and investment solutions for families, professionals, and growing businesses.</p>
-    <div class="hero-cta">
-        <a href="#contact" class="btn btn--gold">Get Covered Today</a>
-        <a href="https://wa.me/2349162631205?text=Hello%20KARBA%2C%20I%27d%20like%20a%20free%20consultation" class="btn btn--outline">Chat on WhatsApp</a>
+  <!-- ======= HERO (auto slider) ======= -->
+  <section class="hero" id="home">
+    <img class="hero__img is-active" src="assets/hero-1.jpg" alt="">
+    <img class="hero__img" src="assets/hero-2.jpg" alt="">
+    <img class="hero__img" src="assets/hero-3.jpg" alt="">
+    <img class="hero__img" src="assets/hero-4.jpg" alt="">
+    <div class="hero__overlay">
+      <h1>Live Confidently. Invest Wisely. Leave a Legacy.</h1>
+      <div class="hero__cta">
+        <a class="btn btn--gold" href="#contact">Get Covered Today</a>
+        <a class="btn btn--outline" href="https://wa.me/2348090914569" target="_blank" rel="noopener">Chat on WhatsApp</a>
       </div>
     </div>
   </section>
 
-  <!-- Services (icon grid) -->
+  <!-- ======= SERVICES (quick) ======= -->
   <section id="services" class="section">
     <div class="container">
-      <h2 class="section__title">Our Services</h2>
-      <div class="grid services">
-        <div class="card">
-          <div class="ic"><span class="ic--shield"></span></div>
-          <h3>Life Insurance Policies</h3>
-          <p>Affordable, flexible coverage designed to secure your loved ones and estate.</p>
-        </div>
-        <div class="card">
-          <div class="ic"><span class="ic--gradcap"></span></div>
-          <h3>Children Education Plans</h3>
-          <p>Planned cover for tuition and long-term academic milestones.</p>
-        </div>
-        <div class="card">
-          <div class="ic"><span class="ic--family"></span></div>
-          <h3>Family Protection Plans</h3>
-          <p>Comprehensive cover for income, health gaps, and emergencies.</p>
-        </div>
-        <div class="card">
-          <div class="ic"><span class="ic--retire"></span></div>
-          <h3>Retirement &amp; Annuity</h3>
-          <p>Build stable retirement income streams and protect your future.</p>
-        </div>
-        <div class="card">
-          <div class="ic"><span class="ic--car"></span></div>
-          <h3>Motor / Car Insurance</h3>
-          <p>Third-party &amp; comprehensive cover with fast claims assistance.</p>
-        </div>
-        <div class="card">
-          <div class="ic"><span class="ic--home"></span></div>
-          <h3>Real Estate Consultancy</h3>
-          <p>Guidance on property acquisition and risk evaluation.</p>
-        </div>
+      <h2>Our Services</h2>
+      <div class="cards">
+        <div class="card">Life Insurance Policies</div>
+        <div class="card">Family Protection Plans</div>
+        <div class="card">Children Education Plans</div>
+        <div class="card">Motor / Car Insurance</div>
+        <div class="card">General Insurance</div>
+        <div class="card">Retirement & Annuity</div>
       </div>
     </div>
   </section>
 
-  <!-- Why choose KARBA -->
-  <section id="about" class="section section--alt">
+  <!-- ======= CONTACT / LEAD FORM ======= -->
+  <section id="contact" class="section">
     <div class="container">
-      <h2 class="section__title">Why Choose KARBA</h2>
-      <div class="grid why">
-        <div class="chip"><span class="ic--check"></span>Licensed Advisor</div>
-        <div class="chip"><span class="ic--check"></span>Expert Guidance</div>
-        <div class="chip"><span class="ic--check"></span>Custom-Tailored Solutions</div>
-        <div class="stats">
-          <div><strong>10+</strong><span>partner providers</span></div>
-          <div><strong>100%</strong><span>tailored recommendations</span></div>
-        </div>
-      </div>
+      <h2>Book a Free Consultation</h2>
+      <p>Please fill your name, email, and service of interest.</p>
+
+      <div id="status" class="status">Checking API…</div>
+
+      <form id="lead-form" class="form">
+        <label>Full name
+          <input name="name" type="text" autocomplete="name" required>
+        </label>
+
+        <label>Email
+          <input name="email" type="email" autocomplete="email" required>
+        </label>
+
+        <label>Phone (optional)
+          <input name="phone" type="tel" inputmode="tel" autocomplete="tel">
+        </label>
+
+        <label>Service of interest
+          <select name="service" required>
+            <option value="">Select…</option>
+            <option>Life Insurance</option>
+            <option>Family Protection Plans</option>
+            <option>Children Education Plans</option>
+            <option>Motor / Car Insurance</option>
+            <option>General Insurance</option>
+            <option>Retirement & Annuity</option>
+          </select>
+        </label>
+
+        <label>Message (optional)
+          <textarea name="message" rows="4" placeholder="Your note…"></textarea>
+        </label>
+
+        <!-- reCAPTCHA v3 “badge” host -->
+        <div id="recaptcha-badge-host" aria-hidden="true"></div>
+
+        <button id="submitBtn" class="btn btn--gold" type="submit">Submit</button>
+      </form>
     </div>
   </section>
 
-  <!-- Certificates -->
-  <div class="card">
-    <div class="card-title">CIIN / NAICOM / CAC — Professional & Regulatory</div>
-    <div class="logos">
-      <img src="assets/ciin-logo.png" alt="CIIN" />
-      <img src="assets/naicom-logo.png" alt="NAICOM" />
-       <img src="assets/cac-logo.png" alt="CAC" />
-    </div>
-    <p class="muted">Formal documents available on request.</p>
-  </div>
-</div>
-  <section id="certificates" class="cert-section">
-
- <!-- CONTACT / LEAD FORM -->
-<section id="contact" class="contact">
-  <h2>Book a Free Consultation</h2>
-  <p>Please fill your name, email, and service of interest.</p>
-
-  <form id="lead-form" class="form">
-  <label>Full name
-    <input id="fullName" name="name" type="text" placeholder="Your full name" required />
-  </label>
-
-  <label>Email
-    <input id="email" name="email" type="email" placeholder="you@example.com" required />
-  </label>
-
-  <label>Phone (optional)
-    <input id="phone" name="phone" type="tel" placeholder="080..." />
-  </label>
-
-  <label>Service of interest
-    <select id="service" name="service" required>
-      <option value="">Select one</option>
-      <option>Life Insurance</option>
-      <option>Retirement & Annuity</option>
-      <option>Children Education Plans</option>
-      <option>Family Protection Plans</option>
-      <option>General Insurance</option>
-    </select>
-  </label>
-
-  <label>Message (optional)
-    <textarea id="message" name="message" placeholder="Tell us a bit…"></textarea>
-  </label>
-
-  <div id="form-status" aria-live="polite" style="margin:.5rem 0;min-height:1.25rem;"></div>
-
-  <button id="submitBtn" type="submit" class="btn btn-gold">Submit</button>
-</form>
-</section>
-         
   <footer class="footer">
-    <div class="container foot">
-      <div class="foot__brand">
-        <img src="assets/logo.png" alt="KARBA logo small" />
-        <div>KARBA Financial Consultant</div>
-      </div>
-      <div class="foot__links">
-        <a href="https://www.linkedin.com/in/babatunde-bamigbetan-148db6122/" target="_blank" rel="noopener">LinkedIn</a>
-        <a href="https://www.facebook.com/share/p/14G1V2JTFH/" target="_blank" rel="noopener">Facebook</a>
-        <a href="https://www.instagram.com/you" target="_blank" rel="noopener">Instagram</a>
-        <a href="https://www.youtube.com/@karbafinancialconsultant" target="_blank" rel="noopener">YouTube</a>
-      </div>
-      <div class="foot__copy">© 2025 KARBA. All rights reserved.</div>
+    <div class="container footer__inner">
+      <img src="assets/logo.png" alt="" class="footer__mini">
+      <span>© 2025 KARBA. All rights reserved.</span>
     </div>
   </footer>
 
-  <!-- CONFIG FIRST -->
-  <script src="config.js"></script>
-  <!-- SCRIPTS (order matters: reCAPTCHA → config → app script) -->
-<script src="config.js"></script>
-  <script src="https://www.google.com/recaptcha/api.js?render=6Ld66MYrAAAAAEdGo5J3whH9YbIDPQfLWKXN4dqc" async defer></script>
-<script src="config.js"></script>
-    !-- your app code -->
-<script src="script.js"></script>
-<script src="script.js?v=<?=Date.now()?>"></script>
-   <script src="https://www.google.com/recaptcha/api.js?render=6Ld66MYrAAAAAEdGo5J3whH9YbIDPQfLWKXN4dqc" async defer></script>
-<script src="config.js"></script>
+  <!-- 3) App script LAST (uses grecaptcha when ready) -->
+  <script src="script.js" defer></script>
 </body>
 </html>
