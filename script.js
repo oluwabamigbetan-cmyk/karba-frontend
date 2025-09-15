@@ -11,8 +11,6 @@ function setStatus(msg, isError = false) {
 const heroImages = [
   "assets/hero-1.jpg",
   "assets/hero-2.jpg",
-  "assets/hero-3.jpg",
-  "assets/hero-4.jpg"
 ];
 let heroIndex = 0;
 
