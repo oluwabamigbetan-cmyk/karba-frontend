@@ -1,79 +1,171 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>KARBA Financial Consultant</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="styles.css" />
+
+  <!-- Config FIRST, then reCAPTCHA, then app -->
+  <script src="config.js"></script>
+  <script src="https://www.google.com/recaptcha/api.js?render=explicit"></script>
 </head>
 <body>
-  <header class="wrap">
-    <div class="brand">
-      <img src="assets/logo.png" alt="KARBA" class="brand__logo" />
-      <span class="brand__text">KARBA Financial Consultant</span>
+  <!-- Top nav -->
+  <header class="nav">
+    <div class="container nav__inner">
+      <a class="brand" href="/">
+        <img src="assets/logo_48.png" alt="KARBA" class="brand__logo" />
+        <strong class="brand__text">KARBA</strong>
+        <span class="brand__sub">Financial Consultant</span>
+      </a>
+
+      <nav class="menu">
+        <a href="#services">Services</a>
+        <a href="#about">About</a>
+        <a href="#consult">Book Free Consultation</a>
+      </nav>
     </div>
-    <nav class="menu">
-      <a href="#services">Services</a>
-      <a href="#about">About</a>
-      <a href="#book">Book Free Consultation</a>
-    </nav>
   </header>
 
-  <main class="wrap">
-    <section id="book" class="card">
-      <h1>Book a Free Consultation</h1>
-      <p>Please fill your name, email, and service of interest.</p>
-      <div id="status" class="status"></div>
+  <!-- HERO (2 images rotate) -->
+  <section class="hero">
+    <!-- Place these two images in /assets with these names -->
+    <!-- assets/hero1.jpg  | assets/hero2.jpg -->
+    <img id="hero-img" src="assets/hero1.jpg" alt="KARBA hero" />
+    <div class="hero__overlay">
+      <h1>Reliable Protection & Smart Planning</h1>
+      <p>Life • Family • Education • Business</p>
+      <a href="#consult" class="btn btn--gold">Book a Free Consultation</a>
+    </div>
+  </section>
 
-      <form id="lead-form" class="form" autocomplete="on" novalidate>
-        <div class="grid">
-          <label>
-            <span>Full name</span>
-            <input id="name" name="name" type="text" placeholder="Your full name" required />
-          </label>
-          <label>
-            <span>Email</span>
-            <input id="email" name="email" type="email" placeholder="you@example.com" required />
-          </label>
-        </div>
+  <!-- TRUST / CERTIFICATES -->
+  <section class="trust" id="trust">
+    <div class="container trust__grid">
+      <!-- Put these PNGs in /assets with these names -->
+      <!-- cert_naicom.png | cert_cac.png | cert_ciin.png -->
+      <div class="trust__item">
+        <img src="assets/cert_naicom.png" alt="NAICOM" />
+        <button class="btn btn--outline cert-trigger" data-img="assets/cert_naicom.png">View certificate</button>
+      </div>
+      <div class="trust__item">
+        <img src="assets/cert_cac.png" alt="CAC" />
+        <button class="btn btn--outline cert-trigger" data-img="assets/cert_cac.png">View certificate</button>
+      </div>
+      <div class="trust__item">
+        <img src="assets/cert_ciin.png" alt="CIIN" />
+        <button class="btn btn--outline cert-trigger" data-img="assets/cert_ciin.png">View certificate</button>
+      </div>
+    </div>
+    <p class="trust__note">Certificates shown on request — click “View certificate”.</p>
+  </section>
 
-        <div class="grid">
-          <label>
-            <span>Phone (optional)</span>
-            <input id="phone" name="phone" type="tel" placeholder="080..." />
-          </label>
-          <label>
-            <span>Service of interest</span>
-            <select id="service" name="service">
-              <option>Life Insurance</option>
-              <option>Family Protection Plans</option>
-              <option>Children Education Plans</option>
-              <option>Motor / Car Insurance</option>
-              <option>Retirement & Annuity</option>
-            </select>
-          </label>
-        </div>
+  <!-- SERVICES (anchor only for nav) -->
+  <section class="container sections" id="services">
+    <h2>Our Services</h2>
+    <ul class="pill-list">
+      <li>Life Insurance</li>
+      <li>Family Protection Plans</li>
+      <li>Children Education Plans</li>
+      <li>Retirement & Annuity</li>
+      <li>Business/Asset Protection</li>
+    </ul>
+  </section>
 
+  <!-- ABOUT (anchor only for nav) -->
+  <section class="container sections" id="about">
+    <h2>About KARBA</h2>
+    <p>We help families and businesses choose the right protection and savings plans, with honest advice and responsive support.</p>
+  </section>
+
+  <!-- CONSULTATION FORM -->
+  <section class="container sections" id="consult">
+    <h2>Book a Free Consultation</h2>
+    <p>Please fill your name, email, and service of interest.</p>
+    <div id="status" class="status">Checking API…</div>
+
+    <form id="lead-form" class="form">
+      <div class="grid">
         <label>
-          <span>Message (optional)</span>
-          <textarea id="message" name="message" rows="5" placeholder="How can we help?"></textarea>
+          Full name
+          <input id="name" name="name" type="text" placeholder="Your full name" required />
         </label>
 
-        <button id="submitBtn" type="submit" class="btn">Submit</button>
-      </form>
-    </section>
-  </main>
+        <label>
+          Email
+          <input id="email" name="email" type="email" placeholder="you@example.com" required />
+        </label>
 
-  <footer class="wrap foot">
-    <small>© <span id="year"></span> KARBA. All rights reserved.</small>
+        <label>
+          Phone (optional)
+          <input id="phone" name="phone" type="tel" placeholder="080..." />
+        </label>
+
+        <label>
+          Service of interest
+          <select id="service" name="service" required>
+            <option>Life Insurance</option>
+            <option>Family Protection Plans</option>
+            <option>Children Education Plans</option>
+            <option>Retirement & Annuity</option>
+            <option>Business/Asset Protection</option>
+          </select>
+        </label>
+
+        <label class="grid--full">
+          Message (optional)
+          <textarea id="message" name="message" placeholder="How can we help?"></textarea>
+        </label>
+      </div>
+
+      <button id="submitBtn" class="btn btn--gold" type="submit">Submit</button>
+      <!-- reCAPTCHA badge lives here when loaded -->
+      <div id="recaptcha-container" class="visually-hidden"></div>
+    </form>
+
+  </section>
+
+  <!-- SOCIAL BAR -->
+  <footer class="foot">
+    <div class="container foot__inner">
+      <div class="foot__copy">© 2025 KARBA. All rights reserved.</div>
+      <div class="social">
+        <!-- Update phone/handles as needed -->
+        <a class="social__link" target="_blank" rel="noopener" href="https://wa.me/2348090914569?text=Hello%20KARBA%2C%20I%27d%20like%20a%20consultation.">
+          <!-- WhatsApp SVG -->
+          <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.62-6.03C.122 5.281 5.403 0 12.057 0c3.181 0 6.167 1.24 8.413 3.488a11.82 11.82 0 013.49 8.41c-.003 6.654-5.284 11.935-11.94 11.935a11.9 11.9 0 01-6.032-1.616L.057 24zm6.597-3.807c1.742 1.035 3.276 1.666 5.392 1.666 5.448 0 9.886-4.434 9.889-9.877.003-5.462-4.415-9.89-9.877-9.893-5.445 0-9.88 4.434-9.883 9.879 0 2.225.651 3.891 1.746 5.555l-.999 3.648 3.732-.978zm11.387-5.464c-.074-.124-.272-.198-.57-.346-.297-.149-1.758-.867-2.03-.966-.272-.099-.47-.149-.668.149-.198.297-.767.966-.94 1.164-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.521.149-.174.198-.298.298-.497.099-.198.05-.372-.025-.521-.074-.149-.668-1.61-.916-2.205-.242-.58-.487-.5-.668-.51l-.57-.01c-.198 0-.521.074-.793.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.71.306 1.263.489 1.694.626.712.227 1.36.195 1.871.118.571-.085 1.758-.718 2.006-1.411.248-.694.248-1.289.173-1.411z" fill="currentColor"/></svg>
+          <span>WhatsApp</span>
+        </a>
+        <a class="social__link" target="_blank" rel="noopener" href="https://www.linkedin.com/">
+          <span>LinkedIn</span>
+        </a>
+        <a class="social__link" target="_blank" rel="noopener" href="https://facebook.com/">
+          <span>Facebook</span>
+        </a>
+        <a class="social__link" target="_blank" rel="noopener" href="https://instagram.com/">
+          <span>Instagram</span>
+        </a>
+        <a class="social__link" target="_blank" rel="noopener" href="https://youtube.com/">
+          <span>YouTube</span>
+        </a>
+        <a class="social__link" href="mailto:karbaconsultant@gmail.com">
+          <span>Email</span>
+        </a>
+      </div>
+    </div>
   </footer>
 
-  <!-- 1) Config FIRST -->
-  <script src="config.js"></script>
+  <!-- Certificate modal -->
+  <div id="modal" class="modal" aria-hidden="true">
+    <div class="modal__backdrop" data-close></div>
+    <div class="modal__content">
+      <button class="modal__close" data-close>&times;</button>
+      <img id="modalImg" src="" alt="Certificate" />
+    </div>
+  </div>
 
-  <!-- 2) DO NOT add reCAPTCHA tag here. We inject it from script.js with your SITE KEY. -->
-
-  <!-- 3) App -->
   <script src="script.js"></script>
 </body>
 </html>
