@@ -1,94 +1,48 @@
-(() => {
-  const cfg = window.KARBA_CONFIG || {};
-  const $ = (s, r = document) => r.querySelector(s);
-  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
-  const byId = id => document.getElementById(id);
+:root{
+  --navy:#0b0d24;
+  --card:rgba(12,23,55,.7);
+  --gold:#e6c669;
+  --text:#e6e9ff;
+  --ok:#47d17f;
+  --bad:#ff6b6b;
+  --muted:#9bb0d9;
+  --radius:12px;
+  --shadow:0 10px 30px rgba(0,0,0,.25);
+}
 
-  const statusEl = byId("status");
-  const btn = byId("submitBtn");
-  const form = byId("lead-form");
-  const nameEl = byId("name");
-  const emailEl = byId("email");
-  const phoneEl = byId("phone");
-  const serviceEl = byId("service");
-  const messageEl = byId("message");
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:linear-gradient(120deg,#0b0d24 60%,#081224 100%);color:var(--text);font:16px/1.55 system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;}
 
-  byId("year").textContent = new Date().getFullYear();
+.nav{position:sticky;top:0;z-index:10;background:rgba(12,23,55,.65);backdrop-filter:blur(6px);border-bottom:1px solid rgba(255,255,255,.06)}
+.nav,.container{max-width:980px;margin:0 auto;padding:14px 18px}
 
-  const setStatus = (txt, color) => {
-    if (!statusEl) return;
-    statusEl.textContent = txt || "";
-    statusEl.style.color = color || "#ffb86b";
-  };
-  const disable = v => { if (btn) btn.disabled = !!v; };
+.brand{display:flex;gap:10px;align-items:center}
+.brand__logo{width:28px;height:28px}
+.brand__text{font-weight:700}
 
-  // 1) Health check
-  const ping = async () => {
-    if (!cfg.BACKEND_URL) {
-      setStatus("Backend URL missing in config.js", "#ff6b6b");
-      return;
-    }
-    try {
-      const r = await fetch(cfg.BACKEND_URL + "/api/health");
-      const j = await r.json();
-      if (j && j.ok) setStatus("[HEALTH] Backend OK", "#47d17f");
-      else setStatus("Backend health failed", "#ff6b6b");
-    } catch {
-      setStatus("Backend unreachable", "#ff6b6b");
-    }
-  };
-  ping();
+.menu{margin-left:auto;display:flex;gap:16px}
+.menu a{color:var(--text);text-decoration:none;opacity:.85}
+.menu a:hover{opacity:1}
 
-  // 2) Form submit
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    setStatus("");
-    disable(true);
+.container{padding:32px 18px}
+h1{margin:0 0 8px}
+.status{margin:10px 0 18px;color:var(--muted)}
 
-    // Basic validation
-    const name = (nameEl.value || "").trim();
-    const email = (emailEl.value || "").trim();
-    if (!name || !email) {
-      setStatus("Please enter your name and email.", "#ff6b6b");
-      disable(false);
-      return;
-    }
+.form{display:grid;gap:14px;background:var(--card);padding:18px;border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid rgba(255,255,255,.06)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:720px){.grid{grid-template-columns:1fr}}
 
-    // Get reCAPTCHA v3 token
-    try {
-      if (!window.grecaptcha || !cfg.RECAPTCHA_SITE_KEY) {
-        throw new Error("reCAPTCHA not loaded");
-      }
-      await grecaptcha.ready();
-      const recaptchaToken = await grecaptcha.execute(cfg.RECAPTCHA_SITE_KEY, { action: "lead" });
+label{display:grid;gap:6px}
+input,select,textarea{
+  width:100%;padding:12px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.12);
+  background:rgba(15,25,55,.5);color:var(--text);outline:0
+}
+input::placeholder,textarea::placeholder{color:#98a5c7}
 
-      setStatus("Submitting…", "#9bb0d9");
+.btn{
+  width:120px;padding:10px 14px;border-radius:999px;border:0;background:var(--gold);color:#222;
+  font-weight:600;cursor:pointer;box-shadow:0 6px 16px rgba(0,0,0,.25)
+}
+.btn:disabled{opacity:.5;cursor:not-allowed}
 
-      const body = {
-        name,
-        email,
-        phone: phoneEl.value || "",
-        service: serviceEl.value || "Life Insurance",
-        message: messageEl.value || "",
-        recaptchaToken
-      };
-
-      const r = await fetch(cfg.BACKEND_URL + "/api/leads", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body)
-      });
-
-      const txt = await r.text();
-      if (!r.ok) throw new Error(txt || "HTTP error");
-
-      setStatus("Thanks — we’ll be in touch shortly.", "#47d17f");
-      form.reset();
-    } catch (err) {
-      setStatus("Network or security error — please try again.", "#ff6b6b");
-      console.error(err);
-    } finally {
-      disable(false);
-    }
-  });
-})();
+.foot{max-width:980px;margin:28px auto;padding:16px;border-top:1px solid rgba(255,255,255,.08);color:#9bb0d9}
