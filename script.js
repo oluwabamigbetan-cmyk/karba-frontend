@@ -1,7 +1,7 @@
 (() => {
   const CFG = window.KARBA_CONFIG || {};
   const $  = (s, p = document) => p.querySelector(s);
-
+  
   // ---- status helpers
   const statusEl = $("#status");
   const setStatus = (msg, color) => {
