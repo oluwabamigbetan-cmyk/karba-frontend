@@ -1,8 +1,8 @@
-// NO <script> TAGS HERE. PURE JS.
-window.KARBA_CONFIG = {
-  // 1) Your Render backend base URL (no trailing slash)
-  BACKEND_URL: "https://karba-backend-jgbp.onrender.com",
+// DO NOT wrap this in <script> tags. Pure JS only.
+// Replace the placeholders before deploying.
 
-  // 2) Your Google reCAPTCHA v3 **SITE** key (not the secret)
-  RECAPTCHA_SITE_KEY: "6LeuMMorAAAAAAhNzhIfYY8IkazL12EJc7fGL8Gc"
+window.KARBA_CONFIG = {
+  BACKEND_URL: "https://karba-backend-xxxx.onrender.com", // ← your Render service URL
+  RECAPTCHA_SITE_KEY: "YOUR_RECAPTCHA_V3_SITE_KEY"        // ← reCAPTCHA v3 site key
 };
+console.log("KARBA_CONFIG", window.KARBA_CONFIG);
