@@ -1,48 +1,116 @@
-:root{
-  --navy:#0b0d24;
-  --card:rgba(12,23,55,.7);
-  --gold:#e6c669;
-  --text:#e6e9ff;
-  --ok:#47d17f;
-  --bad:#ff6b6b;
-  --muted:#9bb0d9;
-  --radius:12px;
-  --shadow:0 10px 30px rgba(0,0,0,.25);
-}
+(() => {
+  const cfg = window.KARBA_CONFIG || {};
+  const $ = s => document.querySelector(s);
+  const byId = id => document.getElementById(id);
+  const statusEl = byId("status");
+  const setStatus = (t, color) => { if(!statusEl) return; statusEl.textContent = t||""; statusEl.style.color = color||""; };
+  const disable = v => { const b = byId("submitBtn"); if(b) b.disabled = !!v; };
 
-*{box-sizing:border-box}
-html,body{margin:0;padding:0;background:linear-gradient(120deg,#0b0d24 60%,#081224 100%);color:var(--text);font:16px/1.55 system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;}
+  // Year
+  const y = byId("year"); if (y) y.textContent = new Date().getFullYear();
 
-.nav{position:sticky;top:0;z-index:10;background:rgba(12,23,55,.65);backdrop-filter:blur(6px);border-bottom:1px solid rgba(255,255,255,.06)}
-.nav,.container{max-width:980px;margin:0 auto;padding:14px 18px}
+  // Health ping
+  (async () => {
+    if (!cfg.BACKEND_URL) { setStatus("Backend URL missing in config.js","#ff6b6b"); return; }
+    try {
+      const r = await fetch(cfg.BACKEND_URL + "/api/health");
+      const j = await r.json().catch(()=>({}));
+      setStatus(j && j.ok ? "[HEALTH] Backend OK" : "Backend health failed", j && j.ok ? "#47d17f" : "#ff6b6b");
+    } catch {
+      setStatus("Backend unreachable", "#ff6b6b");
+    }
+  })();
 
-.brand{display:flex;gap:10px;align-items:center}
-.brand__logo{width:28px;height:28px}
-.brand__text{font-weight:700}
+  // Form submit
+  const form = byId("lead-form");
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const name = (byId("name").value||"").trim();
+    const email = (byId("email").value||"").trim();
+    const phone = byId("phone").value||"";
+    const service = byId("service").value||"Life Insurance";
+    const message = byId("message").value||"";
+    if (!name || !email) { setStatus("Please enter your name and email.", "#ff6b6b"); return; }
 
-.menu{margin-left:auto;display:flex;gap:16px}
-.menu a{color:var(--text);text-decoration:none;opacity:.85}
-.menu a:hover{opacity:1}
+    try {
+      disable(true); setStatus("Securing…");
+      if (!window.grecaptcha || !cfg.RECAPTCHA_SITE_KEY) throw new Error("reCAPTCHA not loaded");
+      await grecaptcha.ready();
+      const recaptchaToken = await grecaptcha.execute(cfg.RECAPTCHA_SITE_KEY, { action: "lead" });
 
-.container{padding:32px 18px}
-h1{margin:0 0 8px}
-.status{margin:10px 0 18px;color:var(--muted)}
+      setStatus("Submitting…", "#9bb0d9");
+      const r = await fetch(cfg.BACKEND_URL + "/api/leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, phone, service, message, recaptchaToken })
+      });
+      const text = await r.text();
+      if (!r.ok) throw new Error(text || "HTTP error");
+      setStatus("Thanks — we’ll be in touch shortly.", "#47d17f");
+      form.reset();
+    } catch (err) {
+      console.error(err);
+      setStatus("Network or security error — please try again.", "#ff6b6b");
+    } finally {
+      disable(false);
+    }
+  });
+})();
+(() => {
+  const cfg = window.KARBA_CONFIG || {};
+  const $ = s => document.querySelector(s);
+  const byId = id => document.getElementById(id);
+  const statusEl = byId("status");
+  const setStatus = (t, color) => { if(!statusEl) return; statusEl.textContent = t||""; statusEl.style.color = color||""; };
+  const disable = v => { const b = byId("submitBtn"); if(b) b.disabled = !!v; };
 
-.form{display:grid;gap:14px;background:var(--card);padding:18px;border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid rgba(255,255,255,.06)}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-@media (max-width:720px){.grid{grid-template-columns:1fr}}
+  // Year
+  const y = byId("year"); if (y) y.textContent = new Date().getFullYear();
 
-label{display:grid;gap:6px}
-input,select,textarea{
-  width:100%;padding:12px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.12);
-  background:rgba(15,25,55,.5);color:var(--text);outline:0
-}
-input::placeholder,textarea::placeholder{color:#98a5c7}
+  // Health ping
+  (async () => {
+    if (!cfg.BACKEND_URL) { setStatus("Backend URL missing in config.js","#ff6b6b"); return; }
+    try {
+      const r = await fetch(cfg.BACKEND_URL + "/api/health");
+      const j = await r.json().catch(()=>({}));
+      setStatus(j && j.ok ? "[HEALTH] Backend OK" : "Backend health failed", j && j.ok ? "#47d17f" : "#ff6b6b");
+    } catch {
+      setStatus("Backend unreachable", "#ff6b6b");
+    }
+  })();
 
-.btn{
-  width:120px;padding:10px 14px;border-radius:999px;border:0;background:var(--gold);color:#222;
-  font-weight:600;cursor:pointer;box-shadow:0 6px 16px rgba(0,0,0,.25)
-}
-.btn:disabled{opacity:.5;cursor:not-allowed}
+  // Form submit
+  const form = byId("lead-form");
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const name = (byId("name").value||"").trim();
+    const email = (byId("email").value||"").trim();
+    const phone = byId("phone").value||"";
+    const service = byId("service").value||"Life Insurance";
+    const message = byId("message").value||"";
+    if (!name || !email) { setStatus("Please enter your name and email.", "#ff6b6b"); return; }
 
-.foot{max-width:980px;margin:28px auto;padding:16px;border-top:1px solid rgba(255,255,255,.08);color:#9bb0d9}
+    try {
+      disable(true); setStatus("Securing…");
+      if (!window.grecaptcha || !cfg.RECAPTCHA_SITE_KEY) throw new Error("reCAPTCHA not loaded");
+      await grecaptcha.ready();
+      const recaptchaToken = await grecaptcha.execute(cfg.RECAPTCHA_SITE_KEY, { action: "lead" });
+
+      setStatus("Submitting…", "#9bb0d9");
+      const r = await fetch(cfg.BACKEND_URL + "/api/leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, phone, service, message, recaptchaToken })
+      });
+      const text = await r.text();
+      if (!r.ok) throw new Error(text || "HTTP error");
+      setStatus("Thanks — we’ll be in touch shortly.", "#47d17f");
+      form.reset();
+    } catch (err) {
+      console.error(err);
+      setStatus("Network or security error — please try again.", "#ff6b6b");
+    } finally {
+      disable(false);
+    }
+  });
+})();
