@@ -1,114 +1,100 @@
-(() => {
+(function() {
   const CFG = window.KARBA_CONFIG || {};
-  const $  = (s, p = document) => p.querySelector(s);
-  
-  // ---- status helpers
-  const statusEl = $("#status");
-  const setStatus = (msg, color) => {
-    if (!statusEl) return;
-    statusEl.textContent = msg || "";
-    statusEl.style.color = color || "";
-  };
+  const $ = (sel, p = document) => p.querySelector(sel);
 
-  // ---- simple button toggler
-  const btn = $("#submit-btn");
-  const disable = (on, label) => {
-    if (!btn) return;
-    btn.disabled = !!on;
-    btn.textContent = on ? (label || "Submitting…") : "Submit";
-  };
-
-  // ---- sanity checks visible on page
-  if (!CFG.BACKEND_URL) {
-    setStatus("Backend URL missing in config.js", "#f66");
+  // ---- Hero slider ----
+  const heroImg = $('#heroImg');
+  const heroImages = [
+    'assets/hero-1.jpg',
+    'assets/hero-2.jpg',
+    'assets/hero-3.jpg',
+    'assets/hero-4.jpg'
+  ];
+  let idx = 0;
+  function showHero(i) {
+    if (!heroImg) return;
+    heroImg.style.opacity = '0';
+    setTimeout(() => {
+      heroImg.src = heroImages[i % heroImages.length];
+      heroImg.onload = () => { heroImg.style.opacity = '1'; };
+    }, 200);
   }
+  showHero(idx++);
+  setInterval(() => showHero(idx++), 6000);
 
-  // ---- ping backend /api/health
-  const health = async () => {
-    if (!CFG.BACKEND_URL) return;
+  // ---- Health ping ----
+  const statusEl = $('#status');
+  const setStatus = (t, color) => { if (statusEl) { statusEl.textContent = t; statusEl.style.color = color || '#9bd6ff'; } };
+
+  async function ping() {
+    if (!CFG.BACKEND_URL) { setStatus('Backend URL missing in config.js', '#ff9d9d'); return; }
     try {
-      const r = await fetch(`${CFG.BACKEND_URL}/api/health`, { cache: "no-store" });
-      const j = await r.json().catch(() => ({}));
-      setStatus("[HEALTH] Backend OK", "#9f9");
+      const r = await fetch(CFG.BACKEND_URL + '/api/health');
+      const j = await r.json();
+      setStatus(j.ok ? '[HEALTH] Backend OK' : 'Backend error');
     } catch (e) {
-      setStatus("Backend not reachable. Check BACKEND_URL or CORS.", "#f66");
+      setStatus('Network or security error — please try again.', '#ff9d9d');
     }
-  };
-  health();
+  }
+  ping();
 
-  // ---- get a reCAPTCHA v3 token (waits until script is ready)
-  async function getRecaptchaToken(action = "lead") {
-    const siteKey = CFG.RECAPTCHA_SITE_KEY;
-    if (!siteKey) throw new Error("Missing RECAPTCHA_SITE_KEY in config.js");
+  // ---- Form submit ----
+  const form = $('#lead-form');
+  const btn  = $('#submitBtn');
 
-    // wait until grecaptcha exists & ready()
-    await new Promise((res, rej) => {
-      const start = Date.now();
-      (function wait() {
-        if (window.grecaptcha && typeof window.grecaptcha.ready === "function") {
-          window.grecaptcha.ready(res);
-        } else if (Date.now() - start > 12000) {
-          rej(new Error("reCAPTCHA loader never arrived"));
-        } else {
-          setTimeout(wait, 120);
-        }
-      })();
-    });
-
-    // execute
-    return await window.grecaptcha.execute(siteKey, { action });
+  async function getRecaptchaToken() {
+    const key = CFG.RECAPTCHA_SITE_KEY;
+    if (!key || !window.grecaptcha) return null;
+    await new Promise(res => window.grecaptcha.ready(res));
+    return await window.grecaptcha.execute(key, { action: 'lead' });
   }
 
-  // ---- form submit
-  const form = $("#lead-form");
+  function disable(flag) { if (btn) btn.disabled = !!flag; if (btn) btn.textContent = flag ? 'Submitting…' : 'Submit'; }
+
   if (form) {
-    form.addEventListener("submit", async (e) => {
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
 
-      // basic validation
-      const nameEl = $("#name");
-      const emailEl = $("#email");
-      if (!nameEl.value.trim() || !emailEl.value.trim()) {
-        setStatus("Please enter your name and email.", "#f66");
+      const nameEl = $('#name'), emailEl = $('#email'), phoneEl = $('#phone');
+      const serviceEl = $('#service'), messageEl = $('#message');
+      const name = (nameEl?.value || '').trim();
+      const email = (emailEl?.value || '').trim();
+      const phone = (phoneEl?.value || '').trim();
+      const service = (serviceEl?.value || '').trim();
+      const message = (messageEl?.value || '').trim();
+
+      if (!name || !email || !service) {
+        setStatus('Please enter your name, email, and service.', '#ff9d9d');
+        return;
+      }
+      if (!CFG.BACKEND_URL) {
+        setStatus('Backend URL missing in config.js', '#ff9d9d');
         return;
       }
 
+      disable(true);
+      setStatus('Submitting…');
+
       try {
-        disable(true, "Securing…");
-        setStatus("Getting security token…");
-
-        const token = await getRecaptchaToken("lead");
-
-        const body = {
-          name: nameEl.value.trim(),
-          email: emailEl.value.trim(),
-          phone: ($("#phone")?.value || "").trim(),
-          service: $("#service")?.value || "",
-          message: ($("#message")?.value || "").trim(),
-          recaptchaToken: token
-        };
-
-        setStatus("Submitting…");
-        const r = await fetch(`${CFG.BACKEND_URL}/api/leads`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(body)
+        const recaptchaToken = await getRecaptchaToken();
+        const r = await fetch(CFG.BACKEND_URL + '/api/leads', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, email, phone, service, message, recaptchaToken })
         });
-
-        const text = await r.text();
-        if (!r.ok) throw new Error(text || `HTTP ${r.status}`);
-
-        setStatus("Thanks — we’ll be in touch shortly.", "#9f9");
+        const j = await r.json();
+        if (!r.ok || !j.ok) throw new Error(j.message || 'HTTP ' + r.status);
+        setStatus('Thanks — we’ll be in touch shortly.');
         form.reset();
       } catch (err) {
+        setStatus('Network or security error — please try again.', '#ff9d9d');
         console.error(err);
-        // Two most common causes:
-        // 1) reCAPTCHA not configured for your domain -> fix key/domain in Google admin
-        // 2) CORS block on backend -> update CORS_ORIGINS env to include your Vercel URL
-        setStatus("Network or security error — please try again.", "#f66");
       } finally {
         disable(false);
       }
     });
   }
+
+  // footer year
+  const y = $('#year'); if (y) y.textContent = new Date().getFullYear();
 })();
