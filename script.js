@@ -64,44 +64,93 @@
   }
 
   // ---------- FORM SUBMIT ----------
-  function wireForm() {
-    const form = $("#lead-form");
-    const btn = $("#submitBtn");
-    if (!form || !btn) return;
+  // In script.js – inside DOMContentLoaded, replace your submit handler with this:
 
-    const disable = (v) => { btn.disabled = !!v; btn.textContent = v ? "Sending…" : "Submit"; };
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
 
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const fd = new FormData(form);
-      const name = (fd.get("name") || "").toString().trim();
-      const email = (fd.get("email") || "").toString().trim();
+  const nameEl = q('input[name="name"]', form);
+  const emailEl = q('input[name="email"]', form);
+  const phoneEl = q('input[name="phone"]', form);
+  const serviceEl = q('select[name="service"]', form);
+  const messageEl = q('textarea[name="message"]', form);
 
-      if (!name || !email) {
-        setStatus("Please enter your name and email.");
-        return;
-      }
+  const setStatus = (txt, color) => {
+    if (!statusEl) return;
+    statusEl.textContent = txt;
+    statusEl.style.color = color || "";
+  };
 
-      disable(true);
-      setStatus("Securing…");
+  // simple validation
+  const name = (nameEl.value || "").trim();
+  const email = (emailEl.value || "").trim();
+  if (!name || !email) {
+    setStatus("Please enter your name and email.");
+    return;
+  }
 
-      try {
-        const recaptchaToken = await getRecaptchaToken();
-
-        const body = {
-          name,
-          email,
-          phone: (fd.get("phone") || "").toString().trim(),
-          service: (fd.get("service") || "").toString().trim(),
-          message: (fd.get("message") || "").toString().trim(),
-          recaptchaToken
-        };
-
-        const r = await fetch(`${CFG.BACKEND_URL}/api/leads`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(body)
+  // get v3 token with 5s timeout
+  let token;
+  try {
+    await withTimeout(
+      new Promise((resolve, reject) => {
+        grecaptcha.ready(async () => {
+          try {
+            const t = await grecaptcha.execute(window.KARBA_CONFIG.RECAPTCHA_SITE_KEY, { action: "lead" });
+            resolve(t);
+          } catch (err) {
+            reject(err);
+          }
         });
+      }),
+      5000,
+      "reCAPTCHA timed out"
+    ).then(t => token = t);
+  } catch (err) {
+    console.error(err);
+    setStatus("reCAPTCHA failed. Please refresh and try again.", "tomato");
+    return;
+  }
+
+  // send to API
+  const body = {
+    name,
+    email,
+    phone: (phoneEl.value || "").trim(),
+    service: (serviceEl.value || "").trim(),
+    message: (messageEl.value || "").trim(),
+    recaptchaToken: token
+  };
+
+  btn.disabled = true;
+  btn.textContent = "Submitting…";
+  setStatus("");
+
+  try {
+    const r = await fetch(window.KARBA_CONFIG.BACKEND_URL + "/api/leads", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body)
+    });
+
+    const data = await r.json().catch(() => ({}));
+
+    if (!r.ok) {
+      // show server reason to help debug
+      setStatus(data.message || data.reason || `Submit failed (HTTP ${r.status}).`, "tomato");
+      return;
+    }
+
+    setStatus("Thanks — we'll be in touch shortly.", "limegreen");
+    form.reset();
+  } catch (err) {
+    console.error(err);
+    setStatus("Network error — please try again.", "tomato");
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "Submit";
+  }
+});
 
         const text = await r.text();
         let data;
