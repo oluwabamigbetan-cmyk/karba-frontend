@@ -13,7 +13,7 @@ a{color:var(--text);text-decoration:none}
 
 .container{width:min(1100px,92%);margin:0 auto}
 
-.nav{position:sticky;top:0;z-index:40;background:rgba(10,22,45,.7);backdrop-filter:blur(6px);border-bottom:1px solid rgba(255,255,255,.06)}
+.nav{position:sticky;top:0;z-index:40;background:transparent;backdrop-filter:none;border-bottom:none}
 .nav__inner{display:flex;align-items:center;justify-content:space-between;padding:12px 0}
 .brand{display:flex;gap:10px;align-items:center}
 .brand__logo{width:40px;height:40px}
