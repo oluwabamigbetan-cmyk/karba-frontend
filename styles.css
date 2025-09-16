@@ -89,3 +89,11 @@ textarea{min-height:110px;resize:vertical}
 
 @media (max-width:980px){ .cards{ grid-template-columns:repeat(2,1fr);} }
 @media (max-width:640px){ .cards{ grid-template-columns:1fr; } }
+/* === UI TWEAKS (safe overrides) === */
+/* 1) Make hero overlay more transparent so the photo pops */.hero__overlay{  /* lighter gradient */  background: linear-gradient(    180deg,    rgba(11,20,36,.18),    rgba(11,20,36,.55) 70%  ) !important;
+  /* push content away from the left/right edges */  padding-inline: clamp(16px, 4vw, 48px) !important;}
+/* 2) Move the hero texts a bit away from the very top too */.hero__overlay { padding-top: clamp(60px, 10vh, 120px) !important; }
+/* 3) Slightly larger brand text in the header */.brand__text{ font-size: 22px !important; }.brand__sub { font-size: 13.5px !important; opacity:.85; }
+/* 4) Remove the faint lines/boxes look in the trust area */.trust{  background: transparent !important;  border-top: none !important;  border-bottom: none !important;  padding-top: 10px !important;}.trust__item{  background: transparent !important;  border: 0 !important;  box-shadow: none !important;}.trust__note{ opacity:.7; }
+/* 5) Give the “Book a Free Consultation” button a little space from edge */.hero__overlay .btn{ margin-left: 2px; }
+/* 6) (Optional) a touch more breathing room around page content */.sections{ padding-inline: clamp(12px, 4vw, 36px); }
