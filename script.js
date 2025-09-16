@@ -49,7 +49,7 @@
     }
     modal.addEventListener('keydown', e => (e.key === 'Escape') && close());
   }
-
+  
   // ---- 3) Health check (Render backend)
   const CFG = window.KARBA_CONFIG || {};
   (async () => {
