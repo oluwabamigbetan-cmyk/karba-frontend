@@ -6,7 +6,7 @@
   <title>KARBA Financial Consultant</title>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="styles.css" />
-  
+
   <!-- Config FIRST, then reCAPTCHA, then app -->
   <script src="config.js"></script>
   <script src="https://www.google.com/recaptcha/api.js?render=explicit"></script>
@@ -30,6 +30,39 @@
   </header>
 
   <!-- HERO (2 images rotate) -->
+  <section class="hero">
+    <!-- Place these two images in /assets with these names -->
+    <!-- assets/hero1.jpg  | assets/hero2.jpg -->
+    <img id="hero-img" src="assets/hero1.jpg" alt="KARBA hero" />
+    <div class="hero__overlay">
+      <h1>Reliable Protection & Smart Planning</h1>
+      <p>Life • Family • Education • Business</p>
+      <a href="#consult" class="btn btn--gold">Book a Free Consultation</a>
+    </div>
+  </section>
+
+  <!-- TRUST / CERTIFICATES -->
+  <section class="trust" id="trust">
+    <div class="container trust__grid">
+      <!-- Put these PNGs in /assets with these names -->
+      <!-- cert_naicom.png | cert_cac.png | cert_ciin.png -->
+      <div class="trust__item">
+        <img src="assets/cert_naicom.png" alt="NAICOM" />
+        <button class="btn btn--outline cert-trigger" data-img="assets/cert_naicom.png">View certificate</button>
+      </div>
+      <div class="trust__item">
+        <img src="assets/cert_cac.png" alt="CAC" />
+        <button class="btn btn--outline cert-trigger" data-img="assets/cert_cac.png">View certificate</button>
+      </div>
+      <div class="trust__item">
+        <img src="assets/cert_ciin.png" alt="CIIN" />
+        <button class="btn btn--outline cert-trigger" data-img="assets/cert_ciin.png">View certificate</button>
+      </div>
+    </div>
+    <p class="trust__note">Certificates shown on request — click “View certificate”.</p>
+  </section>
+
+  <!-- SERVICES (anchor only for nav) -->
   <section class="container sections" id="services">
   <h2>Our Services</h2>
   <div class="cards">
@@ -55,39 +88,6 @@
     </article>
   </div>
 </section>
-
-  <!-- TRUST / CERTIFICATES -->
-  <section class="trust" id="trust">
-    <div class="container trust__grid">
-      <!-- Put these PNGs in /assets with these names -->
-      <!-- cert_naicom.png | cert_cac.png | cert_ciin.png -->
-      <div class="trust__item">
-        <img src="assets/cert_naicom.png" alt="NAICOM" />
-        <button class="btn btn--outline cert-trigger" data-img="assets/cert_naicom.png">View certificate</button>
-      </div>
-      <div class="trust__item">
-        <img src="assets/cert_cac.png" alt="CAC" />
-        <button class="btn btn--outline cert-trigger" data-img="assets/cert_cac.png">View certificate</button>
-      </div>
-      <div class="trust__item">
-        <img src="assets/cert_ciin.png" alt="CIIN" />
-        <button class="btn btn--outline cert-trigger" data-img="assets/cert_ciin.png">View certificate</button>
-      </div>
-    </div>
-    <p class="trust__note">Certificates shown on request — click “View certificate”.</p>
-  </section>
-
-  <!-- SERVICES (anchor only for nav) -->
-  <section class="container sections" id="services">
-    <h2>Our Services</h2>
-    <ul class="pill-list">
-      <li>Life Insurance</li>
-      <li>Family Protection Plans</li>
-      <li>Children Education Plans</li>
-      <li>Retirement & Annuity</li>
-      <li>Business/Asset Protection</li>
-    </ul>
-  </section>
 
   <!-- ABOUT (anchor only for nav) -->
   <section class="container sections" id="about">
