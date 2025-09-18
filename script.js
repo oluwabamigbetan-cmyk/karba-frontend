@@ -58,13 +58,14 @@
         setStatus('Backend URL missing in config.js', '#f66');
         return;
       }
-      const r = await etch("https://karba-backend.onrender.com/api/health")
-  .then(res => res.text())
-  .then(data => {
-    console.log("[HEALTH CHECK]", data); // log only in console
-  })
-  .catch(err => console.error("Health check failed", err));
-
+      const r = await fetch(CFG.BACKEND_URL + '/api/health', { cache:'no-store' });
+      const j = await r.json();
+      if (j && j.ok) setStatus('FILL FORM', '#6fcf97');
+      else setStatus('Backend health check failed', '#f66');
+    }catch(e){
+      setStatus('Backend not reachable', '#f66');
+    }
+  })();
   // ---- 4) FORM SUBMIT with reCAPTCHA v3 (explicit)
   const form = $('#lead-form');
   if (form) {
