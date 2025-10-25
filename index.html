@@ -158,42 +158,16 @@
     <h2>Featured Real Estate</h2>
     <p>Live availability with external media links.</p>
 
-    <div class="grid grid-3" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
-      
-      <!-- PROPERTY CARD 1 -->
-      <div class="card" style="padding: 20px; border: 1px solid #204060; border-radius: 10px;">
-        <h3>3-Bedroom Duplex, Lekki Phase 1</h3>
-        <p style="color: #f0c040;">₦180m • Available</p>
-        <p>Media: 
-          <a href="https://youtube.com/yourlink" target="_blank">YouTube</a> / 
-          <a href="https://instagram.com/yourlink" target="_blank">Instagram</a>
-        </p>
-        <a href="#" class="btn primary">View Details</a>
-      </div>
+    <div id="listContainer" style="display:flex; flex-direction:column; gap:12px; margin-top:12px;"></div>
 
-      <!-- PROPERTY CARD 2 -->
-      <div class="card" style="padding: 20px; border: 1px solid #204060; border-radius: 10px;">
-        <h3>600sqm Land, Ibeju-Lekki</h3>
-        <p style="color: #f0c040;">₦25m • Available</p>
-        <p>Media: 
-          <a href="https://youtube.com/yourlink" target="_blank">YouTube</a> / 
-          <a href="https://instagram.com/yourlink" target="_blank">Instagram</a>
-        </p>
-        <a href="#" class="btn primary">View Details</a>
-      </div>
-
-      <!-- PROPERTY CARD 3 -->
-      <div class="card" style="padding: 20px; border: 1px solid #204060; border-radius: 10px;">
-        <h3>2-Bed Apartment, Yaba</h3>
-        <p style="color: #f0c040;">₦110m • Rented</p>
-        <p>Media: 
-          <a href="https://youtube.com/yourlink" target="_blank">YouTube</a> / 
-          <a href="https://instagram.com/yourlink" target="_blank">Instagram</a>
-        </p>
-        <a href="#" class="btn primary">View Details</a>
-      </div>
-
-      <!-- ✳ Add more properties below by simply copying the card block above ✳ -->
+    <div style="margin-top:14px; display:flex; gap:10px; align-items:center;">
+      <label for="moreSelect" style="opacity:.8;">More:</label>
+      <select id="moreSelect" style="padding:8px 10px; border:1px solid #345; background:transparent; color:#fff;">
+        <option value="">Select another property…</option>
+      </select>
+      <button id="showAllBtn" class="btn" style="padding:8px 12px; border:1px solid #345; background:transparent; color:#fff;">
+        Show all remaining
+      </button>
     </div>
   </div>
 </section>
