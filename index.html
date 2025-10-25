@@ -1,75 +1,168 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>KARBA Financial Consultant Ltd</title>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>KARBA Financial Consultant Ltd</title>
+  <meta name="description" content="Your trusted partner for Insurance and Real Estate solutions." />
 
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="assets/karba-logo-gold.png" />
+  <!-- Single-file Styles (no external CSS needed) -->
+  <style>
+    :root{
+      --bg1:#012b56;
+      --bg2:#024a91;
+      --gold:#c9a23f;      /* button gold */
+      --gold-2:#f4d06f;    /* highlight gold */
+      --panel:rgba(255,255,255,.06);
+      --panel-hover:rgba(255,215,0,.18);
+      --panel-strong:rgba(255,255,255,.08);
+      --text:#ffffff;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: radial-gradient(1200px 800px at 70% 15%, #0357b8 0%, var(--bg2) 35%, var(--bg1) 100%);
+      color:var(--text);
+    }
 
-    <!-- Fonts & Styles -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="styles.css" />
-  </head>
+    /* Header */
+    header{
+      display:flex; align-items:center; justify-content:space-between;
+      padding:18px 28px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:12px; color:#fff; text-decoration:none;
+    }
+    .brand img{ width:42px; height:42px; object-fit:contain; }
+    .brand .name{ font-weight:700; letter-spacing:.3px; }
+    .brand .name b{ color:var(--gold-2); }
 
-  <body id="top">
-    <!-- HEADER / NAVBAR -->
-    <header class="site-header">
-      <div class="container nav-container">
-        <div class="brand">
-          <img
-            src="assets/karba-logo-gold.png"
-            alt="KARBA Logo"
-            class="brand-logo"
-          />
-          <div class="brand-text">
-            <span class="brand-karba">KARBA</span>
-            <span class="brand-tagline">Financial Consultant Ltd</span>
-          </div>
-        </div>
+    nav a{
+      color:#fff; text-decoration:none; margin:0 10px; font-weight:500;
+    }
+    nav a:hover{ color:var(--gold-2); }
+    .btn-gold{
+      background:var(--gold); color:#111; border:none; border-radius:8px;
+      padding:10px 16px; font-weight:700; cursor:pointer; transition:.2s;
+    }
+    .btn-gold:hover{ background:#ffca2c; transform:translateY(-1px); }
 
-        <nav class="main-nav">
-          <a href="#top">Home</a>
-          <a href="#services">Plans</a>
-          <a href="#services">Real Estate</a>
-          <a href="#about">About</a>
-          <a id="portalLoginBtn" class="btn btn-gold" href="#">Portal Login</a>
-        </nav>
-      </div>
-    </header>
+    /* Main layout = two columns like mockup */
+    .wrap{
+      max-width:1280px; margin:0 auto; padding:10px 20px 64px;
+    }
+    .grid{
+      display:grid; grid-template-columns: 380px 1fr; gap:26px;
+    }
 
-    <!-- HERO SECTION -->
-    <section class="hero">
-      <div class="container hero-inner">
-        <div class="hero-content">
-          <h1>
-            Live Confidently.<br />
-            Invest Wisely.<br />
-            Leave a Legacy.
-          </h1>
-          <p>
-            Your trusted partner for Insurance and Real Estate solutions.
-          </p>
-          <div class="hero-buttons">
-            <a href="#services" class="btn btn-gold">Explore Plans</a>
-            <a href="#services" class="btn btn-outline">View Real Estate Offers</a>
-          </div>
-        </div>
+    /* Left column: Services stack */
+    .left-col .title{
+      writing-mode:vertical-rl; transform:rotate(180deg);
+      font-weight:800; letter-spacing:.5px; opacity:.9; margin-left:8px;
+    }
+    .services{
+      display:flex; flex-direction:column; gap:14px; margin-top:10px;
+    }
+    .card{
+      background:var(--panel); border-radius:14px; padding:16px 18px;
+      border:1px solid rgba(255,255,255,.08);
+      transition:.2s;
+    }
+    .card:hover{ background:var(--panel-hover) }
+    .card h3{ margin:0 0 6px; font-size:18px; color:var(--gold-2) }
+    .card p{ margin:0; opacity:.9; line-height:1.35 }
 
-        <!-- STATS rendered by JS -->
-        <div id="hero-stats" class="stats-grid" aria-label="KARBA Stats"></div>
-      </div>
-    </section>
+    /* Right column: Hero + buttons + stats */
+    .hero h1{
+      font-size:48px; line-height:1.15; margin:4px 0 6px;
+      font-weight:900;
+    }
+    .hero h1 .gold{ color:var(--gold-2) }
+    .lede{ margin:0 0 18px; opacity:.9 }
+    .actions{ display:flex; gap:12px; margin:12px 0 28px; }
+    .chip{
+      background:var(--panel); border:1px solid rgba(255,255,255,.12);
+      color:#fff; border-radius:999px; padding:9px 14px; font-weight:700; cursor:pointer;
+      text-decoration:none; display:inline-flex; align-items:center;
+    }
+    .chip.gold{ background:var(--gold); color:#111; border-color:transparent; }
+    .chip.gold:hover{ background:#ffca2c }
+    .chip:hover{ background:var(--panel-hover) }
 
-    <!-- SERVICES -->
-    <section id="services" class="section">
-      <div class="container">
-        <h2>Our Services</h2>
-        <div class="cards">
+    .stats{
+      display:grid; grid-template-columns: repeat(2, minmax(200px, 1fr));
+      gap:14px; max-width:560px;
+    }
+    .stat{
+      background:var(--panel-strong); border:1px solid rgba(255,255,255,.1);
+      border-radius:14px; padding:16px;
+    }
+    .stat h4{ margin:0 0 2px; font-size:15px; letter-spacing:.4px; opacity:.85 }
+    .stat .value{ font-size:22px; font-weight:800; letter-spacing:.3px; }
+    .stat a{ color:var(--gold-2); text-decoration:none; }
+    .stat a:hover{ text-decoration:underline; }
+
+    /* About + footer */
+    .about{
+      max-width:1280px; margin:34px auto 0; padding:0 20px;
+      display:grid; grid-template-columns: 380px 1fr; gap:26px;
+    }
+    .about .title{
+      writing-mode:vertical-rl; transform:rotate(180deg);
+      font-weight:800; letter-spacing:.5px; opacity:.9; margin-left:8px;
+    }
+    .about .panel{
+      background:var(--panel); border:1px solid rgba(255,255,255,.08);
+      border-radius:14px; padding:18px;
+    }
+
+    footer{
+      max-width:1280px; margin:22px auto 30px; padding:0 20px;
+      display:flex; align-items:center; justify-content:space-between; gap:14px;
+    }
+    .social a{ color:var(--gold-2); text-decoration:none; margin-right:14px; }
+    .social a:hover{ color:#fff; text-decoration:underline; }
+    .copy{ opacity:.8 }
+
+    /* Responsive */
+    @media (max-width: 980px){
+      .grid{ grid-template-columns: 1fr; }
+      .about{ grid-template-columns: 1fr; }
+      .left-col .title, .about .title{ writing-mode:horizontal-tb; transform:none; margin:0 0 8px 2px; }
+      .hero h1{ font-size:38px }
+      header{ flex-direction:column; gap:10px; align-items:flex-start }
+    }
+  </style>
+
+  <script>
+    // small helpers
+    function inProgress(e){ e?.preventDefault?.(); alert("Portal is in progress."); }
+  </script>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <a class="brand" href="#">
+      <img src="assets/logo-gold.png" alt="KARBA logo" />
+      <div class="name"><b>KARBA</b> Financial Consultant Ltd</div>
+    </a>
+    <nav>
+      <a href="#home">Home</a>
+      <a href="#plans">Plans</a>
+      <a href="#realestate">Real Estate</a>
+      <a href="#about">About</a>
+      <button class="btn-gold" onclick="inProgress(event)">Portal Login</button>
+    </nav>
+  </header>
+
+  <div class="wrap" id="home">
+    <div class="grid">
+      <!-- Left: Services stack -->
+      <div class="left-col">
+        <div class="title">Our Services</div>
+        <div class="services">
           <article class="card">
             <h3>Life Insurance</h3>
             <p>Comprehensive life and protection plans for peace of mind.</p>
@@ -84,55 +177,69 @@
           </article>
         </div>
       </div>
-    </section>
 
-    <!-- ABOUT -->
-    <section id="about" class="section about">
-      <div class="container">
-        <h2>About KARBA</h2>
-        <p>
-          KARBA Financial Consultant Ltd is a highly regarded Nigerian firm
-          (RC: 8816957) offering Insurance, Financial, and Real Estate
-          Consultancy services. We connect individuals and institutions to
-          trusted solutions, helping clients make sound financial decisions that
-          protect their loved ones and grow wealth sustainably. Our mission is
-          anchored in transparency, professionalism, and value creation. We are
-          registered with the Corporate Affairs Commission (CAC), compliant with
-          SCUML and CIIN for Insurance Advisory, and aligned with Nigeria’s top
-          regulatory standards.
-        </p>
-      </div>
-    </section>
+      <!-- Right: Hero + buttons + stats -->
+      <div class="right-col">
+        <section class="hero">
+          <h1>
+            Live Confidently.<br/>
+            Invest Wisely.<br/>
+            <span class="gold">Leave a Legacy.</span>
+          </h1>
+          <p class="lede">Your trusted partner for Insurance and Real Estate solutions.</p>
+          <div class="actions">
+            <a class="chip gold" href="#plans">Explore Plans</a>
+            <a class="chip" href="#realestate">View Real Estate Offers</a>
+          </div>
 
-    <!-- FOOTER -->
-    <footer id="footer">
-      <div class="container foot_inner">
-        <div class="foot_copy">© 2025 KARBA. All rights reserved.</div>
-        <nav id="socials" class="social_bar" aria-label="Social links"></nav>
-      </div>
-    </footer>
-
-    <!-- PORTAL MODAL -->
-    <div
-      id="portalModal"
-      class="modal hidden"
-      aria-hidden="true"
-      role="dialog"
-      aria-labelledby="portalModalTitle"
-    >
-      <div class="modal_backdrop"></div>
-      <div class="modal_card">
-        <h3 id="portalModalTitle"></h3>
-        <p id="portalModalBody" class="modal_body"></p>
-        <div id="portalModalActions" class="modal_actions"></div>
-        <button id="portalModalClose" class="btn btn-ghost" aria-label="Close">
-          Close
-        </button>
+          <div class="stats" id="plans">
+            <div class="stat">
+              <h4>Plans</h4>
+              <div class="value">Life Insurance</div>
+            </div>
+            <div class="stat">
+              <h4>Clients</h4>
+              <div class="value">100+</div>
+            </div>
+            <div class="stat">
+              <h4>Support</h4>
+              <div class="value">
+                <a href="https://wa.me/09162631205" target="_blank" rel="noopener">WhatsApp</a> ·
+                <a href="mailto:info@karbafinancialconsultant.com">Email</a>
+              </div>
+            </div>
+            <div class="stat">
+              <h4>Partners</h4>
+              <div class="value">6+</div>
+            </div>
+          </div>
+        </section>
       </div>
     </div>
+  </div>
 
-    <!-- JS -->
-    <script type="module" src="config.js"></script>
-    <script type="module" src="script.js"></script>
-  </body>
+  <!-- About -->
+  <section class="about" id="about">
+    <div class="title">About KARBA</div>
+    <div class="panel">
+      KARBA Financial Consultant Ltd is a highly regarded Nigerian firm (RC: 8816957) offering Insurance, Financial, and Real Estate Consultancy services. 
+      We connect individuals to transparent, company-verified options that protect their loved ones and grow wealth with clarity and confidence. 
+      Our mission is anchored in transparency, professionalism, and value creation. We are registered with the Corporate Affairs Commission (CAC), 
+      and aligned with Nigeria’s top regulatory standards (NAICOM · CIIN · SCUML · LASRERA).
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="copy">© 2025 KARBA. All rights reserved.</div>
+    <div class="social">
+      <a target="_blank" rel="noopener" href="https://wa.me/09162631205">WhatsApp</a>
+      <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/mbabatunde-bamigbetan-1484b6412/">LinkedIn</a>
+      <a target="_blank" rel="noopener" href="https://facebook.com/profile.php?id=615790313802878">Facebook</a>
+      <a target="_blank" rel="noopener" href="https://www.instagram.com/karba_fc?igsh=CGxxMnhmNVZ2p1/">Instagram</a>
+      <a target="_blank" rel="noopener" href="https://youtube.com/@Karbafinancialconsultant">YouTube</a>
+      <a href="mailto:info@karbafinancialconsultant.com">Email</a>
+    </div>
+  </footer>
+</body>
 </html>
