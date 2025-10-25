@@ -179,70 +179,89 @@ Our goal is to bridge the gap between clients and trusted providers; ensuring th
     </div>
   </section>
 
- <section class="section" id="listings">
+<!-- Put this near the very top of <body> so Back to Top works -->
+<a id="top"></a>
+
+<section class="section" id="listings">
   <div class="container">
     <h2>Featured Real Estate</h2>
     <p>Live availability with external media links.</p>
+    <p style="opacity:.7; margin-top:-6px;">Last updated: 2025-10-25</p>
 
-    <!-- minimal inline CSS for layout + lines -->
     <style>
       .cols { display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:20px; }
       .col-box { border:1px solid #345; padding:14px; }
       .col-title { font-weight:700; margin:0 0 8px 0; }
-      .prop-list { list-style: none; margin:0; padding:0; border-top:1px solid #345; }
-      .prop-list li { border-top:1px solid #345; padding:10px 0; }
-      .prop-list a { color:#5eb3ff; text-decoration:none; }
+      .prop-list { list-style:none; margin:0; padding:0; border-top:1px solid #345; }
+      .prop-list li { border-top:1px solid #345; padding:10px 0; display:flex; justify-content:space-between; gap:10px; }
       .muted { opacity:.9; }
+      .cta-link { padding:6px 10px; border:1px solid #f0c040; text-decoration:none; color:#f0c040; white-space:nowrap; }
+      @media (max-width:600px){ .prop-list li{ flex-direction:column; align-items:flex-start; } }
     </style>
 
     <div class="cols">
-      <!-- ============= LAND PROPERTIES ============= -->
+      <!-- LAND -->
       <div class="col-box">
         <h3 class="col-title">Land</h3>
         <ol class="prop-list">
           <li>
-            <strong>1. 600sqm Land, Ibeju-Lekki</strong> — <span class="muted">₦25m • Available</span><br>
-            <small>Media: <a href="https://youtube.com/yourlink2" target="_blank">YouTube</a> / <a href="https://instagram.com/yourlink2" target="_blank">Instagram</a></small>
+            <div><strong>1. 600sqm Land, Ibeju-Lekki</strong> — <span class="muted">₦25m • Available</span></div>
+            <a class="cta-link" href="https://your-media-link-here" target="_blank" rel="noopener">See Photos</a>
           </li>
           <li>
-            <strong>2. 300sqm Plot, Epe</strong> — <span class="muted">₦12m • Available</span><br>
-            <small>Media: <a href="#" target="_blank">YouTube</a> / <a href="#" target="_blank">Instagram</a></small>
+            <div><strong>2. 300sqm Plot, Epe</strong> — <span class="muted">₦12m • Available</span></div>
+            <a class="cta-link" href="https://your-media-link-here" target="_blank" rel="noopener">See Photos</a>
           </li>
-          <!-- copy <li> blocks to add more Land -->
+          <li>
+            <div><strong>1. 600sqm Land, Ibeju-Lekki</strong> — <span class="muted">₦25m • Available</span></div>
+            <a class="cta-link" href="https://your-media-link-here" target="_blank" rel="noopener">See Photos</a>
+          </li>
+          <!-- copy li blocks, update number/title/price/link -->
         </ol>
       </div>
 
-      <!-- ============= HOUSES FOR SALE ============= -->
+      <!-- HOUSES FOR SALE -->
       <div class="col-box">
         <h3 class="col-title">Houses for Sale</h3>
         <ol class="prop-list">
           <li>
-            <strong>1. 3-Bedroom Duplex, Lekki Phase 1</strong> — <span class="muted">₦180m • Available</span><br>
-            <small>Media: <a href="https://youtube.com/yourlink1" target="_blank">YouTube</a> / <a href="https://instagram.com/yourlink1" target="_blank">Instagram</a></small>
+            <div><strong>1. 3-Bed Duplex, Lekki Phase 1</strong> — <span class="muted">₦180m • Available</span></div>
+            <a class="cta-link" href="https://your-media-link-here" target="_blank" rel="noopener">See Photos</a>
           </li>
           <li>
-            <strong>2. 4-Bed Terrace, Ajah</strong> — <span class="muted">₦95m • Available</span><br>
-            <small>Media: <a href="#" target="_blank">YouTube</a> / <a href="#" target="_blank">Instagram</a></small>
+            <div><strong>2. 4-Bed Terrace, Ajah</strong> — <span class="muted">₦95m • Available</span></div>
+            <a class="cta-link" href="https://your-media-link-here" target="_blank" rel="noopener">See Photos</a>
           </li>
-          <!-- copy <li> blocks to add more Sales -->
+           <li>
+            <div><strong>1. 3-Bed Duplex, Lekki Phase 1</strong> — <span class="muted">₦180m • Available</span></div>
+            <a class="cta-link" href="https://your-media-link-here" target="_blank" rel="noopener">See Photos</a>
+          </li>
         </ol>
       </div>
 
-      <!-- ============= RENTALS ============= -->
+      <!-- RENTALS -->
       <div class="col-box">
         <h3 class="col-title">Rentals</h3>
         <ol class="prop-list">
           <li>
-            <strong>1. 2-Bed Apartment, Yaba</strong> — <span class="muted">₦1.1m/yr • Rented</span><br>
-            <small>Media: <a href="https://youtube.com/yourlink3" target="_blank">YouTube</a> / <a href="https://instagram.com/yourlink3" target="_blank">Instagram</a></small>
+            <div><strong>1. 2-Bed Apartment, Yaba</strong> — <span class="muted">₦1.1m/yr • Available</span></div>
+            <a class="cta-link" href="https://your-media-link-here" target="_blank" rel="noopener">See Photos</a>
           </li>
           <li>
-            <strong>2. Studio, Surulere</strong> — <span class="muted">₦650k/yr • Available</span><br>
-            <small>Media: <a href="#" target="_blank">YouTube</a> / <a href="#" target="_blank">Instagram</a></small>
+            <div><strong>2. Studio, Surulere</strong> — <span class="muted">₦650k/yr • Available</span></div>
+            <a class="cta-link" href="https://your-media-link-here" target="_blank" rel="noopener">See Photos</a>
           </li>
-          <!-- copy <li> blocks to add more Rentals -->
+          <li>
+            <div><strong>1. 2-Bed Apartment, Yaba</strong> — <span class="muted">₦1.1m/yr • Available</span></div>
+            <a class="cta-link" href="https://your-media-link-here" target="_blank" rel="noopener">See Photos</a>
+          </li>
         </ol>
       </div>
+    </div>
+
+    <!-- Back to Top -->
+    <div style="margin-top:18px;">
+      <a href="#top" style="text-decoration:none; color:#5eb3ff;">↑ Back to Top</a>
     </div>
   </div>
 </section>
