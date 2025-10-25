@@ -184,42 +184,66 @@ Our goal is to bridge the gap between clients and trusted providers; ensuring th
     <h2>Featured Real Estate</h2>
     <p>Live availability with external media links.</p>
 
-    <ol style="list-style: none; margin: 0; padding: 0; border-top: 1px solid #345; border-bottom: 1px solid #345;">
+    <!-- minimal inline CSS for layout + lines -->
+    <style>
+      .cols { display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:20px; }
+      .col-box { border:1px solid #345; padding:14px; }
+      .col-title { font-weight:700; margin:0 0 8px 0; }
+      .prop-list { list-style: none; margin:0; padding:0; border-top:1px solid #345; }
+      .prop-list li { border-top:1px solid #345; padding:10px 0; }
+      .prop-list a { color:#5eb3ff; text-decoration:none; }
+      .muted { opacity:.9; }
+    </style>
 
-      <li style="border-top: 1px solid #345; padding: 12px 0; display: flex; justify-content: space-between; align-items: center;">
-        <div>
-          <strong>1. 3-Bedroom Duplex, Lekki Phase 1</strong> – ₦180m • Available<br>
-          <small>
-            Media:
-            <a href="https://youtube.com/yourlink1" target="_blank" style="color:#5eb3ff;">YouTube</a> /
-            <a href="https://instagram.com/yourlink1" target="_blank" style="color:#5eb3ff;">Instagram</a>
-          </small>
-        </div>
-      </li>
+    <div class="cols">
+      <!-- ============= LAND PROPERTIES ============= -->
+      <div class="col-box">
+        <h3 class="col-title">Land</h3>
+        <ol class="prop-list">
+          <li>
+            <strong>1. 600sqm Land, Ibeju-Lekki</strong> — <span class="muted">₦25m • Available</span><br>
+            <small>Media: <a href="https://youtube.com/yourlink2" target="_blank">YouTube</a> / <a href="https://instagram.com/yourlink2" target="_blank">Instagram</a></small>
+          </li>
+          <li>
+            <strong>2. 300sqm Plot, Epe</strong> — <span class="muted">₦12m • Available</span><br>
+            <small>Media: <a href="#" target="_blank">YouTube</a> / <a href="#" target="_blank">Instagram</a></small>
+          </li>
+          <!-- copy <li> blocks to add more Land -->
+        </ol>
+      </div>
 
-      <li style="border-top: 1px solid #345; padding: 12px 0; display: flex; justify-content: space-between; align-items: center;">
-        <div>
-          <strong>2. 600sqm Land, Ibeju-Lekki</strong> – ₦25m • Available<br>
-          <small>
-            Media:
-            <a href="https://youtube.com/yourlink2" target="_blank" style="color:#5eb3ff;">YouTube</a> /
-            <a href="https://instagram.com/yourlink2" target="_blank" style="color:#5eb3ff;">Instagram</a>
-          </small>
-        </div>
-      </li>
+      <!-- ============= HOUSES FOR SALE ============= -->
+      <div class="col-box">
+        <h3 class="col-title">Houses for Sale</h3>
+        <ol class="prop-list">
+          <li>
+            <strong>1. 3-Bedroom Duplex, Lekki Phase 1</strong> — <span class="muted">₦180m • Available</span><br>
+            <small>Media: <a href="https://youtube.com/yourlink1" target="_blank">YouTube</a> / <a href="https://instagram.com/yourlink1" target="_blank">Instagram</a></small>
+          </li>
+          <li>
+            <strong>2. 4-Bed Terrace, Ajah</strong> — <span class="muted">₦95m • Available</span><br>
+            <small>Media: <a href="#" target="_blank">YouTube</a> / <a href="#" target="_blank">Instagram</a></small>
+          </li>
+          <!-- copy <li> blocks to add more Sales -->
+        </ol>
+      </div>
 
-      <li style="border-top: 1px solid #345; padding: 12px 0; display: flex; justify-content: space-between; align-items: center;">
-        <div>
-          <strong>3. 2-Bed Apartment, Yaba</strong> – ₦110m • Rented<br>
-          <small>
-            Media:
-            <a href="https://youtube.com/yourlink3" target="_blank" style="color:#5eb3ff;">YouTube</a> /
-            <a href="https://instagram.com/yourlink3" target="_blank" style="color:#5eb3ff;">Instagram</a>
-          </small>
-        </div>
-      </li>
-
-    </ol>
+      <!-- ============= RENTALS ============= -->
+      <div class="col-box">
+        <h3 class="col-title">Rentals</h3>
+        <ol class="prop-list">
+          <li>
+            <strong>1. 2-Bed Apartment, Yaba</strong> — <span class="muted">₦1.1m/yr • Rented</span><br>
+            <small>Media: <a href="https://youtube.com/yourlink3" target="_blank">YouTube</a> / <a href="https://instagram.com/yourlink3" target="_blank">Instagram</a></small>
+          </li>
+          <li>
+            <strong>2. Studio, Surulere</strong> — <span class="muted">₦650k/yr • Available</span><br>
+            <small>Media: <a href="#" target="_blank">YouTube</a> / <a href="#" target="_blank">Instagram</a></small>
+          </li>
+          <!-- copy <li> blocks to add more Rentals -->
+        </ol>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -253,7 +277,8 @@ Our goal is to bridge the gap between clients and trusted providers; ensuring th
   <section class="section" style="border-top:none">
     <div class="container">
       <div class="row">
-        <h2 class="title" style="margin:0">Client Dashboard</h2>
+        <h2 class="title" style="margin:0">“KARBA Client & Agent Portal – Under Development”
+Our digital platform is currently being enhanced to serve you better. Please check back soon.</h2>
         <div class="ribbon">Free consultation — limited time</div>
       </div>
 
