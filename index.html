@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-      <meta name="viewport" content="width=device-width, initial-scale=1" />
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>KARBA Financial Consultant Ltd — Insurance & Real Estate in Nigeria</title>
+<link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon" />      
 <meta name="description" content="Trusted advisory for insurance and real estate. Verified listings, direct with developers and owners. Fast WhatsApp support.">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="canonical" href="https://karbafinancialconsultant.com/">
@@ -31,11 +34,7 @@
   ]
 }
 </script>
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>KARBA Mockups v1 – Landing & Client Dashboard</title>
-  <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon" />
+
 <style>
   :root{
     --navy:#001F3F;
@@ -86,22 +85,25 @@
   @media (max-width:900px){.grid-2,.grid-3{grid-template-columns:repeat(1,minmax(0,1fr))} .hero h1{font-size:30px}}
 </style>
 </head>
+      
 <body>
 <header class="header">
-  <div class="container row">
-    <div class="brand">
-       <img src="assets/karba-logo-gold.png" alt="KARBA logo" style="height:42px;width:auto;vertical-align:middle;">
-      <div style="font-weight:600">KARBA Financial Consultant Ltd</div>
+    <div class="container">
+      <div class="brand">
+        <a href="#landing" style="display:flex;align-items:center;gap:8px;text-decoration:none;">
+          <img src="assets/karba-logo-gold.png" alt="KARBA logo">
+          <span class="name"><span class="karba">KARBA</span> Financial Consultant Ltd</span>
+        </a>
+      </div>
+      <nav>
+        <a href="#landing">Home</a>
+        <a href="#plans">Insurance Plans</a>
+        <a href="#realestate">Real Estate</a>
+        <a href="#about">About</a>
+        <a class="btn" href="#dashboard">Portal Login</a>
+      </nav>
     </div>
-    <nav>
-      <a href="#" onclick="show('landing')">Home</a>
-      <a href="#plans" onclick="show('landing')">Plans</a>
-      <a href="#realestate" onclick="show('landing')">Real Estate</a>
-      <a href="#about" onclick="show('landing')">About</a>
-      <button class="primary" onclick="show('dashboard')">Portal Login</button>
-    </nav>
-  </div>
-</header>
+  </header>
 
 <main id="landing" class="view">
   <section class="section hero" style="border-top:none">
