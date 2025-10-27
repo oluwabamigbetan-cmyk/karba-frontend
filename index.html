@@ -84,6 +84,19 @@
   .ribbon{font-size:12px;color:var(--gold);background:rgba(255,255,255,.06);border:1px solid var(--line);padding:6px 10px;border-radius:10px}
   @media (max-width:900px){.grid-2,.grid-3{grid-template-columns:repeat(1,minmax(0,1fr))} .hero h1{font-size:30px}}
 </style>
+  <style>
+  /* modal (popup) with no external CSS/JS */
+  .modal-toggle{position:absolute;opacity:0;pointer-events:none}
+  .photo-modal{position:fixed;inset:0;background:rgba(0,0,0,.8);display:none;justify-content:center;align-items:center;z-index:50}
+  .modal-toggle:checked + .photo-modal{display:flex}
+  .photo-content{background:#fff;color:#000;width:92%;max-width:520px;max-height:90vh;padding:16px;border-radius:8px;text-align:center;overflow:auto}
+  .photo-content h3{margin:0 0 8px}
+  .photo-content img{width:100%;height:auto;border-radius:6px;margin:6px 0}
+  .whatsapp-btn{display:inline-block;margin-top:10px;background:#25D366;color:#fff;text-decoration:none;padding:8px 14px;border-radius:4px;font-weight:600}
+  .whatsapp-btn:hover{filter:brightness(1.05)}
+  .close-modal{display:inline-block;margin-top:8px;background:#e5e5e5;color:#000;text-decoration:none;padding:6px 12px;border-radius:4px;cursor:pointer}
+  .cta-link{padding:6px 10px;border:1px solid #f0c040;color:#f0c040;text-decoration:none;border-radius:4px;white-space:nowrap}
+</style>
 </head>      
 <body>
 <header class="header">
@@ -304,18 +317,43 @@ Our goal is to bridge the gap between clients and trusted providers; ensuring th
       <div class="col-box">
         <h3 class="col-title">Land</h3>
         <ol class="prop-list">
-          <li>
-            <div><strong>1. 600sqm Land, Ibeju-Lekki</strong> — <span class="muted">₦25m • Available</span></div>
-            <a class="cta-link" href="https://your-media-link-here" target="_blank" rel="noopener">See Photos</a>
-          </li>
-          <li>
-            <div><strong>2. 300sqm Plot, Epe</strong> — <span class="muted">₦12m • Available</span></div>
-            <a class="cta-link" href="https://your-media-link-here" target="_blank" rel="noopener">See Photos</a>
-          </li>
-          <li>
-            <div><strong>1. 600sqm Land, Ibeju-Lekki</strong> — <span class="muted">₦25m • Available</span></div>
-            <a class="cta-link" href="https://your-media-link-here" target="_blank" rel="noopener">See Photos</a>
-          </li>
+         <li>
+  <div><strong>1. 600sqm Land, Ibeju-Lekki</strong> — <span class="muted">₦25m • Available</span></div>
+  <label for="land1" class="cta-link">See Photos</label>
+
+  <input id="land1" class="modal-toggle" type="checkbox">
+  <div class="photo-modal">
+    <div class="photo-content">
+      <h3>600sqm Land, Ibeju-Lekki</h3>
+      <img src="assets/land-ibeju-1.jpg" alt="Ibeju-Lekki land photo 1">
+      <img src="assets/land-ibeju-2.jpg" alt="Ibeju-Lekki land photo 2">
+      <p>Price: ₦25m — Available</p>
+      <a class="whatsapp-btn"
+         href="https://wa.me/2349162631206?text=Hello%20KARBA!%20I'm%20interested%20in%20600sqm%20Land%20in%20Ibeju-Lekki%20(₦25m)."
+         target="_blank" rel="noopener">💬 Message on WhatsApp</a>
+      <label for="land1" class="close-modal">× Close</label>
+    </div>
+  </div>
+</li>
+
+<li>
+  <div><strong>2. 300sqm Plot, Epe</strong> — <span class="muted">₦12m • Available</span></div>
+  <label for="land2" class="cta-link">See Photos</label>
+
+  <input id="land2" class="modal-toggle" type="checkbox">
+  <div class="photo-modal">
+    <div class="photo-content">
+      <h3>300sqm Plot, Epe</h3>
+      <img src="assets/land-epe-1.jpg" alt="Epe plot photo 1">
+      <img src="assets/land-epe-2.jpg" alt="Epe plot photo 2">
+      <p>Price: ₦12m — Available</p>
+      <a class="whatsapp-btn"
+         href="https://wa.me/2349162631206?text=Hello%20KARBA!%20I'm%20interested%20in%20300sqm%20Plot%20in%20Epe%20(₦12m)."
+         target="_blank" rel="noopener">💬 Message on WhatsApp</a>
+      <label for="land2" class="close-modal">× Close</label>
+    </div>
+  </div>
+</li>
           <!-- copy li blocks, update number/title/price/link -->
         </ol>
       </div>
@@ -325,17 +363,42 @@ Our goal is to bridge the gap between clients and trusted providers; ensuring th
         <h3 class="col-title">Houses for Sale</h3>
         <ol class="prop-list">
           <li>
-            <div><strong>1. 3-Bed Duplex, Lekki Phase 1</strong> — <span class="muted">₦180m • Available</span></div>
-            <a class="cta-link" href="https://your-media-link-here" target="_blank" rel="noopener">See Photos</a>
-          </li>
-          <li>
-            <div><strong>2. 4-Bed Terrace, Ajah</strong> — <span class="muted">₦95m • Available</span></div>
-            <a class="cta-link" href="https://your-media-link-here" target="_blank" rel="noopener">See Photos</a>
-          </li>
-           <li>
-            <div><strong>1. 3-Bed Duplex, Lekki Phase 1</strong> — <span class="muted">₦180m • Available</span></div>
-            <a class="cta-link" href="https://your-media-link-here" target="_blank" rel="noopener">See Photos</a>
-          </li>
+  <div><strong>1. 3-Bed Duplex, Lekki Phase 1</strong> — <span class="muted">₦180m • Available</span></div>
+  <label for="sale1" class="cta-link">See Photos</label>
+
+  <input id="sale1" class="modal-toggle" type="checkbox">
+  <div class="photo-modal">
+    <div class="photo-content">
+      <h3>3-Bed Duplex, Lekki Phase 1</h3>
+      <img src="assets/lekki-duplex-1.jpg" alt="Lekki duplex photo 1">
+      <img src="assets/lekki-duplex-2.jpg" alt="Lekki duplex photo 2">
+      <p>Price: ₦180m — Available</p>
+      <a class="whatsapp-btn"
+         href="https://wa.me/2349162631206?text=Hello%20KARBA!%20I'm%20interested%20in%203-Bed%20Duplex%20in%20Lekki%20Phase%201%20(₦180m)."
+         target="_blank" rel="noopener">💬 Message on WhatsApp</a>
+      <label for="sale1" class="close-modal">× Close</label>
+    </div>
+  </div>
+</li>
+
+<li>
+  <div><strong>2. 4-Bed Terrace, Ajah</strong> — <span class="muted">₦95m • Available</span></div>
+  <label for="sale2" class="cta-link">See Photos</label>
+
+  <input id="sale2" class="modal-toggle" type="checkbox">
+  <div class="photo-modal">
+    <div class="photo-content">
+      <h3>4-Bed Terrace, Ajah</h3>
+      <img src="assets/ajah-terrace-1.jpg" alt="Ajah terrace photo 1">
+      <img src="assets/ajah-terrace-2.jpg" alt="Ajah terrace photo 2">
+      <p>Price: ₦95m — Available</p>
+      <a class="whatsapp-btn"
+         href="https://wa.me/2349162631206?text=Hello%20KARBA!%20I'm%20interested%20in%204-Bed%20Terrace%20in%20Ajah%20(₦95m)."
+         target="_blank" rel="noopener">💬 Message on WhatsApp</a>
+      <label for="sale2" class="close-modal">× Close</label>
+    </div>
+  </div>
+</li>
         </ol>
       </div>
 
@@ -344,17 +407,42 @@ Our goal is to bridge the gap between clients and trusted providers; ensuring th
         <h3 class="col-title">Rentals</h3>
         <ol class="prop-list">
           <li>
-            <div><strong>1. 2-Bed Apartment, Yaba</strong> — <span class="muted">₦1.1m/yr • Available</span></div>
-            <a class="cta-link" href="https://your-media-link-here" target="_blank" rel="noopener">See Photos</a>
-          </li>
-          <li>
-            <div><strong>2. Studio, Surulere</strong> — <span class="muted">₦650k/yr • Available</span></div>
-            <a class="cta-link" href="https://your-media-link-here" target="_blank" rel="noopener">See Photos</a>
-          </li>
-          <li>
-            <div><strong>1. 2-Bed Apartment, Yaba</strong> — <span class="muted">₦1.1m/yr • Available</span></div>
-            <a class="cta-link" href="https://your-media-link-here" target="_blank" rel="noopener">See Photos</a>
-          </li>
+  <div><strong>1. 2-Bed Apartment, Yaba</strong> — <span class="muted">₦1.1m/yr • Available</span></div>
+  <label for="rent1" class="cta-link">See Photos</label>
+
+  <input id="rent1" class="modal-toggle" type="checkbox">
+  <div class="photo-modal">
+    <div class="photo-content">
+      <h3>2-Bed Apartment, Yaba</h3>
+      <img src="assets/yaba-2bed-1.jpg" alt="Yaba 2-bed photo 1">
+      <img src="assets/yaba-2bed-2.jpg" alt="Yaba 2-bed photo 2">
+      <p>Rent: ₦1.1m/yr — Available</p>
+      <a class="whatsapp-btn"
+         href="https://wa.me/2349162631206?text=Hello%20KARBA!%20I'm%20interested%20in%202-Bed%20Apartment%20in%20Yaba%20(₦1.1m/yr)."
+         target="_blank" rel="noopener">💬 Message on WhatsApp</a>
+      <label for="rent1" class="close-modal">× Close</label>
+    </div>
+  </div>
+</li>
+
+<li>
+  <div><strong>2. Studio, Surulere</strong> — <span class="muted">₦650k/yr • Available</span></div>
+  <label for="rent2" class="cta-link">See Photos</label>
+
+  <input id="rent2" class="modal-toggle" type="checkbox">
+  <div class="photo-modal">
+    <div class="photo-content">
+      <h3>Studio, Surulere</h3>
+      <img src="assets/surulere-studio-1.jpg" alt="Surulere studio photo 1">
+      <img src="assets/surulere-studio-2.jpg" alt="Surulere studio photo 2">
+      <p>Rent: ₦650k/yr — Available</p>
+      <a class="whatsapp-btn"
+         href="https://wa.me/2349162631206?text=Hello%20KARBA!%20I'm%20interested%20in%20the%20Studio%20Apartment%20in%20Surulere%20(₦650k/yr)."
+         target="_blank" rel="noopener">💬 Message on WhatsApp</a>
+      <label for="rent2" class="close-modal">× Close</label>
+    </div>
+  </div>
+</li>
         </ol>
       </div>
     </div>
