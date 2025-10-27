@@ -85,37 +85,18 @@
 </head>
 <body>
 <header class="header">
-  <div class="container row" style="display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:nowrap;">
-    <div class="brand" style="display:flex;align-items:center;gap:8px;white-space:nowrap;flex-shrink:0;">
-      <a href="#landing" style="display:flex;align-items:center;gap:8px;text-decoration:none;">
-        <img src="assets/karba-logo-gold.png" alt="KARBA logo" style="height:42px;width:auto;vertical-align:middle;">
-        <span style="font-weight:600;color:#fff;"><span style="color:#f0c040;">KARBA</span> Financial Consultant Ltd</span>
-      </a>
+  <div class="container row">
+    <div class="brand">
+      <div class="logo">K</div>
+      <div style="font-weight:600">KARBA Financial Consultant Ltd</div>
     </div>
-
-    <main>
-  <section id="landing" class="view">
-    <!-- landing content -->
-  </section>
-
-  <section id="plans" class="view">
-    <!-- plans content -->
-  </section>
-
-  <section id="realestate" class="view">
-    <!-- real estate content -->
-  </section>
-
-  <section id="about" class="view">
-    <!-- about content -->
-  </section>
-
-  <section id="dashboard" class="view">
-    <h2>Client Portal</h2>
-    <p>Welcome to the dashboard.</p>
-    <!-- your portal/dashboard content -->
-  </section>
-</main>
+    <nav>
+      <a href="#" onclick="show('landing')">Home</a>
+      <a href="#plans" onclick="show('landing')">Plans</a>
+      <a href="#realestate" onclick="show('landing')">Real Estate</a>
+      <a href="#about" onclick="show('landing')">About</a>
+      <button class="primary" onclick="show('dashboard')">Portal Login</button>
+    </nav>
   </div>
 </header>
 
