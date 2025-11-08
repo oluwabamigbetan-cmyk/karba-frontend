@@ -103,6 +103,159 @@
   .close-modal{display:inline-block;margin-top:8px;background:#e5e5e5;color:#000;text-decoration:none;padding:6px 12px;border-radius:4px;cursor:pointer}
   .cta-link{padding:6px 10px;border:1px solid #f0c040;color:#f0c040;text-decoration:none;border-radius:4px;white-space:nowrap}
 </style>
+   <style>
+      .promo-box {
+        border: 1px solid #345;
+        padding: 16px;
+        margin: 12px 0;
+        border-left: 4px solid #f0c040;
+        background: rgba(255,255,255,0.03);
+      }
+      .promo-box h3 {
+        margin: 0 0 8px 0;
+        color: #f0c040;
+      }
+      .promo-box p {
+        margin: 0 0 10px 0;
+        opacity: .9;
+      }
+      .promo-links a {
+        display: inline-block;
+        background: #f0c040;
+        color: #000;
+        font-weight: 500;
+        text-decoration: none;
+        padding: 5px 12px;
+        border-radius: 4px;
+        transition: 0.3s;
+      }
+      .promo-links a:hover {
+        background: #d9aa2b;
+      }
+
+      /* === Property cards like Promo === */
+.prop-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:12px;
+  margin-top:8px;
+}
+.prop-card{
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.05);
+  border-radius:12px;
+  padding:14px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+.prop-card .prop-title{
+  font-weight:700;
+  line-height:1.25;
+}
+.prop-card .prop-meta{
+  opacity:.9;
+  font-size:.95rem;
+}
+.actions{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+/* promo-like buttons */
+.btn{
+  display:inline-block; padding:8px 12px; border-radius:8px;
+  text-decoration:none; border:1px solid var(--line); color:#fff;
+}
+.btn-outline{ border-color:#f0c040; color:#f0c040; }
+.btn-outline:hover{ filter:brightness(1.1); }
+.btn-wa{ background:#25D366; color:#fff; border:none; }
+.btn-wa:hover{ filter:brightness(1.05); }
+
+/* make your old list neutral (we'll use the new grid) */
+.prop-list{ list-style:none; padding:0; margin:0; }
+.prop-list > li{ margin:0; padding:0; border:none; background:transparent; }
+
+      /* inline meta row: price + See Photos + Title */
+.meta-line{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.btn-inline{padding:4px 10px;border-radius:6px;border:1px solid var(--gold);color:var(--gold);text-decoration:none}
+.btn-inline:hover{filter:brightness(1.1)}
+
+      /* ---- Section (big) cards that house many small property cards ---- */
+.state-card{
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.05);
+  border-radius:16px;
+  padding:14px;
+  margin:14px 0;
+}
+.state-title{
+  margin:0 0 10px;
+  font-size:18px;
+  font-weight:800;
+}
+
+/* compact grid of small cards */
+.prop-grid.sm{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+  gap:10px;
+}
+
+/* small property card */
+.prop-card.sm{
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.06);
+  border-radius:10px;
+  padding:10px;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+.prop-card.sm .prop-title{ font-size:1rem; font-weight:700; line-height:1.25; }
+.prop-card.sm .meta-line{ display:flex; align-items:center; gap:6px; flex-wrap:wrap; font-size:.95rem; }
+.btn-inline{ padding:3px 8px; border-radius:6px; border:1px solid var(--gold); color:var(--gold); text-decoration:none; }
+.btn-inline:hover{ filter:brightness(1.1); }
+
+/* phone: keep it dense */
+@media (max-width:600px){
+  .state-card{ padding:12px }
+  .prop-grid.sm{ grid-template-columns:1fr; gap:8px; }
+  .prop-card.sm{ padding:10px }
+}
+    </style
+  <!-- ===== Insurance Plan Types (with modal photos + WhatsApp) ===== -->
+<style>
+  /* spacing so it doesn’t touch the edges */
+  .info-wrap{margin:0 10px}
+  .info-section{margin:28px 0}
+  .info-title{font-size:22px;font-weight:800;margin:0 0 12px}
+  .info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+
+  .info-card{border:1px solid var(--line);background:rgba(255,255,255,.06);border-radius:12px;padding:14px}
+  .info-card h4{margin:0 0 8px;font-size:18px}
+  .info-card ul{margin:0 0 10px 18px;padding:0}
+  .info-card li{margin:4px 0}
+
+  /* inline button (same look as property “See Photos”) */
+  .btn-inline{display:inline-block;padding:6px 10px;border-radius:8px;border:1px solid var(--gold);color:var(--gold);text-decoration:none}
+  .btn-inline:hover{filter:brightness(1.08)}
+
+  /* modal (reuse of your property pattern; add if missing) */
+  .modal-toggle{display:none}
+  .photo-modal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:1000;padding:16px}
+  .modal-toggle:checked + .photo-modal{display:flex}
+  .photo-content{background:#fff;color:#111;max-width:520px;width:100%;border-radius:12px;padding:16px}
+  .photo-content h3{margin:0 0 10px}
+  .photo-content img{width:100%;height:auto;border-radius:8px;margin:6px 0}
+  .whatsapp-btn{display:inline-block;margin-top:10px;padding:8px 12px;border-radius:8px;background:#25D366;color:#fff;text-decoration:none}
+  .close-modal{display:inline-block;margin-left:10px;color:#555;cursor:pointer}
+  @media (max-width:600px){
+    .info-title{font-size:20px}
+    .info-card{padding:12px}
+  }
+</style>
 </head>      
 <body>
 <header class="header">
@@ -136,6 +289,7 @@
           <span class="pill">NAICOM</span>
           <span class="pill">LASRERA</span>
           <span class="pill">CIIN</span>
+          <span class="pill">SMEDAN</span>
         </div>
       </div>
       <div class="card">
@@ -173,10 +327,10 @@
             <li><b>Annuity Plans</b> & Retirement</li>
             <li>Motor & General (via partner insurers)</li>
           </ul>
-          <div class="cta">
-            <a class="btn" href="#contact">Request Official Quote</a>
-            <button class="btn">See Plan Types</button>
-          </div>
+          <div class="cta" style="display:flex; gap:12px; flex-wrap:wrap;">
+          <a class="btn" href="#quote">Request Official Quote</a>
+          <a class="btn primary" href="#ins-plans">See Plan Types</a>
+        </div>
           <p style="font-size:12px;color:var(--muted);margin-top:8px">*Calculators differ by company. KARBA fetches accurate quotes directly from your chosen insurer.</p>
         </div>
         <div class="card" id="realestate">
@@ -227,58 +381,47 @@
   <div class="container">
     <hr style="border: 0; border-top: 1px solid #345; margin: 40px 0 25px 0;">
     <h2>Promos & Special Announcements</h2>
-
-    <style>
-      .promo-box {
-        border: 1px solid #345;
-        padding: 16px;
-        margin: 12px 0;
-        border-left: 4px solid #f0c040;
-        background: rgba(255,255,255,0.03);
-      }
-      .promo-box h3 {
-        margin: 0 0 8px 0;
-        color: #f0c040;
-      }
-      .promo-box p {
-        margin: 0 0 10px 0;
-        opacity: .9;
-      }
-      .promo-links a {
-        display: inline-block;
-        background: #f0c040;
-        color: #000;
-        font-weight: 500;
-        text-decoration: none;
-        padding: 5px 12px;
-        border-radius: 4px;
-        transition: 0.3s;
-      }
-      .promo-links a:hover {
-        background: #d9aa2b;
-      }
-    </style>
-
     <!-- ===== PROMO 1 ===== -->
     <div class="promo-box">
-      <h3>🎉 Limited Offer: 5% Discount on Lekki Lands</h3>
+      <h3>🎉 HOT DISTRESS SALES: TEV 13 PLOTS FENCED with C of O (Eleko Lekki Expressway)</h3>
       <p>
-        Secure your Lekki property this week and enjoy up to <strong>₦2.5m savings</strong>.
+        Buy and Win 7days all expenses paid trip to any Country of your choice in Africa. <strong>Ends 18/12/2025</strong>.
+      </p>
+      <div class="promo-links">
+        <a href="https://wa.me/2349162631205?text=Hello%20KARBA!%20I'm%20interested%20in%20the%20HOT DISTRESS SALES%20Eleko%20Land%20offer.%20Please%20share%20details."
+           target="_blank" rel="noopener">💬 Message on WhatsApp</a>
+      </div>
+    </div>
+
+<!-- ===== PROMO 2 ===== -->
+    <div class="promo-box">
+      <h3>🎉 Limited Offer: 5% Discount on FGG Lands</h3>
+      <p>
+        Secure your property this week and get 500 Blocks and 50 Bags of Cement. Plus up to <strong>₦2m savings</strong> (Ends 18/12/2025).
       </p>
       <div class="promo-links">
         <a href="https://wa.me/2349162631205?text=Hello%20KARBA!%20I'm%20interested%20in%20the%205%%20discount%20Lekki%20Land%20offer.%20Please%20share%20details."
            target="_blank" rel="noopener">💬 Message on WhatsApp</a>
       </div>
     </div>
-
-    <!-- ===== PROMO 2 ===== -->
+    
+    <!-- ===== PROMO 3 ===== -->
     <div class="promo-box">
-      <h3>🏠 New Listing Alert: 4-Bed Duplex in Ajah</h3>
+      <h3>🎉 Limited Offer: HGCE and KLG Lands</h3>
       <p>
-        Fresh 4-Bed Duplex now available for inspection in Ajah. Book a visit today — limited slots available!
+        Buy 1 Plot and WIN <strong>₦100k Shopping Voucher</strong>.
+      </p>
+      <p>
+        Buy 2 Plots and WIN <strong>₦250k Shopping Voucher</strong>.
+      </p>
+        <p>
+        Buy 3 Plots and WIN <strong>₦400k Shopping Voucher</strong>.
+      </p>
+        <p>
+        Buy 6 Plots and WIN <strong>₦850k Shopping Voucher</strong>.
       </p>
       <div class="promo-links">
-        <a href="https://wa.me/2349162631205?text=Hello%20KARBA!%20I'm%20interested%20in%20the%204-Bed%20Duplex%20in%20Ajah.%20Kindly%20share%20details."
+        <a href="https://wa.me/2349162631205?text=Hello%20KARBA!%20I'm%20interested%20in%20the%20Discount%20HGCE and KLG Lands%20offer.%20Please%20share%20details."
            target="_blank" rel="noopener">💬 Message on WhatsApp</a>
       </div>
     </div>
@@ -298,168 +441,636 @@ KARBA Financial Consultant Ltd; also known simply as <strong>KARBA</strong> prov
     -->
   </div>
 </section>
-  
+
 <!-- Put this near the very top of <body> so Back to Top works -->
 <a id="top"></a>
 
 <section class="section" id="listings">
   <div class="container">
     <h2>Available Properties</h2>
-    <p style="opacity:.7; margin-top:-6px;">Last updated: 2025-10-25</p>
+    <p style="opacity:.7; margin-top:-6px;">Last updated: 8/11/2025</p>
+    
+  <div class="state-card">
+  <h3 class="state-title">Investments (Land Banking)</h3>
+  <div class="prop-grid sm">
 
-    <style>
-      .cols { display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:20px; }
-      .col-box { border:1px solid #345; padding:14px; }
-      .col-title { font-weight:700; margin:0 0 8px 0; }
-      .prop-list { list-style:none; margin:0; padding:0; border-top:1px solid #345; }
-      .prop-list li { border-top:1px solid #345; padding:10px 0; display:flex; justify-content:space-between; gap:10px; }
-      .muted { opacity:.9; }
-      .cta-link { padding:6px 10px; border:1px solid #f0c040; text-decoration:none; color:#f0c040; white-space:nowrap; }
-      @media (max-width:600px){ .prop-list li{ flex-direction:column; align-items:flex-start; } }
-    </style>
-
-    <div class="cols">
-      <!-- LAND -->
-      <div class="col-box">
-        <h3 class="col-title">Land</h3>
-        <ol class="prop-list">
-         <li>
-  <div><strong>1. 600sqm Land, Ibeju-Lekki</strong> — <span class="muted">₦25m • Available</span></div>
-  <label for="land1" class="cta-link">See Photos</label>
-
-  <input id="land1" class="modal-toggle" type="checkbox">
-  <div class="photo-modal">
-    <div class="photo-content">
-      <h3>600sqm Land, Ibeju-Lekki</h3>
-      <img src="assets/land-ibeju-1.jpg" alt="Ibeju-Lekki land photo 1">
-      <img src="assets/land-ibeju-2.jpg" alt="Ibeju-Lekki land photo 2">
-      <p>Price: ₦25m — Available</p>
-      <a class="whatsapp-btn"
-         href="https://wa.me/2349162631205?text=Hello%20KARBA!%20I'm%20interested%20in%20600sqm%20Land%20in%20Ibeju-Lekki%20(₦25m)."
-         target="_blank" rel="noopener">💬 Message on WhatsApp</a>
-      <label for="land1" class="close-modal">× Close</label>
-    </div>
-  </div>
-</li>
-
-<li>
-  <div><strong>2. 300sqm Plot, Epe</strong> — <span class="muted">₦12m • Available</span></div>
-  <label for="land2" class="cta-link">See Photos</label>
-
-  <input id="land2" class="modal-toggle" type="checkbox">
-  <div class="photo-modal">
-    <div class="photo-content">
-      <h3>300sqm Plot, Epe</h3>
-      <img src="assets/land-epe-1.jpg" alt="Epe plot photo 1">
-      <img src="assets/land-epe-2.jpg" alt="Epe plot photo 2">
-      <p>Price: ₦12m — Available</p>
-      <a class="whatsapp-btn"
-         href="https://wa.me/2349162631205?text=Hello%20KARBA!%20I'm%20interested%20in%20300sqm%20Plot%20in%20Epe%20(₦12m)."
-         target="_blank" rel="noopener">💬 Message on WhatsApp</a>
-      <label for="land2" class="close-modal">× Close</label>
-    </div>
-  </div>
-</li>
-          <!-- copy li blocks, update number/title/price/link -->
-        </ol>
+    <!-- INV #1 -->
+    <div class="prop-card sm">
+      <div class="prop-title">Realty PIN</div>
+      <div class="meta-line">
+        <span>From ₦1.5m</span>
+        <label for="inv-lag-1" class="btn-inline">See Photos</label>
+        <span class="muted">• Yield: 30% p.a.</span>
       </div>
-
-      <!-- HOUSES FOR SALE -->
-      <div class="col-box">
-        <h3 class="col-title">Houses for Sale</h3>
-        <ol class="prop-list">
-          <li>
-  <div><strong>1. 3-Bed Duplex, Lekki Phase 1</strong> — <span class="muted">₦180m • Available</span></div>
-  <label for="sale1" class="cta-link">See Photos</label>
-
-  <input id="sale1" class="modal-toggle" type="checkbox">
-  <div class="photo-modal">
-    <div class="photo-content">
-      <h3>3-Bed Duplex, Lekki Phase 1</h3>
-      <img src="assets/lekki-duplex-1.jpg" alt="Lekki duplex photo 1">
-      <img src="assets/lekki-duplex-2.jpg" alt="Lekki duplex photo 2">
-      <p>Price: ₦180m — Available</p>
-      <a class="whatsapp-btn"
-         href="https://wa.me/2349162631205?text=Hello%20KARBA!%20I'm%20interested%20in%203-Bed%20Duplex%20in%20Lekki%20Phase%201%20(₦180m)."
-         target="_blank" rel="noopener">💬 Message on WhatsApp</a>
-      <label for="sale1" class="close-modal">× Close</label>
+      <input id="inv-lag-1" class="modal-toggle" type="checkbox">
+      <div class="photo-modal"><div class="photo-content">
+        <h3>Realty PIN</h3>
+        <img src="assets/RP 1.jpg" alt="">
+        <img src="assets/RP 2.jpg" alt="">
+        <p>From ₦1.5m • Yield: 30% p.a.</p>
+        <a class="whatsapp-btn" target="_blank" rel="noopener"
+           href="https://wa.me/2349162631205?text=Hello%20KARBA!%20I'm%20interested%20in%20RealtyPIN%20in%2030%ROI%20(₦1.5m and Above).">💬 Message on WhatsApp</a>
+        <label for="inv-lag-1" class="close-modal">× Close</label>
+      </div></div>
     </div>
-  </div>
-</li>
 
-<li>
-  <div><strong>2. 4-Bed Terrace, Ajah</strong> — <span class="muted">₦95m • Available</span></div>
-  <label for="sale2" class="cta-link">See Photos</label>
-
-  <input id="sale2" class="modal-toggle" type="checkbox">
-  <div class="photo-modal">
-    <div class="photo-content">
-      <h3>4-Bed Terrace, Ajah</h3>
-      <img src="assets/ajah-terrace-1.jpg" alt="Ajah terrace photo 1">
-      <img src="assets/ajah-terrace-2.jpg" alt="Ajah terrace photo 2">
-      <p>Price: ₦95m — Available</p>
-      <a class="whatsapp-btn"
-         href="https://wa.me/2349162631205?text=Hello%20KARBA!%20I'm%20interested%20in%204-Bed%20Terrace%20in%20Ajah%20(₦95m)."
-         target="_blank" rel="noopener">💬 Message on WhatsApp</a>
-      <label for="sale2" class="close-modal">× Close</label>
-    </div>
-  </div>
-</li>
-        </ol>
+    <!-- INV #2 -->
+    <div class="prop-card sm">
+      <div class="prop-title">Women Of Vision</div>
+      <div class="meta-line">
+        <span>From ₦2million</span>
+        <label for="inv-lag-2" class="btn-inline">See Photos</label>
+        <span class="muted">• Yield: 30% - 40% p.a.</span>
       </div>
-
-      <!-- RENTALS -->
-      <div class="col-box">
-        <h3 class="col-title">Rentals</h3>
-        <ol class="prop-list">
-          <li>
-  <div><strong>1. 2-Bed Apartment, Yaba</strong> — <span class="muted">₦1.1m/yr • Available</span></div>
-  <label for="rent1" class="cta-link">See Photos</label>
-
-  <input id="rent1" class="modal-toggle" type="checkbox">
-  <div class="photo-modal">
-    <div class="photo-content">
-      <h3>2-Bed Apartment, Yaba</h3>
-      <img src="assets/yaba-2bed-1.jpg" alt="Yaba 2-bed photo 1">
-      <img src="assets/yaba-2bed-2.jpg" alt="Yaba 2-bed photo 2">
-      <p>Rent: ₦1.1m/yr — Available</p>
-      <a class="whatsapp-btn"
-         href="https://wa.me/2349162631205?text=Hello%20KARBA!%20I'm%20interested%20in%202-Bed%20Apartment%20in%20Yaba%20(₦1.1m/yr)."
-         target="_blank" rel="noopener">💬 Message on WhatsApp</a>
-      <label for="rent1" class="close-modal">× Close</label>
+      <input id="inv-lag-2" class="modal-toggle" type="checkbox">
+      <div class="photo-modal"><div class="photo-content">
+        <h3>Women Of Vision</h3>
+        <img src="assets/WOV 1.jpg" alt="">
+        <img src="assets/WOV 2.jpg" alt="">
+        <p>From ₦2million • Yield: 30% - 40% p.a.</p>
+        <a class="whatsapp-btn" target="_blank" rel="noopener"
+           href="https://wa.me/2349162631205?text=Hello%20KARBA!%20I'm%20interested%20in%20RealtyPIN%20in%2030%-40%ROI%20(from ₦2million).">💬 Message on WhatsApp</a>
+        <label for="inv-lag-2" class="close-modal">× Close</label>
+      </div></div>
     </div>
   </div>
-</li>
 
-<li>
-  <div><strong>2. Studio, Surulere</strong> — <span class="muted">₦650k/yr • Available</span></div>
-  <label for="rent2" class="cta-link">See Photos</label>
+  <div class="state-card">
+  <h3 class="state-title">Lagos — Houses & Apartments</h3>
+  <div class="prop-grid sm">
 
-  <input id="rent2" class="modal-toggle" type="checkbox">
-  <div class="photo-modal">
-    <div class="photo-content">
-      <h3>Studio, Surulere</h3>
-      <img src="assets/surulere-studio-1.jpg" alt="Surulere studio photo 1">
-      <img src="assets/surulere-studio-2.jpg" alt="Surulere studio photo 2">
-      <p>Rent: ₦650k/yr — Available</p>
-      <a class="whatsapp-btn"
-         href="https://wa.me/2349162631205?text=Hello%20KARBA!%20I'm%20interested%20in%20the%20Studio%20Apartment%20in%20Surulere%20(₦650k/yr)."
-         target="_blank" rel="noopener">💬 Message on WhatsApp</a>
-      <label for="rent2" class="close-modal">× Close</label>
-    </div>
-  </div>
-</li>
-        </ol>
+    <!-- House #1 -->
+    <div class="prop-card sm">
+      <div class="prop-title">KA 'Twin Court' 3-Bed Penthouse, Abijo,Lekki-expressway</div>
+      <div class="meta-line">
+        <span>₦95m</span>
+        <label for="lag-sale-1" class="btn-inline">See Photos</label>
+        <span class="muted">• Title: Governor’s Consent</span>
       </div>
+      <input id="lag-sale-1" class="modal-toggle" type="checkbox">
+      <div class="photo-modal"><div class="photo-content">
+        <h3>KA 'Twin Court' 3-Bed Penthouse, Abijo</h3>
+        <img src="assets/lagos-sale1-1.jpg" alt="">
+        <img src="assets/lagos-sale1-2.jpg" alt="">
+        <p>₦95m • Governor’s Consent</p>
+        <a class="whatsapp-btn" target="_blank" rel="noopener"
+           href="https://wa.me/2349162631205?text=Hello%20KARBA!%20I'm%20interested%20in%20KA 'Twin Court' 2-Bed Penthouse%20in%20Abijo,Lekki-expressway%20Phase%201%20(₦70m).">💬 Message on WhatsApp</a>
+        <label for="lag-sale-1" class="close-modal">× Close</label>
+      </div></div>
     </div>
 
-    <!-- Back to Top -->
+    <!-- House #2 -->
+    <div class="prop-card sm">
+      <div class="prop-title">KA 'Twin Court' 2-Bed Apartments, Abijo,Lekki-expressway</div>
+      <div class="meta-line">
+        <span>₦70m</span>
+        <label for="lag-sale-2" class="btn-inline">See Photos</label>
+        <span class="muted">• Title: Governor's Consent</span>
+      </div>
+      <input id="lag-sale-2" class="modal-toggle" type="checkbox">
+      <div class="photo-modal"><div class="photo-content">
+        <h3>KA 'Twin Court' 2-Bed Apartments, Abijo</h3>
+        <img src="assets/KA 1.jpg" alt="">
+        <img src="assets/KA 2.jpg" alt="">
+        <p>₦70m • Governor's Consent</p>
+        <a class="whatsapp-btn" target="_blank" rel="noopener"
+           href="https://wa.me/2349162631205?text=Hello%20KARBA!%20I'm%20interested%20in%20KA 'Twin Court' 2-Bed Apartments%20in%20Abijo,Lekki-expressway%20Phase%201%20(₦70m).">💬 Message on WhatsApp</a>
+        <label for="lag-sale-2" class="close-modal">× Close</label>
+      </div></div>
+    </div>
+  </div>
+</div>
+
+  <div class="state-card">
+  <h3 class="state-title">Lagos — Lands</h3>
+  <div class="prop-grid sm">
+
+    <!-- Land #1 -->
+    <div class="prop-card sm">
+      <div class="prop-title">1. PE2: 600sqm, Olomowewe town,Ibeju-Lekki</div>
+      <div class="meta-line">
+        <span>₦16m</span>
+        <label for="lag-land-1" class="btn-inline">See Photos</label>
+        <span class="muted">• Title: C of O</span>
+      </div>
+      <input id="lag-land-1" class="modal-toggle" type="checkbox">
+      <div class="photo-modal"><div class="photo-content">
+        <h3>PE2: 600sqm, Olomowewe town,Ibeju-Lekki</h3>
+        <img src="assets/PE2 1.jpg" alt="">
+        <img src="assets/PE2 2.jpg" alt="">
+        <p>₦16m • C of O</p>
+        <a class="whatsapp-btn" target="_blank" rel="noopener"
+           href="https://wa.me/2349162631205?text=Hello%20KARBA!%20I'm%20interested%20in%20PE2: 600sqm%20Land%20in%20Olomowewe town,Ibeju-Lekki%20(₦16m).">💬 Message on WhatsApp</a>
+        <label for="lag-land-1" class="close-modal">× Close</label>
+      </div></div>
+    </div>
+
+    <!-- Land #2 -->
+    <div class="prop-card sm">
+      <div class="prop-title">2. TEV: 13 Plots Fenced Land, Eleko, Lekki-Epe Expressway</div>
+      <div class="meta-line">
+        <span>₦750m</span>
+        <label for="lag-land-2" class="btn-inline">See Photos</label>
+        <span class="muted">• Title: C of O</span>
+      </div>
+      <input id="lag-land-2" class="modal-toggle" type="checkbox">
+      <div class="photo-modal"><div class="photo-content">
+        <h3>TEV: 13 Plots Fenced Land, Eleko</h3>
+        <img src="assets/TEV 1.jpg" alt="">
+        <img src="assets/TEV 2.jpg" alt="">
+        <p>₦750m • C of O</p>
+        <a class="whatsapp-btn" target="_blank" rel="noopener"
+           href="https://wa.me/2349162631205?text=Hello%20KARBA!%20I'm%20interested%20in%20TEV: 13 Plots Fenced Land%20Plot%20in%20Eleko%20(₦750m).">💬 Message on WhatsApp</a>
+        <label for="lag-land-2" class="close-modal">× Close</label>
+      </div></div>
+    </div>
+
+    <!-- Land #3 -->
+    <div class="prop-card sm">
+      <div class="prop-title">3. FGG: 600sqm, Abijo,Lekki-expressway</div>
+      <div class="meta-line">
+        <span>">₦40m</span>
+        <label for="lag-land-3" class="btn-inline">See Photos</label>
+        <span class="muted">• Title: Governor’s Consent</span>
+      </div>
+      <input id="lag-land-3" class="modal-toggle" type="checkbox">
+      <div class="photo-modal"><div class="photo-content">
+        <h3>FGG: 600sqm, Abijo</h3>
+        <img src="assets/FGG 1.jpg" alt="">
+        <img src="assets/FGG 2.jpg" alt="">
+        <p>₦40m • Governor’s Consent</p>
+        <a class="whatsapp-btn" target="_blank" rel="noopener"
+           href="https://wa.me/2349162631205?text=Hello%20KARBA!%20I'm%20interested%20in%20FGG:600sqm%20Land%20in%20Abijo,Lekki-expressway%20(₦40m).">💬 Message on WhatsApp</a>
+        <label for="lag-land-3" class="close-modal">× Close</label>
+      </div></div>
+    </div>
+
+    <!-- Land #4 -->
+    <div class="prop-card sm">
+      <div class="prop-title">4. KRE: 600sqm, Otolu,Ibeju-Lekki</div>
+      <div class="meta-line">
+        <span>₦18m</span>
+        <label for="lag-land-4" class="btn-inline">See Photos</label>
+        <span class="muted">• Title: Govt.Approved Excision</span>
+      </div>
+      <input id="lag-land-4" class="modal-toggle" type="checkbox">
+      <div class="photo-modal"><div class="photo-content">
+        <h3>KRE: 600sqm, Otolu,Ibeju-Lekki</h3>
+        <img src="assets/KRE 1.jpg" alt="">
+        <img src="assets/KRE 2.jpg" alt="">
+        <p>₦18m • Govt.Approved Excision</p>
+        <a class="whatsapp-btn" target="_blank" rel="noopener"
+           href="https://wa.me/2349162631205?text=Hello%20KARBA!%20I'm%20interested%20in%20KRE: 600sqm%20Land%20in%20Otolu Ibeju-Lekki%20(₦18m).">💬 Message on WhatsApp</a>
+        <label for="lag-land-4" class="close-modal">× Close</label>
+      </div></div>
+    </div>
+
+    <!-- Land #5 -->
+    <div class="prop-card sm">
+      <div class="prop-title">5. HGC: 600sqm, Elerangbe,Ibeju-Lekki</div>
+      <div class="meta-line">
+        <span>">₦5m</span>
+        <label for="lag-land-5" class="btn-inline">See Photos</label>
+        <span class="muted">• Title: Survey & Deed</span>
+      </div>
+      <input id="lag-land-5" class="modal-toggle" type="checkbox">
+      <div class="photo-modal"><div class="photo-content">
+        <h3>HGC: 600sqm, Elerangbe,Ibeju-Lekki</h3>
+        <img src="assets/HGC 1.jpg" alt="">
+        <img src="assets/HGC 2.jpg" alt="">
+        <p>₦5m • Survey & Deed</p>
+        <a class="whatsapp-btn" target="_blank" rel="noopener"
+           href="https://wa.me/2349162631205?text=Hello%20KARBA!%20I'm%20interested%20in%20HGC: 600sqm%20Land%20in%20Elerangbe,Ibeju-Lekki%20(₦5m).">💬 Message on WhatsApp</a>
+        <label for="lag-land-5" class="close-modal">× Close</label>
+      </div></div>
+    </div>
+
+    <!-- Land #6 -->
+    <div class="prop-card sm">
+      <div class="prop-title">6. KLG: 600sqm, Igbodu,Epe</div>
+      <div class="meta-line">
+        <span>">₦12m</span>
+        <label for="lag-land-3" class="btn-inline">See Photos</label>
+        <span class="muted">• Title: Survey & Deed</span>
+      </div>
+      <input id="lag-land-6" class="modal-toggle" type="checkbox">
+      <div class="photo-modal"><div class="photo-content">
+        <h3>KLG: 600sqm, Igbodu,Epe</h3>
+        <img src="assets/KLG 1.jpg" alt="">
+        <img src="assets/KLG 2.jpg" alt="">
+        <p>₦12m • Survey & Deed</p>
+        <a class="whatsapp-btn" target="_blank" rel="noopener"
+           href="https://wa.me/2349162631205?text=Hello%20KARBA!%20I'm%20interested%20in%20KLG: 600sqm%20Plot%20in%20Igbodu,Epe%20(₦12m).">💬 Message on WhatsApp</a>
+        <label for="lag-land-6" class="close-modal">× Close</label>
+      </div></div>
+    </div>
+
+    <!-- Land #7 -->
+    <div class="prop-card sm">
+      <div class="prop-title">7. HGCE: 600sqm, Elerangbe,Ibeju-Lekki</div>
+      <div class="meta-line">
+        <span>3.5m</span>
+        <label for="lag-land-7" class="btn-inline">See Photos</label>
+        <span class="muted">• Title: Survey & Deed</span>
+      </div>
+      <input id="lag-land-7" class="modal-toggle" type="checkbox">
+      <div class="photo-modal"><div class="photo-content">
+        <h3>HGCE: 600sqm, Elerangbe,Ibeju-Lekki</h3>
+        <img src="assets/HGCE 1.jpg" alt="">
+        <img src="assets/HGCE 2.jpg" alt="">
+        <p>₦3.5m • Title: Survey & Deed</p>
+        <a class="whatsapp-btn" target="_blank" rel="noopener"
+           href="https://wa.me/2349162631205?text=Hello%20KARBA!%20I'm%20interested%20in%20HGCE: 600sqm%20Land%20in%20Elerangbe,Ibeju-Lekki%20(₦40m).">💬 Message on WhatsApp</a>
+        <label for="lag-land-7" class="close-modal">× Close</label>
+      </div></div>
+    </div>
+
+    <!-- Land #8 -->
+    <div class="prop-card sm">
+      <div class="prop-title">8. KHC2: 600sqm, Igbogun,Ibeju-Lekki</div>
+      <div class="meta-line">
+        <span>₦7m</span>
+        <label for="lag-land-8" class="btn-inline">See Photos</label>
+        <span class="muted">• Title: Registered Survey & Deed</span>
+      </div>
+      <input id="lag-land-8" class="modal-toggle" type="checkbox">
+      <div class="photo-modal"><div class="photo-content">
+        <h3>KHC2: 600sqm, Igbogun,Ibeju-Lekki</h3>
+        <img src="assets/lagos-land3-1.jpg" alt="">
+        <img src="assets/lagos-land3-2.jpg" alt="">
+        <p>₦7m • Title: Registered Survey & Deed</p>
+        <a class="whatsapp-btn" target="_blank" rel="noopener"
+           href="https://wa.me/2349162631205?text=Hello%20KARBA!%20I'm%20interested%20in%20KHC2: 600sqm%20Land%20in%20Igbogun,Ibeju-Lekki%20(₦7m).">💬 Message on WhatsApp</a>
+        <label for="lag-land-8" class="close-modal">× Close</label>
+      </div></div>
+    </div>
+    <!-- Duplicate more cards up to 10+ -->
+  </div>
+</div>
+
+  <div class="state-card">
+  <h3 class="state-title">Rivers — Lands</h3>
+  <div class="prop-grid sm">
+  
+    <div class="prop-card sm">
+      <div class="prop-title">1. AVE: 465sqm, Fimie-Ama Phaiga,River State</div>
+      <div class="meta-line">
+        <span>₦22m</span>
+        <label for="riv-land-1" class="btn-inline">See Photos</label>
+        <span class="muted">• Title: C of O</span>
+      </div>
+      <input id="riv-land-1" class="modal-toggle" type="checkbox">
+      <div class="photo-modal"><div class="photo-content">
+        <h3>AVE: 465sqm, Fimie-Ama Phaiga,River State</h3>
+        <img src="assets/AVE 1.jpg" alt="">
+        <img src="assets/AVE 2.jpg" alt="">
+        <p>₦22m • Title: C of O</p>
+        <a class="whatsapp-btn" target="_blank" rel="noopener"
+           href="https://wa.me/2349162631205?text=Hello%20KARBA!%20I'm%20interested%20in%20AVE: 465sqm%20Land%20in%20Fimie-Ama Phaiga,River State%20(₦22m).">💬 Message on WhatsApp</a>
+        <label for="riv-land-1" class="close-modal">× Close</label>
+      </div></div>
+    </div>
+
+    <div class="prop-card sm">
+      <div class="prop-title">2. OGC: 450sqm Land, Elele Etche LGA,River State</div>
+      <div class="meta-line">
+        <span>₦4.5m</span>
+        <label for="riv-land-2" class="btn-inline">See Photos</label>
+        <span class="muted">• Title: C of O in view</span>
+      </div>
+      <input id="riv-land-2" class="modal-toggle" type="checkbox">
+      <div class="photo-modal"><div class="photo-content">
+        <h3>OGC: 450sqm Land, Elele Etche LGA,River State</h3>
+        <img src="assets/OGC 1.jpg" alt="">
+        <img src="assets/OGC 2.jpg" alt="">
+        <p>₦4.5m • C of O in view</p>
+        <a class="whatsapp-btn" target="_blank" rel="noopener"
+           href="https://wa.me/2349162631205?text=Hello%20KARBA!%20I'm%20interested%20in%20OGC: 450sqm%20Plot%20in%20Elele Etche LGA,River State%20(₦12m).">💬 Message on WhatsApp</a>
+        <label for="riv-land-2" class="close-modal">× Close</label>
+      </div></div>
+    </div>
+    <!-- Duplicate more cards up to 10+ -->
+  </div>
+</div>
+
+  <div class="state-card">
+  <h3 class="state-title">Imo — Lands</h3>
+  <div class="prop-grid sm">
+
+    <div class="prop-card sm">
+      <div class="prop-title">1. CRG: 450sqm, Ngor Okpala, Owerri LGA, Imo State</div>
+      <div class="meta-line">
+        <span>₦7m</span>
+        <label for="imo-land-1" class="btn-inline">See Photos</label>
+        <span class="muted">• Title: Survey & Deed</span>
+      </div>
+      <input id="imo-land-1" class="modal-toggle" type="checkbox">
+      <div class="photo-modal"><div class="photo-content">
+        <h3>CRG: 450sqm, Ngor Okpala, Owerri LGA, Imo State</h3>
+        <img src="assets/CRG 1.jpg" alt="">
+        <img src="assets/CRG 2.jpg" alt="">
+        <p>₦7m • Title: Survey & Deed</p>
+        <a class="whatsapp-btn" target="_blank" rel="noopener"
+           href="https://wa.me/2349162631205?text=Hello%20KARBA!%20I'm%20interested%20in%20CRG: 450sqm%20Land%20in%20Ngor Okpala, Owerri LGA, Imo State%20(₦7m).">💬 Message on WhatsApp</a>
+        <label for="imo-land-1" class="close-modal">× Close</label>
+      </div></div>
+    </div>
+
+    <div class="prop-card sm">
+      <div class="prop-title">2. FVE: 450sqm Land, Ohuba, Owerri LGA, Imo State</div>
+      <div class="meta-line">
+        <span>₦3.5m</span>
+        <label for="imo-land-2" class="btn-inline">See Photos</label>
+        <span class="muted">• Title: Survey & Deed</span>
+      </div>
+      <input id="imo-land-2" class="modal-toggle" type="checkbox">
+      <div class="photo-modal"><div class="photo-content">
+        <h3>FVE: 450sqm Land, Ohuba, Owerri LGA, Imo State</h3>
+        <img src="assets/FVE 1.jpg" alt="">
+        <img src="assets/FVE 2.jpg" alt="">
+        <p>₦3.5m • Survey & Deed</p>
+        <a class="whatsapp-btn" target="_blank" rel="noopener"
+           href="https://wa.me/2349162631205?text=Hello%20KARBA!%20I'm%20interested%20in%20FVE: 450sqm%20Plot%20in%20Ohuba, Owerri LGA, Imo State%20(₦3.5m).">💬 Message on WhatsApp</a>
+        <label for="imo-land-2" class="close-modal">× Close</label>
+      </div></div>
+    </div>
+     <!-- Duplicate more cards up to 10+ -->
+  </div>
+</div>
+
+  <div class="state-card">
+  <h3 class="state-title">Anambra — Lands</h3>
+  <div class="prop-grid sm">
+
+    <div class="prop-card sm">
+      <div class="prop-title">1. SGE: 500sqm, Nando LGA, Anambra State</div>
+      <div class="meta-line">
+        <span>₦7m</span>
+        <label for="ana-land-1" class="btn-inline">See Photos</label>
+        <span class="muted">• Title: C of O</span>
+      </div>
+      <input id="ana-land-1" class="modal-toggle" type="checkbox">
+      <div class="photo-modal"><div class="photo-content">
+        <h3>SGE: 500sqm, Nando LGA, Anambra State</h3>
+        <img src="assets/SGE 1.jpg" alt="">
+        <img src="assets/SGE 2.jpg" alt="">
+        <p>₦7m • Title: C of O</p>
+        <a class="whatsapp-btn" target="_blank" rel="noopener"
+           href="https://wa.me/2349162631205?text=Hello%20KARBA!%20I'm%20interested%20in%20SGE: 500sqm%20Land%20in%20 Nando LGA, Anambra State%20(₦7m).">💬 Message on WhatsApp</a>
+        <label for="ana-land-1" class="close-modal">× Close</label>
+      </div></div>
+    </div>
+
+    <div class="prop-card sm">
+      <div class="prop-title">2. ORG: 450sqm Land, Mgbakkwu, Awka LGA, Anambra</div>
+      <div class="meta-line">
+        <span>₦4m</span>
+        <label for="ana-land-2" class="btn-inline">See Photos</label>
+        <span class="muted">• Title: Survey & Deed</span>
+      </div>
+      <input id="ana-land-2" class="modal-toggle" type="checkbox">
+      <div class="photo-modal"><div class="photo-content">
+        <h3>ORG: 450sqm Land, Mgbakkwu, Awka LGA, Anambra</h3>
+        <img src="assets/ORG 1.jpg" alt="">
+        <img src="assets/ORG 2.jpg" alt="">
+        <p>₦4m • Survey & Deed</p>
+        <a class="whatsapp-btn" target="_blank" rel="noopener"
+           href="https://wa.me/2349162631205?text=Hello%20KARBA!%20I'm%20interested%20in%20ORG: 450sqm%20Plot%20in%20Mgbakkwu, Awka LGA, Anambra%20(₦4m).">💬 Message on WhatsApp</a>
+        <label for="ana-land-2" class="close-modal">× Close</label>
+      </div></div>
+    </div>
+
+    <div class="prop-card sm">
+      <div class="prop-title">3. DBGCE: 450sqm Land, Isiagu, Awka LGA, Anambra</div>
+      <div class="meta-line">
+        <span>₦20m</span>
+        <label for="ana-land-3" class="btn-inline">See Photos</label>
+        <span class="muted">• Title: C of O</span>
+      </div>
+      <input id="ana-land-3" class="modal-toggle" type="checkbox">
+      <div class="photo-modal"><div class="photo-content">
+        <h3>DBGCE: 450sqm Land, Isiagu, Awka LGA, Anambra</h3>
+        <img src="assets/DBGCE 1.jpg" alt="">
+        <img src="assets/DBGCE 2.jpg" alt="">
+        <p>">₦20m • C of O</p>
+        <a class="whatsapp-btn" target="_blank" rel="noopener"
+           href="https://wa.me/2349162631205?text=Hello%20KARBA!%20I'm%20interested%20in%20DBGCE: 450sqm%20Plot%20in%20Isiagu, Awka LGA, Anambra%20(₦20m).">💬 Message on WhatsApp</a>
+        <label for="ana-land-3" class="close-modal">× Close</label>
+      </div></div>
+    </div>
+ <!-- Duplicate more cards up to 10+ -->
+  </div>
+</div>
+   <!-- Back to Top -->
     <div style="margin-top:18px;">
       <a href="#top" style="text-decoration:none; color:#5eb3ff;">↑ Back to Top</a>
     </div>
   </div>
 </section>
 
+
+    <!-- ===== Insurance Plan Types (grouped in one big centered card) ===== -->
+<style>
+  /* outer spacing so it doesn't hug edges */
+  .info-wrap{margin:0 10px}
+
+  /* big container card */
+  .info-container{
+    max-width: 980px;              /* similar width to properties */
+    margin: 28px auto;             /* center it */
+    border: 1px solid var(--line);
+    background: rgba(255,255,255,.04);
+    border-radius: 16px;
+    padding: 16px;
+  }
+  .info-heading{
+    display:flex; justify-content:space-between; align-items:center;
+    gap:12px; margin-bottom:12px;
+  }
+  .info-title{font-size:22px; font-weight:800; margin:0}
+  .info-sub{opacity:.8; font-size:14px; margin:0}
+
+  /* inner grid of small cards */
+  .info-grid{
+    display:grid; gap:12px;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  }
+  .info-card{
+    border:1px solid var(--line);
+    background: rgba(255,255,255,.06);
+    border-radius:12px; padding:14px;
+  }
+  .info-card h4{margin:0 0 8px; font-size:18px}
+  .info-card ul{margin:0 0 10px 18px; padding:0}
+  .info-card li{margin:4px 0}
+
+  /* inline button same look as your property “See Photos” pill */
+  .btn-inline{
+    display:inline-block; padding:6px 10px; border-radius:8px;
+    border:1px solid var(--gold); color:var(--gold); text-decoration:none;
+  }
+  .btn-inline:hover{filter:brightness(1.08)}
+
+  /* modal bits (unchanged) */
+  .modal-toggle{display:none}
+  .photo-modal{position:fixed; inset:0; background:rgba(0,0,0,.6);
+    display:none; align-items:center; justify-content:center; z-index:1000; padding:16px}
+  .modal-toggle:checked + .photo-modal{display:flex}
+  .photo-content{background:#fff; color:#111; max-width:520px; width:100%;
+    border-radius:12px; padding:16px}
+  .photo-content h3{margin:0 0 10px}
+  .photo-content img{width:100%; height:auto; border-radius:8px; margin:6px 0}
+  .whatsapp-btn{display:inline-block; margin-top:10px; padding:8px 12px; border-radius:8px;
+    background:#25D366; color:#fff; text-decoration:none}
+  .close-modal{display:inline-block; margin-left:10px; color:#555; cursor:pointer}
+
+  @media (max-width:600px){
+    .info-title{font-size:20px}
+    .info-container{padding:12px}
+    .info-card{padding:12px}
+  }
+</style>
+
+<div class="info-wrap">
+  <section id="ins-plans" class="info-container">
+    <div class="info-heading">
+      <h3 class="info-title">Insurance Plan Types</h3>
+      <p class="info-sub">Quick overview of popular plans. Tap “See Photos” to view and chat on WhatsApp.</p>
+    </div>
+
+    <div class="info-grid">
+      <!-- Retirees & Immediate Annuity -->
+    <div class="info-card">
+      <h4>Retirees & Immediate Annuity</h4>
+      <ul>
+        <li>Guaranteed lifetime monthly income</li>
+        <li>Insulated from market swings</li>
+        <li>Financial Independence & Peace of Mind</li>
+      </ul>
+      <label for="ins-annuity" class="btn-inline">See Photos</label>
+
+      <!-- modal -->
+      <input id="ins-annuity" class="modal-toggle" type="checkbox">
+      <div class="photo-modal"><div class="photo-content">
+        <h3>Retirees & Immediate Annuity</h3>
+        <img src="assets/annuity 1.jpg" alt="Annuity 1">
+        <img src="assets/annuity 2.jpg" alt="Annuity 2">
+        <a class="whatsapp-btn" target="_blank" rel="noopener"
+           href="https://wa.me/2349162631205?text=Hello%20KARBA!%20I%27m%20interested%20in%20Retirees%20%26%20Immediate%20Annuity.%20Please%20advise.">Message on WhatsApp</a>
+        <label for="ins-annuity" class="close-modal">× Close</label>
+      </div></div>
+    </div>
+
+    <!-- Family Protection Plans -->
+    <div class="info-card">
+      <h4>Family Protection Plans</h4>
+      <ul>
+        <li>Instant Security for Loved Ones</li>
+        <li>Debt & Expense Coverage</li>
+        <li>Flexible premiums + optional riders</li>
+        <li>Peace of mind for breadwinners & SMEs</li>
+      </ul>
+      <label for="ins-family" class="btn-inline">See Photos</label>
+
+      <input id="ins-family" class="modal-toggle" type="checkbox">
+      <div class="photo-modal"><div class="photo-content">
+        <h3>Family Protection Plans</h3>
+        <img src="assets/family 1.jpg" alt="family 1">
+        <img src="assets/family 2.jpg" alt="family 2">
+        <a class="whatsapp-btn" target="_blank" rel="noopener"
+           href="https://wa.me/2349162631205?text=Hello%20KARBA!%20I%27m%20interested%20in%20Family%20Protection%20Plans.">Message on WhatsApp</a>
+        <label for="ins-family" class="close-modal">× Close</label>
+      </div></div>
+    </div>
+
+    <!-- Children Education Protection -->
+    <div class="info-card">
+      <h4>Children Education Protection</h4>
+      <ul>
+        <li>Guaranteed Education Funds & milestones on schedule</li>
+        <li>Partial withdrawals allowed</li>
+        <li>Serves as both protection & savings</li>
+        <li>The child education continue if sponsor passes away</li>
+      </ul>
+      <label for="ins-edu" class="btn-inline">See Photos</label>
+
+      <input id="ins-edu" class="modal-toggle" type="checkbox">
+      <div class="photo-modal"><div class="photo-content">
+        <h3>Children Education Protection</h3>
+        <img src="assets/edu 1.jpg" alt="Education plan 1">
+        <img src="assets/edu 2.jpg" alt="Education plan 2">
+        <a class="whatsapp-btn" target="_blank" rel="noopener"
+           href="https://wa.me/2349162631205?text=Hello%20KARBA!%20I%27m%20interested%20in%20Children%20Education%20Protection%20plans.">Message on WhatsApp</a>
+        <label for="ins-edu" class="close-modal">× Close</label>
+      </div></div>
+    </div>
+
+    <!-- Whole-Life Plan -->
+    <div class="info-card">
+      <h4>Whole-Life Plan</h4>
+      <ul>
+        <li>Lifetime cover with growing cash value</li>
+        <li>Access policy loans when needed</li>
+        <li>Build generational wealth & legacy.</li>
+      </ul>
+      <label for="ins-whole" class="btn-inline">See Photos</label>
+
+      <input id="ins-whole" class="modal-toggle" type="checkbox">
+      <div class="photo-modal"><div class="photo-content">
+        <h3>Whole-Life Plan</h3>
+        <img src="assets/whole 1.jpg" alt="Whole life plan 1">
+        <img src="assets/whole 2.jpg" alt="Whole life plan 2">
+        <a class="whatsapp-btn" target="_blank" rel="noopener"
+           href="https://wa.me/2349162631205?text=Hello%20KARBA!%20I%27m%20interested%20in%20Whole-Life%20Plan%20options.">Message on WhatsApp</a>
+        <label for="ins-whole" class="close-modal">× Close</label>
+      </div></div>
+    </div>
+
+    <!-- Term Assurance -->
+    <div class="info-card">
+      <h4>Term Assurance</h4>
+      <ul>
+        <li>High cover for 5–30 years at low cost</li>
+        <li>Convertible to whole-life later</li>
+        <li>Great for income earner</li>
+      </ul>
+      <label for="ins-term" class="btn-inline">See Photos</label>
+
+      <input id="ins-term" class="modal-toggle" type="checkbox">
+      <div class="photo-modal"><div class="photo-content">
+        <h3>Term Assurance</h3>
+        <img src="assets/term 1.jpg" alt="Term assurance 1">
+        <img src="assets/term 2.jpg" alt="Term assurance 2">
+        <a class="whatsapp-btn" target="_blank" rel="noopener"
+           href="https://wa.me/2349162631205?text=Hello%20KARBA!%20I%27m%20interested%20in%20Term%20Assurance.">Message on WhatsApp</a>
+        <label for="ins-term" class="close-modal">× Close</label>
+      </div></div>
+    </div>
+
+    <!-- Motor Vehicle Insurance -->
+    <div class="info-card">
+      <h4>Motor Vehicle Insurance</h4>
+      <ul>
+        <li>Comprehensive & Third-Party Cover</li>
+        <li>Instant verification & easy claims support</li>
+        <li>Drive confidently, stayfully protected</li>
+      </ul>
+      <label for="ins-motor" class="btn-inline">See Photos</label>
+
+      <input id="ins-motor" class="modal-toggle" type="checkbox">
+      <div class="photo-modal"><div class="photo-content">
+        <h3>Motor Vehicle Insurance</h3>
+        <img src="assets/motor 1.jpg" alt="Motor insurance 1">
+        <img src="assets/motor 2.jpg" alt="Motor insurance 2">
+        <a class="whatsapp-btn" target="_blank" rel="noopener"
+           href="https://wa.me/2349162631205?text=Hello%20KARBA!%20I%27m%20interested%20in%20Motor%20Vehicle%20Insurance%20(Comprehensive%20or%20Third-Party).">Message on WhatsApp</a>
+        <label for="ins-motor" class="close-modal">× Close</label>
+          </div></div>
+        </div>
+      </div>
+    </section>
+  </div>
+  
   <section class="section" id="contact">
     <div class="container row">
       <div>
