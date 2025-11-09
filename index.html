@@ -377,68 +377,131 @@
   </section>
 
 <!-- ===== PROMOS & SPECIAL ANNOUNCEMENTS ===== -->
-<section class="section" id="promos">
-  <div class="container">
-    <hr style="border: 0; border-top: 1px solid #345; margin: 40px 0 25px 0;">
-    <h2>Promos & Special Announcements</h2>
-    <!-- ===== PROMO 1 ===== -->
+<style>
+  .promo-section {
+    margin: 40px 10px;
+  }
+  .promo-container {
+    display: grid;
+    gap: 12px;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  }
+  .promo-box {
+    border: 1px solid var(--line);
+    background: rgba(255,255,255,.06);
+    border-radius: 12px;
+    padding: 14px;
+  }
+  .promo-box h3 {
+    margin: 0 0 8px;
+    font-size: 18px;
+    font-weight: 700;
+  }
+  .promo-box p {
+    font-size: 14px;
+    margin: 0 0 8px;
+    line-height: 1.5;
+  }
+
+  .btn-inline {
+    display: inline-block;
+    padding: 6px 10px;
+    border-radius: 8px;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    text-decoration: none;
+  }
+  .btn-inline:hover {
+    filter: brightness(1.08);
+  }
+
+  /* Modal pattern (same as your property modals) */
+  .modal-toggle { display: none; }
+  .photo-modal {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,.6);
+    display: none; align-items: center; justify-content: center;
+    z-index: 1000; padding: 16px;
+  }
+  .modal-toggle:checked + .photo-modal { display: flex; }
+  .photo-content {
+    background: #fff; color: #111;
+    max-width: 520px; width: 100%;
+    border-radius: 12px; padding: 16px;
+  }
+  .photo-content h3 { margin: 0 0 10px; }
+  .photo-content img { width: 100%; height: auto; border-radius: 8px; margin: 6px 0; }
+  .whatsapp-btn {
+    display: inline-block; margin-top: 10px; padding: 8px 12px;
+    border-radius: 8px; background: #25D366; color: #fff; text-decoration: none;
+  }
+  .close-modal { display: inline-block; margin-left: 10px; color: #555; cursor: pointer; }
+</style>
+
+<section class="promo-section" id="promos">
+  <h2 class="title">Promos & Special Announcements</h2>
+  <div class="promo-container">
+
+    <!-- PROMO 1 -->
     <div class="promo-box">
-      <h3>🎉 HOT DISTRESS SALES: TEV 13 PLOTS FENCED with C of O (Eleko Lekki Expressway)</h3>
-      <p>
-        Buy and Win 7days all expenses paid trip to any Country of your choice in Africa. <strong>Ends 18/12/2025</strong>.
-      </p>
-      <div class="promo-links">
-        <a href="https://wa.me/2349162631205?text=Hello%20KARBA!%20I'm%20interested%20in%20the%20HOT DISTRESS SALES%20Eleko%20Land%20offer.%20Please%20share%20details."
-           target="_blank" rel="noopener">💬 Message on WhatsApp</a>
+      <h3>🔥 HOT DISTRESS SALE: TEV 13 PLOTS FENCED with C of O (Eleko Lekki Expressway)</h3>
+      <p>Buy and win 7 days all-expense-paid trip to any country of your choice in Africa. <strong>Ends 18/12/2025</strong></p>
+      <label for="promo1" class="btn-inline">See Photos</label>
+
+      <input id="promo1" class="modal-toggle" type="checkbox">
+      <div class="photo-modal">
+        <div class="photo-content">
+          <h3>HOT DISTRESS SALE: TEV 13 PLOTS</h3>
+          <img src="assets/promo1-1.jpg" alt="Promo 1 photo 1">
+          <img src="assets/promo1-2.jpg" alt="Promo 1 photo 2">
+          <p>Secure one or more plots today and qualify for the travel draw. Offer valid till 18/12/2025.</p>
+          <a class="whatsapp-btn" target="_blank" rel="noopener"
+             href="https://wa.me/2349162631205?text=Hello%20KARBA!%20I%27m%20interested%20in%20the%20HOT%20DISTRESS%20SALE%20promo.">Message on WhatsApp</a>
+          <label for="promo1" class="close-modal">× Close</label>
+        </div>
       </div>
     </div>
 
-<!-- ===== PROMO 2 ===== -->
+    <!-- PROMO 2 -->
     <div class="promo-box">
-      <h3>🎉 Limited Offer: 5% Discount on FGG Lands</h3>
-      <p>
-        Secure your property this week and get 500 Blocks and 50 Bags of Cement. Plus up to <strong>₦2m savings</strong> (Ends 18/12/2025).
-      </p>
-      <div class="promo-links">
-        <a href="https://wa.me/2349162631205?text=Hello%20KARBA!%20I'm%20interested%20in%20the%205%%20discount%20Lekki%20Land%20offer.%20Please%20share%20details."
-           target="_blank" rel="noopener">💬 Message on WhatsApp</a>
+      <h3>🎁 Limited Offer: 5% Discount on FGC & KLFG Lands</h3>
+      <p>Secure your property this week and get 50 blocks & 5 bags of cement. Plus up to ₦2m savings! <strong>Ends 18/12/2025</strong></p>
+      <label for="promo2" class="btn-inline">See Photos</label>
+
+      <input id="promo2" class="modal-toggle" type="checkbox">
+      <div class="photo-modal">
+        <div class="photo-content">
+          <h3>5% Discount on FGC & KLFG Lands</h3>
+          <img src="assets/promo2-1.jpg" alt="Promo 2 photo 1">
+          <img src="assets/promo2-2.jpg" alt="Promo 2 photo 2">
+          <p>Enjoy discounted plots and construction bonuses on verified estates. Hurry before offer closes.</p>
+          <a class="whatsapp-btn" target="_blank" rel="noopener"
+             href="https://wa.me/2349162631205?text=Hello%20KARBA!%20I%27m%20interested%20in%20the%205%%20Discount%20Promo.">Message on WhatsApp</a>
+          <label for="promo2" class="close-modal">× Close</label>
+        </div>
       </div>
     </div>
-    
-    <!-- ===== PROMO 3 ===== -->
+
+    <!-- PROMO 3 -->
     <div class="promo-box">
-      <h3>🎉 Limited Offer: HGCE and KLG Lands</h3>
-      <p>
-        Buy 1 Plot and WIN <strong>₦100k Shopping Voucher</strong>.
-      </p>
-      <p>
-        Buy 2 Plots and WIN <strong>₦250k Shopping Voucher</strong>.
-      </p>
-        <p>
-        Buy 3 Plots and WIN <strong>₦400k Shopping Voucher</strong>.
-      </p>
-        <p>
-        Buy 6 Plots and WIN <strong>₦850k Shopping Voucher</strong>.
-      </p>
-      <div class="promo-links">
-        <a href="https://wa.me/2349162631205?text=Hello%20KARBA!%20I'm%20interested%20in%20the%20Discount%20HGCE and KLG Lands%20offer.%20Please%20share%20details."
-           target="_blank" rel="noopener">💬 Message on WhatsApp</a>
+      <h3>💰 Buy & Win Vouchers (FGC, KLFG & TEV Estates)</h3>
+      <p>Buy 1 plot and win ₦100k shopping voucher, 2 plots ₦250k, 3 plots ₦400k! <strong>Ends 18/12/2025</strong></p>
+      <label for="promo3" class="btn-inline">See Photos</label>
+
+      <input id="promo3" class="modal-toggle" type="checkbox">
+      <div class="photo-modal">
+        <div class="photo-content">
+          <h3>Buy & Win Vouchers</h3>
+          <img src="assets/promo3-1.jpg" alt="Promo 3 photo 1">
+          <img src="assets/promo3-2.jpg" alt="Promo 3 photo 2">
+          <p>Stand a chance to win exciting prizes when you buy verified plots in our partner estates.</p>
+          <a class="whatsapp-btn" target="_blank" rel="noopener"
+             href="https://wa.me/2349162631205?text=Hello%20KARBA!%20I%27m%20interested%20in%20the%20Buy%20%26%20Win%20Promo.">Message on WhatsApp</a>
+          <label for="promo3" class="close-modal">× Close</label>
+        </div>
       </div>
     </div>
-<p style="text-align:center;opacity:0.7;font-size:13px;">
-KARBA Financial Consultant Ltd; also known simply as <strong>KARBA</strong> provides trusted insurance and real estate advisory across Nigeria.
-</p>
-    <!-- ===== PROMO 3 (example template) ===== -->
-    <!--
-    <div class="promo-box">
-      <h3>🔥 Holiday Promo</h3>
-      <p>Enjoy discounted service fees on all insurance advisory sessions booked before December 31st.</p>
-      <div class="promo-links">
-        <a href="https://wa.me/2349162631206?text=Hello%20KARBA!%20I'd%20like%20to%20know%20more%20about%20the%20Holiday%20Promo."
-           target="_blank" rel="noopener">💬 Message on WhatsApp</a>
-      </div>
-    </div>
-    -->
+
   </div>
 </section>
 
@@ -466,7 +529,6 @@ KARBA Financial Consultant Ltd; also known simply as <strong>KARBA</strong> prov
       <div class="photo-modal"><div class="photo-content">
         <h3>Realty PIN</h3>
         <img src="assets/RP 1.jpg" alt="">
-        <img src="assets/RP 2.jpg" alt="">
         <p>From ₦1.5m • Yield: 30% p.a.</p>
         <a class="whatsapp-btn" target="_blank" rel="noopener"
            href="https://wa.me/2349162631205?text=Hello%20KARBA!%20I'm%20interested%20in%20RealtyPIN%20in%2030%ROI%20(₦1.5m and Above).">💬 Message on WhatsApp</a>
@@ -486,7 +548,6 @@ KARBA Financial Consultant Ltd; also known simply as <strong>KARBA</strong> prov
       <div class="photo-modal"><div class="photo-content">
         <h3>Women Of Vision</h3>
         <img src="assets/WOV 1.jpg" alt="">
-        <img src="assets/WOV 2.jpg" alt="">
         <p>From ₦2million • Yield: 30% - 40% p.a.</p>
         <a class="whatsapp-btn" target="_blank" rel="noopener"
            href="https://wa.me/2349162631205?text=Hello%20KARBA!%20I'm%20interested%20in%20RealtyPIN%20in%2030%-40%ROI%20(from ₦2million).">💬 Message on WhatsApp</a>
@@ -510,8 +571,7 @@ KARBA Financial Consultant Ltd; also known simply as <strong>KARBA</strong> prov
       <input id="lag-sale-1" class="modal-toggle" type="checkbox">
       <div class="photo-modal"><div class="photo-content">
         <h3>KA 'Twin Court' 3-Bed Penthouse, Abijo</h3>
-        <img src="assets/lagos-sale1-1.jpg" alt="">
-        <img src="assets/lagos-sale1-2.jpg" alt="">
+        <img src="assets/TC 1.jpg" alt="">
         <p>₦95m • Governor’s Consent</p>
         <a class="whatsapp-btn" target="_blank" rel="noopener"
            href="https://wa.me/2349162631205?text=Hello%20KARBA!%20I'm%20interested%20in%20KA 'Twin Court' 2-Bed Penthouse%20in%20Abijo,Lekki-expressway%20Phase%201%20(₦70m).">💬 Message on WhatsApp</a>
@@ -530,8 +590,7 @@ KARBA Financial Consultant Ltd; also known simply as <strong>KARBA</strong> prov
       <input id="lag-sale-2" class="modal-toggle" type="checkbox">
       <div class="photo-modal"><div class="photo-content">
         <h3>KA 'Twin Court' 2-Bed Apartments, Abijo</h3>
-        <img src="assets/KA 1.jpg" alt="">
-        <img src="assets/KA 2.jpg" alt="">
+        <img src="assets/TC 2.jpg" alt="">
         <p>₦70m • Governor's Consent</p>
         <a class="whatsapp-btn" target="_blank" rel="noopener"
            href="https://wa.me/2349162631205?text=Hello%20KARBA!%20I'm%20interested%20in%20KA 'Twin Court' 2-Bed Apartments%20in%20Abijo,Lekki-expressway%20Phase%201%20(₦70m).">💬 Message on WhatsApp</a>
@@ -556,8 +615,7 @@ KARBA Financial Consultant Ltd; also known simply as <strong>KARBA</strong> prov
       <input id="lag-land-1" class="modal-toggle" type="checkbox">
       <div class="photo-modal"><div class="photo-content">
         <h3>PE2: 600sqm, Olomowewe town,Ibeju-Lekki</h3>
-        <img src="assets/PE2 1.jpg" alt="">
-        <img src="assets/PE2 2.jpg" alt="">
+        <img src="assets/PE 1.jpg" alt="">
         <p>₦16m • C of O</p>
         <a class="whatsapp-btn" target="_blank" rel="noopener"
            href="https://wa.me/2349162631205?text=Hello%20KARBA!%20I'm%20interested%20in%20PE2: 600sqm%20Land%20in%20Olomowewe town,Ibeju-Lekki%20(₦16m).">💬 Message on WhatsApp</a>
@@ -577,7 +635,6 @@ KARBA Financial Consultant Ltd; also known simply as <strong>KARBA</strong> prov
       <div class="photo-modal"><div class="photo-content">
         <h3>TEV: 13 Plots Fenced Land, Eleko</h3>
         <img src="assets/TEV 1.jpg" alt="">
-        <img src="assets/TEV 2.jpg" alt="">
         <p>₦750m • C of O</p>
         <a class="whatsapp-btn" target="_blank" rel="noopener"
            href="https://wa.me/2349162631205?text=Hello%20KARBA!%20I'm%20interested%20in%20TEV: 13 Plots Fenced Land%20Plot%20in%20Eleko%20(₦750m).">💬 Message on WhatsApp</a>
@@ -597,7 +654,6 @@ KARBA Financial Consultant Ltd; also known simply as <strong>KARBA</strong> prov
       <div class="photo-modal"><div class="photo-content">
         <h3>FGG: 600sqm, Abijo</h3>
         <img src="assets/FGG 1.jpg" alt="">
-        <img src="assets/FGG 2.jpg" alt="">
         <p>₦40m • Governor’s Consent</p>
         <a class="whatsapp-btn" target="_blank" rel="noopener"
            href="https://wa.me/2349162631205?text=Hello%20KARBA!%20I'm%20interested%20in%20FGG:600sqm%20Land%20in%20Abijo,Lekki-expressway%20(₦40m).">💬 Message on WhatsApp</a>
@@ -617,7 +673,6 @@ KARBA Financial Consultant Ltd; also known simply as <strong>KARBA</strong> prov
       <div class="photo-modal"><div class="photo-content">
         <h3>KRE: 600sqm, Otolu,Ibeju-Lekki</h3>
         <img src="assets/KRE 1.jpg" alt="">
-        <img src="assets/KRE 2.jpg" alt="">
         <p>₦18m • Govt.Approved Excision</p>
         <a class="whatsapp-btn" target="_blank" rel="noopener"
            href="https://wa.me/2349162631205?text=Hello%20KARBA!%20I'm%20interested%20in%20KRE: 600sqm%20Land%20in%20Otolu Ibeju-Lekki%20(₦18m).">💬 Message on WhatsApp</a>
@@ -637,7 +692,6 @@ KARBA Financial Consultant Ltd; also known simply as <strong>KARBA</strong> prov
       <div class="photo-modal"><div class="photo-content">
         <h3>HGC: 600sqm, Elerangbe,Ibeju-Lekki</h3>
         <img src="assets/HGC 1.jpg" alt="">
-        <img src="assets/HGC 2.jpg" alt="">
         <p>₦5m • Survey & Deed</p>
         <a class="whatsapp-btn" target="_blank" rel="noopener"
            href="https://wa.me/2349162631205?text=Hello%20KARBA!%20I'm%20interested%20in%20HGC: 600sqm%20Land%20in%20Elerangbe,Ibeju-Lekki%20(₦5m).">💬 Message on WhatsApp</a>
@@ -657,7 +711,6 @@ KARBA Financial Consultant Ltd; also known simply as <strong>KARBA</strong> prov
       <div class="photo-modal"><div class="photo-content">
         <h3>KLG: 600sqm, Igbodu,Epe</h3>
         <img src="assets/KLG 1.jpg" alt="">
-        <img src="assets/KLG 2.jpg" alt="">
         <p>₦12m • Survey & Deed</p>
         <a class="whatsapp-btn" target="_blank" rel="noopener"
            href="https://wa.me/2349162631205?text=Hello%20KARBA!%20I'm%20interested%20in%20KLG: 600sqm%20Plot%20in%20Igbodu,Epe%20(₦12m).">💬 Message on WhatsApp</a>
@@ -677,7 +730,6 @@ KARBA Financial Consultant Ltd; also known simply as <strong>KARBA</strong> prov
       <div class="photo-modal"><div class="photo-content">
         <h3>HGCE: 600sqm, Elerangbe,Ibeju-Lekki</h3>
         <img src="assets/HGCE 1.jpg" alt="">
-        <img src="assets/HGCE 2.jpg" alt="">
         <p>₦3.5m • Title: Survey & Deed</p>
         <a class="whatsapp-btn" target="_blank" rel="noopener"
            href="https://wa.me/2349162631205?text=Hello%20KARBA!%20I'm%20interested%20in%20HGCE: 600sqm%20Land%20in%20Elerangbe,Ibeju-Lekki%20(₦40m).">💬 Message on WhatsApp</a>
@@ -687,7 +739,7 @@ KARBA Financial Consultant Ltd; also known simply as <strong>KARBA</strong> prov
 
     <!-- Land #8 -->
     <div class="prop-card sm">
-      <div class="prop-title">8. KHC2: 600sqm, Igbogun,Ibeju-Lekki</div>
+      <div class="prop-title">8. KHC: 600sqm, Igbogun,Ibeju-Lekki</div>
       <div class="meta-line">
         <span>₦7m</span>
         <label for="lag-land-8" class="btn-inline">See Photos</label>
@@ -695,9 +747,8 @@ KARBA Financial Consultant Ltd; also known simply as <strong>KARBA</strong> prov
       </div>
       <input id="lag-land-8" class="modal-toggle" type="checkbox">
       <div class="photo-modal"><div class="photo-content">
-        <h3>KHC2: 600sqm, Igbogun,Ibeju-Lekki</h3>
-        <img src="assets/lagos-land3-1.jpg" alt="">
-        <img src="assets/lagos-land3-2.jpg" alt="">
+        <h3>KHC: 600sqm, Igbogun,Ibeju-Lekki</h3>
+        <img src="assets/KHC 1.jpg" alt="">
         <p>₦7m • Title: Registered Survey & Deed</p>
         <a class="whatsapp-btn" target="_blank" rel="noopener"
            href="https://wa.me/2349162631205?text=Hello%20KARBA!%20I'm%20interested%20in%20KHC2: 600sqm%20Land%20in%20Igbogun,Ibeju-Lekki%20(₦7m).">💬 Message on WhatsApp</a>
@@ -723,7 +774,6 @@ KARBA Financial Consultant Ltd; also known simply as <strong>KARBA</strong> prov
       <div class="photo-modal"><div class="photo-content">
         <h3>AVE: 465sqm, Fimie-Ama Phaiga,River State</h3>
         <img src="assets/AVE 1.jpg" alt="">
-        <img src="assets/AVE 2.jpg" alt="">
         <p>₦22m • Title: C of O</p>
         <a class="whatsapp-btn" target="_blank" rel="noopener"
            href="https://wa.me/2349162631205?text=Hello%20KARBA!%20I'm%20interested%20in%20AVE: 465sqm%20Land%20in%20Fimie-Ama Phaiga,River State%20(₦22m).">💬 Message on WhatsApp</a>
@@ -742,7 +792,6 @@ KARBA Financial Consultant Ltd; also known simply as <strong>KARBA</strong> prov
       <div class="photo-modal"><div class="photo-content">
         <h3>OGC: 450sqm Land, Elele Etche LGA,River State</h3>
         <img src="assets/OGC 1.jpg" alt="">
-        <img src="assets/OGC 2.jpg" alt="">
         <p>₦4.5m • C of O in view</p>
         <a class="whatsapp-btn" target="_blank" rel="noopener"
            href="https://wa.me/2349162631205?text=Hello%20KARBA!%20I'm%20interested%20in%20OGC: 450sqm%20Plot%20in%20Elele Etche LGA,River State%20(₦12m).">💬 Message on WhatsApp</a>
@@ -768,7 +817,6 @@ KARBA Financial Consultant Ltd; also known simply as <strong>KARBA</strong> prov
       <div class="photo-modal"><div class="photo-content">
         <h3>CRG: 450sqm, Ngor Okpala, Owerri LGA, Imo State</h3>
         <img src="assets/CRG 1.jpg" alt="">
-        <img src="assets/CRG 2.jpg" alt="">
         <p>₦7m • Title: Survey & Deed</p>
         <a class="whatsapp-btn" target="_blank" rel="noopener"
            href="https://wa.me/2349162631205?text=Hello%20KARBA!%20I'm%20interested%20in%20CRG: 450sqm%20Land%20in%20Ngor Okpala, Owerri LGA, Imo State%20(₦7m).">💬 Message on WhatsApp</a>
@@ -787,7 +835,6 @@ KARBA Financial Consultant Ltd; also known simply as <strong>KARBA</strong> prov
       <div class="photo-modal"><div class="photo-content">
         <h3>FVE: 450sqm Land, Ohuba, Owerri LGA, Imo State</h3>
         <img src="assets/FVE 1.jpg" alt="">
-        <img src="assets/FVE 2.jpg" alt="">
         <p>₦3.5m • Survey & Deed</p>
         <a class="whatsapp-btn" target="_blank" rel="noopener"
            href="https://wa.me/2349162631205?text=Hello%20KARBA!%20I'm%20interested%20in%20FVE: 450sqm%20Plot%20in%20Ohuba, Owerri LGA, Imo State%20(₦3.5m).">💬 Message on WhatsApp</a>
@@ -813,7 +860,6 @@ KARBA Financial Consultant Ltd; also known simply as <strong>KARBA</strong> prov
       <div class="photo-modal"><div class="photo-content">
         <h3>SGE: 500sqm, Nando LGA, Anambra State</h3>
         <img src="assets/SGE 1.jpg" alt="">
-        <img src="assets/SGE 2.jpg" alt="">
         <p>₦7m • Title: C of O</p>
         <a class="whatsapp-btn" target="_blank" rel="noopener"
            href="https://wa.me/2349162631205?text=Hello%20KARBA!%20I'm%20interested%20in%20SGE: 500sqm%20Land%20in%20 Nando LGA, Anambra State%20(₦7m).">💬 Message on WhatsApp</a>
@@ -832,7 +878,6 @@ KARBA Financial Consultant Ltd; also known simply as <strong>KARBA</strong> prov
       <div class="photo-modal"><div class="photo-content">
         <h3>ORG: 450sqm Land, Mgbakkwu, Awka LGA, Anambra</h3>
         <img src="assets/ORG 1.jpg" alt="">
-        <img src="assets/ORG 2.jpg" alt="">
         <p>₦4m • Survey & Deed</p>
         <a class="whatsapp-btn" target="_blank" rel="noopener"
            href="https://wa.me/2349162631205?text=Hello%20KARBA!%20I'm%20interested%20in%20ORG: 450sqm%20Plot%20in%20Mgbakkwu, Awka LGA, Anambra%20(₦4m).">💬 Message on WhatsApp</a>
@@ -851,7 +896,6 @@ KARBA Financial Consultant Ltd; also known simply as <strong>KARBA</strong> prov
       <div class="photo-modal"><div class="photo-content">
         <h3>DBGCE: 450sqm Land, Isiagu, Awka LGA, Anambra</h3>
         <img src="assets/DBGCE 1.jpg" alt="">
-        <img src="assets/DBGCE 2.jpg" alt="">
         <p>">₦20m • C of O</p>
         <a class="whatsapp-btn" target="_blank" rel="noopener"
            href="https://wa.me/2349162631205?text=Hello%20KARBA!%20I'm%20interested%20in%20DBGCE: 450sqm%20Plot%20in%20Isiagu, Awka LGA, Anambra%20(₦20m).">💬 Message on WhatsApp</a>
