@@ -545,36 +545,38 @@
       </div>
     </div>
 
- <!-- ===== PROMO 5 ===== -->
-    <div class="promo-box">
-      <h3>🎉 Limited Offer: RHC LAND IN IBEJU-LEKKI</h3>
-      <p>
-        Buy 1 Plot and WIN <strong>₦100k Shopping Voucher</strong>.
-      </p>
-      <p>
-        Buy 2 Plots and WIN <strong>₦250k Shopping Voucher</strong>.
-      </p>
-        <p>
-        Buy 3 Plots and WIN <strong>₦400k Shopping Voucher</strong>.
-      </p>
-        <p>
-        Buy 6 Plots and WIN <strong>₦850k Shopping Voucher</strong>.
-      </p>
-      <label for="promo5" class="cta-link">View Offer</label>
-<input id="promo" class="modal-toggle" type="checkbox">
-<div class="photo-modal">
-  <div class="photo-content">
-    <h3>💰 Buy & Win Vouchers RHC</h3>
-    <img src="assets/RHC 2.jpg" alt="">
-    <p>Buy 1 plot and win ₦100k shopping voucher, 2 plots ₦250k, 3 plots ₦400k! Ends 18/12/2025.</p>
-    <a class="whatsapp-btn" target="_blank" rel="noopener"
-       href="https://wa.me/2349162631205?text=Hello%20KARBA!%20I%27m%20interested%20in%20the%20Buy%20%26%20Win%20Promo.">
-       Message on WhatsApp
-    </a>
-    <label for="promo4" class="close-modal">× Close</label>
-        </div>
-      </div>
+ <!-- PROMO: RHC LAND -->
+<div class="promo-box">
+  <h3><span class="badge">🎉</span> Limited Offer: RHC LAND IN IBEJU-LEKKI</h3>
+  <p>Buy 1 Plot and WIN ₦100k Shopping Voucher.</p>
+  <p>Buy 2 Plots and WIN ₦250k Shopping Voucher.</p>
+  <p>Buy 3 Plots and WIN ₦400k Shopping Voucher.</p>
+  <p>Buy 6 Plots and WIN ₦850k Shopping Voucher.</p>
+
+  <!-- 1) unique id -->
+  <input id="promo-rhg" class="modal-toggle" type="checkbox">
+
+  <!-- 2) label's for matches id exactly -->
+  <label for="promo-rhg" class="cta-link">View Offer</label>
+
+  <!-- 3) modal is a sibling that comes AFTER the input -->
+  <div class="photo-modal">
+    <div class="photo-content">
+      <h4>RHG LAND — Ibeju-Lekki</h4>
+      <img src="/assets/RHC 2.jpg" alt="">
+      <p>Promo ends 18/12/2025.</p>
+
+      <!-- close without JS -->
+      <label for="promo-rhg" class="close-modal">× Close</label>
+
+      <!-- optional WhatsApp CTA -->
+      <a class="btn whatsapp" target="_blank"
+         href="https://wa.me/2349162631205?text=Hello%20KARBA%2C%20I%E2%80%99m%20interested%20in%20the%20RHG%20Land%20promo.%20Please%20share%20details.">
+         Message on WhatsApp
+      </a>
     </div>
+  </div>
+</div>
     
     <!-- ===== PROMO 6 ===== -->
     <div class="promo-box">
@@ -827,7 +829,7 @@ KARBA Financial Consultant Ltd; also known simply as <strong>KARBA</strong> prov
       <div class="prop-title">6. KLG: 600sqm, Igbodu,Epe</div>
       <div class="meta-line">
         <span>">₦12m</span>
-        <label for="lag-land-3" class="btn-inline">View Details</label>
+        <label for="lag-land-6" class="btn-inline">View Details</label>
         <span class="muted">• Title: Survey & Deed</span>
       </div>
       <input id="lag-land-6" class="modal-toggle" type="checkbox">
