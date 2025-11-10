@@ -256,6 +256,36 @@
     .info-card{padding:12px}
   }
 </style>
+  <style>
+.pill{
+  display:inline-block; padding:8px 14px; border:1px solid rgba(255,255,255,.4);
+  border-radius:10px; background:rgba(255,204,64,.12);
+  color:#ffcc40; text-decoration:none; cursor:pointer
+}
+.pill:hover{ filter:brightness(1.05) }
+
+.promo-box{ position:relative }        /* each promo self-contained */
+.modal-toggle{ display:none }
+.photo-modal{
+  position:fixed; inset:0; display:none; align-items:center; justify-content:center;
+  background:rgba(0,0,0,.7); z-index:9999; padding:16px
+}
+/* important: general sibling so only THIS promo's modal opens */
+.modal-toggle:checked ~ .photo-modal{ display:flex }
+
+.photo-content{
+  width:100%; max-width:780px; background:#fff; color:#111;
+  border-radius:12px; padding:16px; box-shadow:0 10px 30px rgba(0,0,0,.35)
+}
+@media (min-width:900px){ .photo-content{ max-width:960px } }
+.photo-content h3{ margin:0 0 10px }
+.photo-content img{ width:100%; height:auto; display:block; margin:8px 0; border-radius:8px }
+.whatsapp-btn{
+  display:inline-block; margin-top:10px; padding:8px 12px; border-radius:8px;
+  background:#25D366; color:#fff; text-decoration:none
+}
+.close-modal{ margin-left:10px; cursor:pointer; color:#666 }
+</style>
 </head>      
 <body>
 <header class="header">
@@ -375,6 +405,35 @@
       </div>
     </div>
   </section>
+
+  <!-- ONE PROMO CARD -->
+<div class="promo-box">
+  <h3>🔥 HOT DISTRESS SALE: TEV 13 PLOTS FENCED with C of O (Eleko Lekki Expressway)</h3>
+  <p>Buy and Win 7-days all-expenses-paid trip to any African country. Ends 18/12/2025.</p>
+
+  <div class="promo-links">
+    <label for="promo-tev13" class="pill">See Photos</label>
+  </div>
+
+  <!-- modal for THIS promo only -->
+  <input id="promo-tev13" class="modal-toggle" type="checkbox">
+  <div class="photo-modal">
+    <div class="photo-content">
+      <h3>TEV 13 PLOTS — Photo Preview</h3>
+
+      <img src="assets/promo-tev13-1.jpg" alt="TEV 13 photo 1">
+      <img src="assets/promo-tev13-2.jpg" alt="TEV 13 photo 2">
+
+      <p>Secure a verified plot; get full documentation support.</p>
+
+      <a class="whatsapp-btn" target="_blank" rel="noopener"
+         href="https://wa.me/2349162631205?text=Hello%20KARBA!%20I%27m%20interested%20in%20the%20TEV%2013%20plots%20promo.">
+        Message on WhatsApp
+      </a>
+      <label for="promo-tev13" class="close-modal">× Close</label>
+    </div>
+  </div>
+</div>
   
 <!-- ===== PROMOS & SPECIAL ANNOUNCEMENTS ===== -->
 <section class="section" id="promos">
